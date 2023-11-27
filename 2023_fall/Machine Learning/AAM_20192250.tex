@@ -1,0 +1,2711 @@
+\documentclass[12pt,openany]{book}
+
+\usepackage{amsmath,amsthm,amsfonts,amscd} % Packages for mathematics
+\usepackage{commath}
+
+% Colors
+\usepackage[dvipsnames]{xcolor}
+\definecolor{titleblue}{RGB}{0,53,128}
+\definecolor{chaptergray}{RGB}{140,140,140}
+\definecolor{sectiongray}{RGB}{180,180,180}
+
+\definecolor{thmcolor}{RGB}{231, 76, 60}
+\definecolor{defcolor}{RGB}{52, 152, 219}
+\definecolor{lemcolor}{RGB}{155, 89, 182}
+\definecolor{corcolor}{RGB}{46, 204, 113}
+\definecolor{procolor}{RGB}{241, 196, 15}
+
+% Fonts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newpxtext,newpxmath}
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\color{titleblue}\mdseries}
+
+% Page layout
+\usepackage{geometry}
+\geometry{a4paper,left=1.2in,right=.6in,top=1in,bottom=1in,heightrounded}
+\usepackage{fancyhdr}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Chapter formatting
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+{\normalfont\sffamily\Huge\bfseries\color{titleblue}}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+{\normalfont\sffamily\Large\bfseries\color{titleblue!100!gray}}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\sffamily\large\bfseries\color{titleblue!75!gray}}{\thesubsection}{1em}{}
+
+% Table of contents formatting
+\usepackage{tocloft}
+\renewcommand{\cftchapfont}{\sffamily\color{titleblue}\bfseries}
+\renewcommand{\cftsecfont}{\sffamily\color{chaptergray}}
+\renewcommand{\cftsubsecfont}{\sffamily\color{sectiongray}}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+\usepackage{cancel}
+\newcommand\crossout[3][black]{\renewcommand\CancelColor{\color{#1}}\cancelto{#2}{#3}}
+\newcommand\ncrossout[2][black]{\renewcommand\CancelColor{\color{#1}}\cancel{#2}}
+
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=titleblue,
+	filecolor=black,      
+	urlcolor=titleblue,
+}
+
+%Listing
+\usepackage{listings} %Code
+\renewcommand{\lstlistingname}{Code}%
+
+\definecolor{sagegreen}{rgb}{0.0,0.6,0.4}
+\definecolor{sagepurple}{rgb}{0.6,0.0,0.4}
+\definecolor{sageblue}{rgb}{0.0,0.4,0.6}
+\definecolor{sageorange}{rgb}{1.0,0.4,0.0}
+\definecolor{sagegray}{rgb}{0.4,0.4,0.4}
+
+\lstdefinestyle{sage}{
+	language=Python,
+	backgroundcolor=\color{white},
+	basicstyle=\small\ttfamily\color{black}, 
+	basicstyle=\footnotesize\ttfamily\color{black},
+	keywordstyle=\color{blue!60!black},
+	commentstyle=\color{green!60!black},
+	stringstyle=\color{purple!60!black},
+	showstringspaces=false,
+	breaklines=true,
+	tabsize=4,
+	morekeywords={True, False, None},
+	frame=leftline, % Remove the border
+	framesep=3pt,
+	frameround=tttt,
+	framexleftmargin=3pt,
+	numbers=left,
+	numberstyle=\small\color{gray},
+	xleftmargin=15pt, % Increase the left margin
+	xrightmargin=5pt,
+	captionpos=b,
+	belowskip=0pt,
+	aboveskip=4pt
+}
+
+%Ceiling and Floor Function
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+%Algorithm
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\usepackage{setspace}
+\usepackage{algpseudocode}
+\SetKwComment{Comment}{/* }{ */}
+\SetKw{Break}{break}
+\SetKw{Downto}{downto}
+\SetKwProg{Fn}{Function}{:}{end}
+\SetKwFunction{KeyGen}{KeyGen}
+
+
+%---------------------------My Preamble
+\usepackage{marvosym} %Lightning
+\usepackage{booktabs}
+\usepackage{multicol}
+\setlength{\columnsep}{2cm}
+\setlength{\columnseprule}{1.25pt}
+\usepackage{enumerate}
+\usepackage{soul}
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle #2$}}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{3d, calc}
+\usetikzlibrary{arrows, arrows.meta, positioning, shapes.multipart}
+
+%Tcolorbox
+\usepackage[most]{tcolorbox}
+\tcbset{colback=white, arc=5pt}
+%\tcbset{enhanced, colback=white,colframe=black,fonttitle=\bfseries,arc=4mm,boxrule=1pt,shadow={2mm}{-1mm}{0mm}{black!50}}
+%White box with black text and shadow
+%\begin{tcolorbox}[colback=white,colframe=black,fonttitle=\bfseries,title=Black Shadow Box,arc=4mm,boxrule=1pt,shadow={2mm}{-1mm}{0mm}{black!50}]
+%	This is a white box with black text and a subtle shadow. The shadow adds some depth and dimension to the box without overpowering the design.
+%\end{tcolorbox}
+
+%Theorem
+\newtheorem{axiom}{Axiom}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{exercise}{Exercise}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newtheorem*{note}{Note}
+
+%New Command
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\ie}{\textnormal{i.e.}}
+\newcommand{\eg}{\textnormal{e.g.}}
+
+\newcommand{\of}[1]{\left( #1 \right)} 
+
+\newcommand{\nbhd}{\mathcal{N}}
+\newcommand{\Id}{\operatorname{\textnormal{id}}}
+
+%\newcommand{\norm}[1]{\left\| #1 \right\|}
+
+\newcommand{\sol}{\textcolor{magenta}{\bf Sol}}
+
+\newcommand{\inv}[1]{{#1}^{-1}}
+\newcommand{\img}{\textnormal{Im}}
+
+\newcommand{\by}{\times}
+\newcommand{\Span}[1]{\textnormal{span}\langle #1\rangle}
+\newcommand{\Sspan}[1]{\textnormal{span}\bigg\langle #1\bigg\rangle}
+\newcommand{\basis}{\mathscr{B}}
+\newcommand{\scrC}{\mathscr{C}}
+\newcommand{\rank}{\textnormal{rank}}
+\newcommand{\inner}[1]{\langle #1\rangle}
+\newcommand{\norms}[1]{|| #1||}
+\newcommand{\tr}{\textnormal{tr}}
+\newcommand{\conjugate}[1]{\overline{#1}}
+\newcommand{\grad}{\nabla}
+\newcommand{\Cov}{\textnormal{Cov}}
+\newcommand{\corr}{\textnormal{Corr}}
+\newcommand{\Var}{\textnormal{Var}}
+
+\newcommand{\mvec}[1]{\boldsymbol{#1}}
+\renewcommand{\vec}[1]{\textbf{#1}}
+
+
+
+% Begin document
+\begin{document}
+	
+	% Title page
+	\begin{titlepage}
+		\begin{center}
+			{\Huge\textsf{\textbf{Advanced Applied Mathematics}}\par}
+			{\LARGE\textsf{\textbf{- Machine Learning -}}\par}
+			\vspace{0.5in}
+			{\Large Ji Yong-Hyeon\par}
+			\vspace{1in}\centering
+			\includegraphics[width=\textwidth,height=.3\textheight]{aam.png}\par
+			\vspace{1in}\large
+			{\bfseries Department of Information Security, Cryptology, and Mathematics\par}
+			{College of Science and Technology\par}
+			{Kookmin University\par}
+			%\includegraphics[width=1.5in]{school_logo.jpg}\par
+			\vspace{.25in}
+			{\large \today\par}
+		\end{center}
+	\end{titlepage}
+	
+	% Table of contents
+	\tableofcontents
+	
+	% Chapters
+	\mainmatter
+	
+	\chapter{Linear Algebra}
+	\section{Matrices}
+	\begin{itemize}
+		\item A system of linear equations
+		\[
+		\begin{cases}
+			x_1,\dots,x_n:\text{unknowns}\\
+			\text{\# of unknowns}=n\\
+			\text{\# of equations}=m
+		\end{cases}
+		\]
+		\begin{align*}
+			&\begin{cases}
+				a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=b_1\\
+				a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=b_2\\
+				\hspace{50pt}\vdots\\
+				a_{m1}x_1+a_{m2}x_2+\cdots+a_{mn}x_n=b_m\\
+			\end{cases}\\
+			\iff&\begin{bmatrix}
+				a_{11} & a_{12} & \cdots & a_{1n}\\
+				\vdots \\
+				a_{m1} & a_{m2} &\cdots & a_{mn}
+			\end{bmatrix}\begin{bmatrix}
+				x_1\\ \vdots \\ x_n
+			\end{bmatrix}=\begin{bmatrix}
+				b_1\\ \vdots \\ b_m
+			\end{bmatrix} &\textcolor{blue}{A\textbf{x}=\textbf{b}}\\
+			\iff& x_1\begin{bmatrix}
+				a_{11}\\ a_{21}\\ \vdots\\ a_{m1}
+			\end{bmatrix}+x_2\begin{bmatrix}
+				a_{12}\\ a_{22}\\ \vdots\\ a_{m2}
+			\end{bmatrix}+\cdots+x_n\begin{bmatrix}
+				a_{1m}\\ a_{2m}\\ \vdots\\ a_{mn}
+			\end{bmatrix}=\begin{bmatrix}
+				b_1\\ b_2\\ \vdots\\ b_{m} 
+			\end{bmatrix} & \textcolor{blue}{x_1\textbf{C}_1+\cdots+x_n\textbf{C}_n=\textbf{b}}
+		\end{align*}
+		\item Matrix operation
+		\begin{enumerate}[(i)]
+			\item scalar multiplication: $kA$
+			\item addition: $A+B$
+			\item multiplication: $AB$
+		\end{enumerate}
+		\item Properties \begin{itemize}
+			\item Associative: $(A+B)+C=A+(B+C)$, $A(BC)=(AB)C$
+			\item Distributive: $(AB)C=A(BC)$
+			\item (in general) not commutative: $AB\neq BA$
+		\end{itemize}
+		\item Transpose of $A$: $A^T$ \[
+		(a_{ij})_{m\times n}\longrightarrow(a^t_{ij})_{n\times m}=(a_{ji})_{n\times m}
+		\]
+		\item Square Matrices
+	\end{itemize}
+	
+	\section{Solving Systems of Linear Equations}
+	\begin{itemize}
+		\item Exchange of two equations (rows in the matrix representing the system
+		of equations)
+		\item Multiplication of an equation (row) with a constant $\lambda\in\R^*$
+		\item Addition of two equations (rows)
+	\end{itemize}
+	
+	\begin{remark}
+		$A\textbf{x}=\textbf{b}\iff[A\mid\textbf{b}]$.
+	\end{remark}
+	
+	\begin{example}
+		\begin{align*}
+			\begin{bmatrix}
+				1 & 1 & 1\\ 1 & -1& 2\\ 2 & 0 & 3
+			\end{bmatrix}\begin{bmatrix}
+				x_1\\ x_2\\ x_3
+			\end{bmatrix}=\begin{bmatrix}
+				3 \\ 2 \\ 5
+			\end{bmatrix} &\iff \left[
+			\begin{array}{ccc|c}
+				1 & 1 & 1 & 3\\
+				1 & -1 & 2 & 2\\
+				2 & 0 & 3 & 5
+			\end{array}
+			\right] \\ &\xLeftrightarrow[R_3\gets R_3-2R_1]{R_2\gets R_2-R_1} \left[
+			\begin{array}{ccc|c}
+				1 & 1 & 1 & 3\\
+				0 & -2 & 1 & -1\\
+				0 & -2 & 1 & -1
+			\end{array} 
+			\right] \\
+			&\xLeftrightarrow[R_2\gets -\frac{1}{2}R_2]{R_3\gets R_3-R_2} \left[
+			\begin{array}{ccc|c}
+				1 & 1 & 1 & 3\\
+				0 & 1 & -1/2 & 1/2\\
+				0 & 0 & 0 & 0
+			\end{array} 
+			\right]\quad\text{Row-Echelon Form (REF)} \\
+			&\xLeftrightarrow{R_1\gets R_1-R_2} \left[
+			\begin{array}{ccc|c}
+				1 & 0 & 3/2 & 5/2\\
+				0 & 1 & -1/2 & 1/2\\
+				0 & 0 & 0 & 0
+			\end{array} 
+			\right]\quad\text{Reduced Row-Echelon Form (RREF)} \\
+			&\iff \begin{cases}
+				x_1=-\frac{3}{2}x_3+\frac{5}{2}\\
+				x_2=\frac{1}{2}x_3+\frac{1}{2}
+			\end{cases}.
+		\end{align*} Let $x_3=\lambda$ then \[
+		\textbf{x}=\begin{bmatrix}
+			-\frac{3}{2}\lambda+\frac{5}{2}\\ \frac{1}{2}\lambda+\frac{1}{2}\\ \lambda
+		\end{bmatrix}=\begin{bmatrix}
+		\frac{5}{2}\\ \frac{1}{2}\\ 0
+		\end{bmatrix}+\lambda\begin{bmatrix}
+			-\frac{3}{2}\\ \frac{1}{2}\\ 1
+		\end{bmatrix}.
+		\]
+	\end{example}
+
+	\newpage
+	\section{Vector Space}
+	\section{Linear Independence}
+	\section{Basis and Rank}
+	
+	\newpage
+	\section{Linear Mappings}
+		\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Linear Mapping}]
+		\begin{definition}
+			Let $V,W$ are vector spaces. A mapping \[
+			\fullfunction{\Phi}{V}{W}{\lambda\vec{x}+\psi\vec{y}}{\Phi(\lambda\vec{x}+\psi\vec{y})=\lambda\Phi(\vec{x})+\psi\Phi(\vec{y})}
+			\] is called a \textbf{linear mapping} (or \textbf{vector space homomorphism} / \textbf{linear transformation}).
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{10pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Coordinate}]
+		\begin{definition}
+			Let $V$ be a vector space with $\dim V=n$, and let $\basis=\set{\vec{b}_1,\dots,\vec{b}_n}$ be a ordered basis of $V$. Then \[
+			\forall\vec{x}\in V:\exists\text{representation}:\quad\vec{x}=\sum_{i=1}^n\alpha_i\vec{b}_i=\begin{bmatrix}
+				a_1&\cdots a_n
+			\end{bmatrix}\begin{bmatrix}
+				\vec{b}_1\\ \vdots\\ \vec{b}_n
+			\end{bmatrix}.
+			\] Then $\begin{bmatrix}
+				\alpha_1& \cdots& \alpha_n
+			\end{bmatrix}^T\in\R^n$ is a coordinate vector of $\vec{x}$ w.r.t. $\basis$.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{example}
+		Let $\vec{e}_1=\begin{bmatrix}
+			1\\0
+		\end{bmatrix}$ and $\vec{e}_2=\begin{bmatrix}
+		0\\1
+	\end{bmatrix}$. Then $
+	\vec{x}=\begin{bmatrix}
+	2\\3
+\end{bmatrix}=2\begin{bmatrix}
+1\\0
+\end{bmatrix}+3\begin{bmatrix}
+0\\1
+\end{bmatrix}=2\vec{e}_1+3\vec{e}_2.$
+	\end{example}
+	\subsection{Matrix Representation of Linear Mappings}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Transformation Matrix}]
+		\begin{definition}
+			Consider vector spaces $V,W$ with corresponding (ordered basis) $\basis=(\vec{b}_1,\dots,\vec{b}_n)$ and $\mathscr{C}=\set{\vec{c}_1,\dots,\vec{c}_m}$. Let $\Phi:V\to W$ be a linear mapping such that $
+			\Phi(\vec{b}_j)=\sum_{i=1}^m\alpha_{ij}\vec{c}_i.
+			$ Let $A_\Phi=[\alpha_{ij}]_{m\by n}$. Note that \begin{align*}
+				\Phi(\vec{x})=\Phi(x_1\vec{b}_1+\cdots+x_n\vec{b}_n)&=\sum_{i=1}^nx_i\Phi(\vec{b}_i)
+				=\sum_{j=1}^nx_j\del{\sum_{i=1}^m\alpha_{ij}\vec{c}_i}\\
+				&=\begin{bmatrix}
+					\sum_{j=1}^n\alpha_{ij}x_j\\ \vdots\\ \sum_{j=1}^n\alpha_{ij}x_j
+				\end{bmatrix}_{\mathscr{C}}\\
+			&=\begin{bmatrix}
+				\alpha_{11} &\cdots &\alpha_{1n}\\
+				\vdots&\ddots&\vdots\\
+				\alpha_{m1}&\cdots&\alpha_{mn}
+			\end{bmatrix}\begin{bmatrix}
+			x_1\\ \vdots\\ x_n
+		\end{bmatrix}_{\basis}.
+			\end{align*}
+		\end{definition}
+	\end{tcolorbox}
+	
+	\subsection{Basis Change}
+	
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Basis Change}]
+		\begin{theorem}
+			For a linear mapping $\Phi:V\to W$, ordered bases \[
+			\mathscr{B}=(\textbf{b}_1,\dots,\textbf{b}_n),\quad\tilde{\mathscr{B}}=(\tilde{\textbf{b}}_1,\cdots\tilde{\textbf{b}}_n)
+			\] of \(V\) and \[
+			\mathscr{C}=(\textbf{c}_1,\dots,\textbf{c}_m),\quad\tilde{\mathscr{C}}=(\tilde{\textbf{c}}_1,\cdots\tilde{\textbf{c}}_m)
+			\] of \(W\), and a transformation matrix \(\textbf{A}_{\Phi}=\sbr[1]{a_{ij}}_{m\by n}\) w.r.t. \(\mathscr{B}\) and \(\mathscr{C}\), the corresponding transformation matrix \(\tilde{\textbf{A}}_\Phi=\sbr[1]{\tilde{a}_{ij}}_{m\by n}\) w.r.t. the bases \(\tilde{\mathscr{B}}\) and \(\tilde{\mathscr{C}}\) is given \[
+			\boxed{\tilde{\textbf{A}}_\Phi=\textbf{T}^{-1}\textbf{A}_\Phi \textbf{S}}.
+			\]
+			\begin{tikzcd}
+				&& V \arrow[rr, "\Phi"] && W && V \arrow[rr, "\Phi"] && W\\
+				&& \mathscr{B} \arrow[rr, "\textbf{A}_\Phi"] && \mathscr{C} && \mathscr{B} \arrow[rr, "\textbf{A}_\Phi"] && \mathscr{C} \arrow[dd, "\textbf{T}^{-1}"] \\
+				&& && && &&\\
+				&& \tilde{\mathscr{B}} \arrow[uu, "\textbf{S}"] \arrow[rr, "\tilde{\textbf{A}}_\Phi"] && \tilde{\mathscr{C}} \arrow[uu, "\textbf{T}"'] && \tilde{\mathscr{B}} \arrow[uu, "\textbf{S}"] \arrow[rr, "\tilde{\textbf{A}}_\Phi"] && \tilde{\mathscr{C}}             
+			\end{tikzcd}
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let \[
+			\textbf{S}:=\sbr[1]{s_{ij}}_{n\by n}=\sbr[2]{\tilde{\textbf{b}}_1\ \tilde{\textbf{b}}_2\ \cdots\ \tilde{\textbf{b}}_n}_{\basis},\quad
+			\text{and}\quad
+			\textbf{T}:=\sbr[1]{t_{lk}}_{m\by m}=\sbr[2]{\tilde{\textbf{c}}_1\ \tilde{\textbf{c}}_2\ \cdots\ \tilde{\textbf{c}}_m}_{\scrC}.
+		\] That is, \[
+		\tilde{\textbf{b}}_j=\begin{bmatrix}
+			s_{1j} \\ \vdots \\ s_{nj}
+		\end{bmatrix}_{\mathscr{B}}=\sum_{i=1}^ns_{ij}\textbf{b}_j\quad\text{and}\quad \tilde{\textbf{c}}_k=\begin{bmatrix}
+		t_{1k} \\ \vdots \\ t_{mk}
+		\end{bmatrix}_{\mathscr{C}}=\sum_{l=1}^mt_{lk}\textbf{c}_l
+		\] for $j=1,\dots,n$ and $k=1,\dots,m$, respectively. We must show that \[
+		\textbf{T}\tilde{\textbf{A}_\Phi}=\textbf{A}_\Phi\textbf{S}\in M_{m\by n}(\R).
+		\] \begin{enumerate}[(i)]
+			\item \((\textbf{T}\tilde{\textbf{A}_\Phi})\) For \(j=1,2,\dots,n\), \[
+			\Phi(\tilde{\textbf{b}}_j)=\sum_{k=1}^{m}\tilde{a}_{kj}\tilde{\textbf{c}}_k=\sum_{k=1}^m\sbr{\tilde{a}_{kj}\del{\sum_{l=1}^mt_{lk}\textbf{c}_l}}=\sum_{l=1}^m\sbr{\del{\sum_{k=1}^mt_{lk}\tilde{a}_{kj}}\textbf{c}_l}.
+			\]
+			\item \((\textbf{A}_\Phi\textbf{S})\) For \(j=1,2,\dots,n\), \[
+			\Phi(\tilde{\textbf{b}}_j)=\Phi\of{\sum_{i=1}^ns_{ij}\textbf{b}_j}=\sum_{i=1}^n\sbr{s_{ij}\Phi(\textbf{b}_i)}=\sum_{i=1}^n\sbr{s_{ij}\sum_{i=1}^ma_{li}\textbf{c}_l}=\sum_{l=1}^m\of{\sum_{i=1}^na_{li}s_{ij}}\textbf{c}_l.
+			\]
+		\end{enumerate}
+		 Hence \[
+		 \sum_{k=1}^mt_{lk}\tilde{a}_{kj}=\sum_{i=1}^na_{li}s_{ij}\implies\textbf{T}\tilde{\textbf{A}_\Phi}=\textbf{A}_\Phi\textbf{S}\implies\tilde{\textbf{A}}_\Phi=\textbf{T}^{-1}\textbf{A}_\Phi \textbf{S}.
+		 \]
+	\end{proof}
+	
+	\begin{example}
+		Let \[
+		y_1\textbf{e}_1+y_2\textbf{e}_2=\Phi(x_1\textbf{e}_1+x_2\textbf{e}_2)=(x_1+5x_2)\textbf{e}_1+6x_2\textbf{e}_2.
+		\] Then \[\begin{bmatrix}
+			y_1\\ y_2
+		\end{bmatrix}=\textbf{A}_\Phi\begin{bmatrix}
+	x_1 \\ x_2
+\end{bmatrix},\quad\text{where}\quad
+\textbf{A}_\Phi=\begin{bmatrix}
+	1 & 5\\ 0 & 6
+\end{bmatrix}.
+		\] We define \[
+		\tilde{\basis}=\sbr{\tilde{\textbf{b}}_1\ \tilde{\textbf{b}}_2}:=\begin{bmatrix}
+			1 & 1\\ 1 & 0
+		\end{bmatrix}.
+		\]\[
+		\tilde{\textbf{A}}_\Phi=\textbf{T}^{-1}\textbf{A}_\Phi\textbf{S}=
+		\begin{bmatrix}
+			0 & 1\\ 1 & -1
+		\end{bmatrix}\begin{bmatrix}
+		0 & 5\\ 0 & 6
+	\end{bmatrix}\begin{bmatrix}
+	1 & 1\\ 1 & 0
+\end{bmatrix}=\begin{bmatrix}
+6 & 0\\ 0 & 1
+\end{bmatrix}
+		\] \[
+		\Phi\of{\tilde{x}_1\begin{bmatrix}
+			1 \\ 1
+		\end{bmatrix}+\tilde{x}_2\begin{bmatrix}
+		1 \\ 0
+	\end{bmatrix}}=6\tilde{x}_1\begin{bmatrix}
+1 \\ 1
+\end{bmatrix}+\tilde{x}_2\begin{bmatrix}
+1 \\ 0
+\end{bmatrix}.
+		\]
+	\end{example}
+
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Similarity}]
+		\begin{definition}
+			Let \(\textbf{A},\tilde{\textbf{A}}\in M_{n\by n}(\R)\). \(\textbf{A},\tilde{\textbf{A}}\) are \textbf{similar} if \[
+			\exists\textbf{S}\in M_{n\by n}(\R):\tilde{\textbf{A}}=\textbf{S}^{-1}\textbf{A}\textbf{S}.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	
+	\newpage
+	\subsection{Image and Kernel}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Image and Kernel}]
+		\begin{definition}
+			Let \(\Phi:V\to W\) be a linear mapping. \begin{enumerate}[(1)]
+				\item The \textbf{kernel (null) space} is defined by \[
+				\ker(\Phi):=\Phi^{-1}(\textbf{0}_W)=\set{\textbf{v}\in V:\Phi(\textbf{v})=\textbf{0}_W}.
+				\]
+				\item The \textbf{image (range)} is defined by \[
+				\img(\Phi):=\Phi[V]=\set{\textbf{w}\in W:(\exists\textbf{v}\in V)\ \Phi(\textbf{v})=\textbf{w}}.
+				\]
+			\end{enumerate}
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item \(\textbf{0}_V\in\ker(\Phi)\implies\ker\Phi\neq\emptyset\).
+			\item \(\ker(\Phi)\subseteq V\) is a subspace of $V$.
+			\item \(\img(\Phi)\subseteq W\) is a subspace of $W$.
+			\item \(\Phi:V\rightarrowtail W\iff \ker(\Phi)=\set{\textbf{0}_V}\).
+		\end{enumerate}
+	\end{remark}
+	\vspace{8pt}
+	\begin{remark}[Null Space and Column Space]
+		Let \(\textbf{A}\in M_{m\by n}(\R)\) and $$\fullfunction{\Phi}{\R^n}{\R^m}{\textbf{x}}{\textbf{Ax}}$$
+		\begin{enumerate}[(1)]
+			\item The \textbf{column space} is the image of \(\Phi\), the span of the columns of \(\textbf{A}\),\begin{align*}
+				\img(\Phi)=\set{\textbf{A}\textbf{x}:\textbf{x}\in\R^n}&=\set{\sbr{\textbf{a}_1,\dots,\textbf{a}_n}\begin{bmatrix}
+						x_1\\ \vdots\\ x_n
+					\end{bmatrix}:x_i\in\R}\\
+				&=\set{\sum_{i=1}^nx_i\textbf{a}_i:x_i\in\R}\\
+				&=\Span{\textbf{a}_1,\dots,\textbf{a}_n}\subseteq\R^m.
+			\end{align*}
+			\item \(\rank(\textbf{A})=\dim(\img(\Phi))\).
+			\item The \textbf{null space} \(\ker(\Phi)\) is $\set{\textbf{x}:\textbf{Ax}=\textbf{0}}$.
+		\end{enumerate}
+	\end{remark}
+
+	\newpage
+	\begin{example}[Image and Kernel of Linear Mapping]
+		The mapping \begin{align*}
+			\Phi:\R^4\to\R^2:\begin{bmatrix}
+				x_1\\x_2\\x_3\\x_4
+			\end{bmatrix}\mapsto\begin{bmatrix}
+			1&2&-1&0\\1&0&0&1
+		\end{bmatrix}\begin{bmatrix}
+			x_1\\x_2\\x_3\\x_4
+		\end{bmatrix}&=\begin{bmatrix}
+			x_1+2x_2-x_3\\x_1+x_4
+		\end{bmatrix}\\
+		&=x_1\begin{bmatrix} 1\\1 \end{bmatrix}+x_2\begin{bmatrix} 2\\0 \end{bmatrix}+x_3\begin{bmatrix} -1\\0 \end{bmatrix}+x_4\begin{bmatrix} 0\\1 \end{bmatrix}.
+		\end{align*} is linear. Then \begin{enumerate}[(1)]
+		\item \(\img(\Phi)=\textnormal{span}\bigg\langle
+			\begin{bmatrix}1\\1\end{bmatrix},
+			\begin{bmatrix}2\\0\end{bmatrix},
+			\begin{bmatrix}-1\\0\end{bmatrix},
+			\begin{bmatrix}0\\1\end{bmatrix}
+			\bigg\rangle=\R^2
+			\)
+			\item Since \[
+			\begin{bmatrix}
+				1&2&-1&0\\1&0&0&1
+			\end{bmatrix}\rightsquigarrow\cdots\rightsquigarrow\begin{bmatrix}
+			1&0&0&1\\0&1&-\frac{1}{2}&-\frac{1}{2}
+		\end{bmatrix}\xrightarrow[]{\text{Minus-1 Trick}}
+			\begin{bmatrix}
+				1&0&0&1\\0&1&-\frac{1}{2}&-\frac{1}{2}\\
+				0&0&-1&0\\ 0&0&0&-1
+			\end{bmatrix},
+			\] we have \[
+			\ker(\Phi)=\Sspan{\begin{bmatrix}1\\-1/2\\-1\\0\end{bmatrix},
+					\begin{bmatrix}1\\-1/2\\0\\-1\end{bmatrix}}.
+			\]
+	\end{enumerate}
+	\end{example}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Rank-Nullity Theorem (Fundamental Theorem of Linear Mapping)}]
+		\begin{theorem}
+			Let \(\Phi:V\to W\) be a linear mapping for vector spaces \(V,W\). Then \[
+			\dim(\ker\Phi)+\dim(\img\Phi)=\dim V.
+			\]
+		\end{theorem}
+	\end{tcolorbox}
+
+	\section{Affine Spaces}
+	\[
+	\Phi(\textbf{x})=\textbf{A}\textbf{x}+\textbf{b}
+	\] \(\img\Phi\) is not a subspace if \(\textbf{b}\neq 0\).
+	
+	\newpage
+	\chapter{Analytic Geometry}
+	
+	\section{Norm}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Norm}]
+		\begin{definition}
+			A \textbf{norm} on a vector space \(V\) is a function \[
+			\fullfunction{\norm{\ \cdot\ }}{V}{\R}{\textbf{x}}{\norm{\textbf{x}}}
+			\] such that for all \(\lambda\in\R\) and \(\textbf{x},\textbf{y}\in V\) the following hold: \begin{enumerate}[(i)]
+				\item (Absolutely homogeneous)\quad \(\norm{\lambda x}=\abs{\lambda}\norm{\textbf{x}}\)
+				\item (Triangle inequality)\quad \(\norm{\textbf{x}+\textbf{y}}\leq\norm{\textbf{x}}+\norm{\textbf{y}}\)
+				\item (Positive definite)\quad \(
+				\begin{cases}
+					\norm{\textbf{x}}> 0&:\textbf{x}\neq\textbf{0}\\
+					\norm{\textbf{x}}=0&:\textbf{x}=\textbf{0}
+				\end{cases}\)
+			\end{enumerate}
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{8pt}
+	\begin{example}[Manhattan Norm]
+		The Manhattan norm on $\R^n$ is defined for $\textbf{x}\in\R^n$ as $$\norm{\textbf{x}}_1:=\sum_{i=1}^n\abs{x_i}.$$ The Manhattan norm is also called \(\mathscr{l}_1\) norm.
+	\end{example}
+	\begin{example}[Euclidean Norm]
+		The Manhattan norm on $\R^n$ is defined for $\textbf{x}\in\R^n$ as $$\norm{\textbf{x}}_2:=\sqrt{\sum_{i=1}^nx_i^2}=\sqrt{\textbf{x}^T\textbf{x}}.$$ The Euclidean norm is also called \(\mathscr{l}_2\) norm.
+	\end{example}
+
+	\section{Inner Products}
+	\subsection{General Inner Product}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Dot Product (Scalar Product)}]
+		\begin{definition}
+			The \textbf{dot product (scalar product)} in \(\R^n\) is given by \[
+			\langle\textbf{x},\textbf{y}\rangle=\textbf{x}\cdot\textbf{y}=\textbf{x}^T\textbf{y}=\sum_{i=1}^nx_iy_i.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Bilinaer Mapping}]
+		\begin{definition}
+			Let \(V\) be a vector space and \(\Omega:V\times V\to\R\) is a \textbf{bilienar mapping} if for all \(\alpha,\beta\in\R\),  \begin{enumerate}[(i)]
+				\item $\Omega(\alpha \textbf{x}_1+\beta\textbf{x}_2,\textbf{y}) = \alpha\Omega(\textbf{x},\textbf{y})+\beta\Omega(\textbf{x}_2,y)$.
+				\item $\Omega(\textbf{y},\alpha\textbf{y}_1+\beta\textbf{y}_2) = \alpha\Omega(\textbf{x},\textbf{y}_1)+\beta\Omega(\textbf{x},y_2)$.
+			\end{enumerate}
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item \(\Omega\) is called \textbf{symmetric} if \(\forall\textbf{x},\textbf{y}\in V:\Omega(\textbf{x},\textbf{y})=\Omega(\textbf{y},\textbf{x})\).
+			\item \(\Omega\) is called \textbf{positive definite} if $
+			\begin{cases}
+				\Omega(\textbf{x},\textbf{x})>0 &:\textbf{x}\in V\setminus\set{\textbf{0}}\\
+				\Omega(\textbf{x},\textbf{x})=0 &:\textbf{x}=\textbf{0}.
+			\end{cases}$.
+		\end{enumerate}
+	\end{remark}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Inner Product}]
+		\begin{definition}
+			A positive definite, symmetric bilinear mapping \(\Omega:V\times V\to\R\) is called an \textbf{inner product} on vector space \(V\). 
+		\end{definition}
+	\end{tcolorbox}
+	\begin{example}[Inner Product That Is Not Dot Product]
+		Consider \(V=\R^2\). We define \[
+		\inner{\textbf{x},\textbf{y}}:=x_1y_1-(x_1y_2+x_2y_1)+2x_2y_2=
+		\begin{bmatrix} x_1&x_2\end{bmatrix}
+		\begin{bmatrix} 1 & -1\\ -1 &2\end{bmatrix}
+		\begin{bmatrix} y_1\\y_2\end{bmatrix}.
+		\] Then \begin{enumerate}[(i)]
+			\item (positive definite) \[
+			\inner{\textbf{x},\textbf{x}}=x_1^2-2x_1x_2+x_2^2+x_2^2=(x_1-x_2)^2+x_2^2\geq0.
+			\] Moreover, \(\inner{\textbf{x},\textbf{x}}=0\iff\textbf{x}=0\).
+			\item (symmetric) It holds.
+			\item (bilinear) It holds.
+		\end{enumerate}
+	\end{example}
+	
+	\newpage
+	\subsection{Symmetric, Positive Definite Matrices}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Symmetric, Positive Defintie Matrix}]
+		\begin{definition}
+			Let \(V\) be a vector space with \(\dim V=n\). A symmetric matrix \(\textbf{A}\in M_{n\by n}(\R)\) is called \textbf{symmetric, positive definite} if \(\textbf{x}^T\textbf{Ax}\geq 0\) for all \(\textbf{x}\in V\) and \[
+			\begin{cases}
+				\textbf{x}^T\textbf{Ax}>0 &:\textbf{x}\in V\setminus\set{\textbf{0}}\\
+				\textbf{x}^T\textbf{Ax}=0 &:\textbf{x}=\textbf{0}.
+			\end{cases}
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\(\textbf{A}\) is positive \textbf{semi-definite} if \(\textbf{x}^T\textbf{A}\textbf{x}\geq 0 \) only.
+	\end{remark}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			Let \(V\) be a vector space with \(\dim V=n\) and \(\basis\) an ordered basis of \(V\). A bilinear mapping \(\inner{\cdot,\cdot}:V\times V\to\R\) is an inner product if and only if \[
+			\exists\text{symmetric, positive definite matrix}\ \textbf{A}\in M_{n\by n}(\R):\inner{\textbf{x},\textbf{y}}=\textbf{x}^T\textbf{A}\textbf{y}.
+			\]
+		\end{theorem}
+	\end{tcolorbox} 
+	\vspace{8pt}
+	\begin{remark}
+		Let \(\textbf{A}\) be a symmetric, positive definite matrix.
+		\begin{enumerate}[(1)]
+			\item \(\ker\textbf{A}=\set{0}\) because \[
+			\textbf{x}\neq \textbf{0}\implies \textbf{x}^T\textbf{Ax}>0\implies \textbf{Ax}\neq\textbf{0}.
+			\]
+			\item The diagonal element \(a_{ii}\) of \(\textbf{A}\) are positive because \[
+			a_{ii}=\textbf{e}_i^T\textbf{A}\textbf{e}_i=\inner{\textbf{e}_i,\textbf{e}_i}> 0.
+			\]
+		\end{enumerate}
+	\end{remark}
+
+	\subsection{Lengths and Distances}
+	\begin{remark}[Cauchy-Schwarz Inequality]
+		\[
+		\abs{\inner{\textbf{x},\textbf{y}}}\leq\norms{\textbf{x}}\norms{\textbf{y}}.
+		\]
+	\end{remark}
+	
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Distance and Metric}]
+		\begin{definition}
+			Consider an inner product space \((V,\inner{\cdot,\cdot})\). Let \(\textbf{x},\textbf{y}\in V\). Then \[
+			d(\textbf{x},\textbf{y})=\norms{\textbf{x}-\textbf{y}}=\sqrt{\inner{\textbf{x}-\textbf{y},\textbf{x}-\textbf{y}}}.
+			\] is called \textbf{distance} between \textbf{x} and \textbf{y}. The mapping \[
+			\fullfunction{d}{V\times V}{\R}{(\textbf{x},\textbf{y})}{d(\textbf{x},\textbf{y})}
+			\] is called a \textbf{metric}
+		\end{definition}
+	\end{tcolorbox}
+
+	\subsection{Angles and Orthogonality}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Angle}]
+		\begin{definition}
+			Assume that \(\textbf{x},\textbf{y}\in V\setminus\set{\textbf{0}}\). Then \[
+			-1\leq\frac{\inner{\textbf{x},\textbf{y}}}{\norms{\textbf{x}}\norms{\textbf{y}}}\leq 1.
+			\] And \[
+			\exists !\theta\in[0,\pi]:\cos\theta=\frac{\inner{\textbf{x},\textbf{y}}}{\norms{\textbf{x}}\norms{\textbf{y}}}.
+			\] The number \(\theta\) is the \textbf{angle}.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{example}
+		Consider \(\textbf{x}=(1,1)\) and \(\textbf{y}=(-1,1)\) on \(\R^2\).
+		\begin{enumerate}[(1)]
+			\item Dot Product: \[
+			\textbf{x}\cdot \textbf{y}=(1,1)\cdot(-1,1)=-1+1=0.
+			\]
+			\item Inner Product: \[
+			\inner{\textbf{x},\textbf{y}}:=\textbf{x}^T\begin{bmatrix}
+				2&0\\0&1
+			\end{bmatrix}\textbf{y}\implies\cos\theta=-\frac{1}{3}.
+			\]
+		\end{enumerate}
+	\end{example}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Orthogonal Matrix}]
+		\begin{definition}
+			A square matrix \(\textbf{A}\in M_{n\by n}(\R)\) is an \textbf{orthogonal matrix} if and only if \[
+			\textbf{A}\textbf{A}^T=I_n=\textbf{A}^T\textbf{A},
+			\] that is, \(\textbf{A}^{-1}=\textbf{A}^T\).
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item \(\textbf{A}^T\textbf{A}=[A_i^TA_j]_{n\by n}=\sbr{\inner{\textbf{A}_i,\textbf{A}_j}}_{n\by n}\), where \(\inner{\textbf{A}_i,\textbf{A}_j}=\begin{cases}
+				1 &:i=j\\ 0&:i\neq j.
+			\end{cases}\)
+			\begin{enumerate}[(i)]
+				\item Column vectors of \(\textbf{A}\) are orthogonal each other.
+				\item \(\inner{\textbf{A}_i,\textbf{A}_i}=1\implies\norms{\textbf{A}_i}=1\).
+			\end{enumerate}
+			\item Let \(\textbf{A}\) is orthogonal. Then a linear mapping \[
+			\fullfunction{\Phi}{\R^n}{\R^m}{\textbf{x}}{\textbf{Ax}}
+			\] has \textbf{length preserving} property, \ie, \(\norms{\textbf{x}}=\norms{\textbf{Ax}}\) because \[
+			\norms{\textbf{Ax}}^2=\inner{\textbf{Ax},\textbf{Ax}}=(\textbf{Ax})^T\textbf{Ax}=\textbf{x}^T\textbf{A}^T\textbf{Ax}=\textbf{x}^T\textbf{x}=\inner{\textbf{x},\textbf{x}}=\norms{\textbf{x}}^2.
+			\] $\Phi$ has also \textbf{angle preserving} property because \[
+			\cos\theta=\frac{(\vec{Ax}^T)(\vec{Ay})}{\norms{\vec{Ax}}\norms{\vec{Ay}}}=\frac{\vec{x}^T\textbf{A}^T\textbf{A}\vec{y}}{\sqrt{\textbf{x}^T\textbf{A}^T\textbf{Ax}\textbf{y}^T\textbf{A}^T\textbf{Ay}}}=\frac{\textbf{x}^T\textbf{y}}{\norms{\vec{x}}\norms{\vec{y}}}.
+			\]
+		\end{enumerate}
+	\end{remark}
+	
+	\newpage
+	\section{Orthonormal Basis}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Orthnormal Bais}]
+		\begin{definition}
+			Consider an \(n\)-dimensional vector space \(V\) and a basis \(\set{\vec{b}_1,\dots,\vec{b}_n}\) of \(V\). The basis is called an \textbf{orthonormal basis (ONB)} if \[
+			\inner{\vec{b}_i,\vec{b}_j}=\begin{cases}
+				0 &:i\neq j\\
+				1 &:i=j
+			\end{cases},\quad\ie,\quad\inner{\vec{b}_i,\vec{b}_j}=\delta_{ij}
+			\] for all \(i,j=1,\dots,n\).
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Orthogonal Complement}]
+		\begin{definition}
+			Consider a \(d\)-dimensional vector space \(V\) and an \(m\)-dimensional subspace \(U\subseteq V\). The \textbf{orthogonal complement} is \[
+			U^\perp:=\set{\textbf{v}\in V:(\forall\vec{u}\in U)\ \inner{\textbf{v},\textbf{u}}=0}
+			\]  is a \((d-m)\)-dimensional subspace of \(V\).
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item \(U\cap U^\perp=\set{\vec{0}}\).
+			\item Any vector \(\textbf{x}\in V\) can be uniquely decomposed into \[
+			\textbf{x}=\sum_{i=1}^m\lambda_m\vec{b}_m+\sum_{j=1}^{d-m}\psi_j\vec{b}_j^\perp,\quad\lambda_i,\psi_j\in\R,
+			\] where \((\vec{b}_1,\dots,\vec{b}_m)\) is a basis of \(U\) and \((\vec{b}_1^\perp,\dots,\vec{b}_{d-m}^\perp)\) is a basis of \(U^\perp\).
+		\end{enumerate}
+	\end{remark}
+
+	\section{Orthogonal Projections}
+	\begin{quote}
+		``To minimize the compression loss, we have to find the most informative dimensions in the data''
+	\end{quote}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Projection}]
+		\begin{definition}
+		Let \(V\) be a vector space and $U\subseteq V$ a subspace of $V$. A linear mapping \(\pi:V\to U\) is called a \textbf{projection} if \[
+		\pi^2=\pi\circ\pi=\pi.
+		\]
+		\end{definition}
+	\end{tcolorbox}
+
+	\subsection{Projection onto One-Dimensional Subspaces (Lines)}
+	\begin{center}
+		\begin{tikzpicture}[scale=2]
+			% draw axes
+			\draw[->] (-.5,0) -- (3.5,0) node[right] {$\Re(z)$};
+			\draw[->] (0,-.5) -- (0,3.5) node[above] {$\Im(z)$};
+			% add arrow
+			%\draw[->] (0,0) -- (1,1) node[midway, above left] {};
+			% draw point
+			\draw[thick, ->, dashed, red] (1.5,{1.5*sqrt(3)}) -- ({9/4},{3*sqrt(3)/4}) node[] {};
+			\draw[thick, ->, orange] (0,0) -- ({2*sqrt(3)},2) node[right] {$\textbf{b}$};
+			\draw[thick, ->] (0,0) -- (1.5,{1.5*sqrt(3)}) node[right] {$\textbf{x}$};
+			\draw[->, thick] ({sqrt(3)/2},1/2) arc (30:60:1) node[midway, right] {$\omega$};
+			\fill ({9/4},{3*sqrt(3)/4}) circle (1.5pt) node[below] {$\pi_U(\vec{x})$};
+		\end{tikzpicture}
+	\end{center}
+	We determine the coordinate \(\lambda\), the projection \(\pi_U(\vec{x})\in U\), and the projection matrix \(\textbf{P}_\pi\) that maps any \(\vec{x}\in\R^n\) onto $U$:
+	\begin{enumerate}[(Step 1)]
+		\item Finding the coordinate \(\lambda\). \(\pi_U\in U\Rightarrow\pi_U(\vec{x})=\lambda\vec{b}\). Note that \begin{align*}
+			0&=\inner{\vec{x}-\pi_U(\vec{x}),\vec{b}}\\
+			&=\inner{\vec{x}-\lambda\vec{b},\vec{b}}\quad\because\pi_U(\vec{x})=\lambda\vec{b}\\
+			&=\inner{\vec{x},\vec{b}}-\lambda\inner{\vec{b},\vec{b}}\quad\text{by bilinearity of the inner product}.
+		\end{align*} Thus \[
+		\lambda=\frac{\inner{\vec{x},\vec{b}}}{\inner{\vec{b},\vec{b}}}=\frac{\inner{\vec{b},\vec{x}}}{\norms{\vec{b}}^2}=\frac{\vec{b}^T\vec{x}}{\vec{b}^T\vec{b}}.
+		\] If \(\norms{\vec{b}}=1\), then the coordinate $\lambda$ of the projection is given by \(\vec{b}^T\vec{x}\).
+		\item Finding the projection point \(\pi_U(\vec{x})\in U\) and the projection matrix \(\textbf{P}_\pi\).
+		Note that \[
+		\inner{\vec{b},\vec{x}}\vec{b}=\del{\vec{b}^T\vec{x}}\vec{b}=\del{\sum_jb_jx_j}\del{\sum_ib_i\vec{e}_i}=\sum_i\del{\sum_j b_ib_jx_j}\vec{e}_i=\sum_{ij} (\vec{b}\vec{b}^T)_{ij}x_i\vec{e}_i=\vec{b}\vec{b}^T\vec{x}
+		\]
+		\[
+		\pi_U(\vec{x})=\lambda\vec{b}=\underbrace{\del{\frac{\inner{\vec{x},\vec{b}}}{\norms{\vec{b}}^2}}}_{\in\R}\vec{b}=\textbf{P}_\pi\vec{x},\quad\text{where}\quad\textbf{P}_\pi=\del{\frac{\vec{b}\vec{b}^T}{\norms{\vec{b}}^2}}.
+		\]
+	\end{enumerate}
+	\vspace{4pt}
+	\begin{example}[Projection onto a Line]
+		Find the projection matrix \(\textbf{P}_\pi\) onto the line through the origin spanned by \(\vec{b}=\begin{bmatrix}
+			1&2&2
+		\end{bmatrix}^T\), where \(\vec{b}\) is a direction and a basis of the one-dimensional subspace (line through origin).
+		\begin{proof}[\sol]
+			Note that
+			\begin{align*}
+				&\vec{b}\vec{b}^T=\begin{bmatrix}
+					1\\2\\2
+				\end{bmatrix}\begin{bmatrix}
+				1&2&2
+			\end{bmatrix}=\begin{bmatrix}
+			1&2&2\\2&4&4\\2&4&4
+		\end{bmatrix},\\
+			&\norms{\vec{b}}^2=\vec{b}^T\vec{b}=\begin{bmatrix}
+				1&2&2
+			\end{bmatrix}\begin{bmatrix}
+				1\\2\\2
+			\end{bmatrix}=1+2^2+2^2=9.
+			\end{align*} Thus \[
+			\textbf{P}_{\pi}=\frac{\vec{b}\vec{b}^T}{\vec{b}^T\vec{b}}=\frac{1}{9}
+				\begin{bmatrix}
+				1&2&2\\2&4&4\\2&4&4
+			\end{bmatrix}.
+			\] For \(\textbf{x}=\begin{bmatrix}
+				1&1&1
+			\end{bmatrix}^T\in \R^3\), the projection is \[
+			\pi_U(\vec{x})=\textbf{P}_\pi\vec{x}=\frac{1}{9}\begin{bmatrix}
+				1&2&2\\2&4&4\\2&4&4
+			\end{bmatrix}\begin{bmatrix}
+			1 \\ 1 \\ 1
+		\end{bmatrix}=\frac{1}{9}\begin{bmatrix}
+		5\\10\\10
+		\end{bmatrix}\in\textnormal{span}\bigg\langle\begin{bmatrix}
+		1\\2\\2
+	\end{bmatrix}\bigg\rangle.
+			\]
+		\end{proof}
+	\end{example}
+
+	\subsection{Projection onto General Subspaces}
+	
+	Assume that \[
+	U=\Span{\vec{b}_1,\dots,\vec{b}_m}\subseteq V=R^n.
+	\] Then \(\pi_U(\vec{x})=\sum_{i=1}^m\lambda_i\vec{b}_i\).
+	
+	We find the projection \(\pi_U(\vec{x})\) and the projection matrix \(\textbf{P}_\pi\):
+	
+	\begin{enumerate}[(Step 1)]
+		\item Find the coordinates \(\lambda_1,\dots,\lambda_m\) of projection w.r.t. the basis of \(U\), such that the linear combination \begin{align*}
+			&\pi_U(\vec{x})=\sum_{i=1}^m\lambda_i\vec{b}_i=\textbf{B}\boldsymbol{\lambda}\quad\text{with}\\
+			&\textbf{B}=\begin{bmatrix}
+				\vec{b}_1,\dots,\vec{b}_m
+			\end{bmatrix}\in M_{n\by m}(\R),\quad\boldsymbol{\lambda}=\begin{bmatrix}
+			\lambda_1,\dots,\lambda_m^T
+		\end{bmatrix}\in\R^m
+		\end{align*} is closest to \(\vec{x}\in\R^n\).
+		We obtain \(m\) simulationeous conditions \begin{align*}
+			\inner{\vec{b}_1,\vec{x}-\pi_U(\vec{x})}=&\vec{b}_1^T(\vec{x}-\pi_U(\vec{x}))=0\\
+			&\vdots\\
+			\inner{\vec{b}_m,\vec{x}-\pi_U(\vec{x})}=&\vec{b}_m^T(\vec{x}-\pi_U(\vec{x}))=0
+		\end{align*} which, with \(\pi_U(\vec{x})=\textbf{B}\boldsymbol{\lambda}\), can be written as \begin{align*}
+		\vec{b}_1^T(&\vec{x}-\textbf{B}\boldsymbol{\lambda})=0\\
+		&\vdots\\
+		\vec{b}_m^T(&\vec{x}-\textbf{B}\boldsymbol{\lambda})=0\\
+	\end{align*} such that we obtain a homogeneous linear equation system \begin{align*}
+		\begin{bmatrix}
+			\vec{b}_1^T\\ \vdots\\ \vec{b}_m^T
+		\end{bmatrix}\begin{bmatrix}
+		\vec{x}-\textbf{B}\boldsymbol{\lambda}
+	\end{bmatrix}=\vec{0}&\iff\textbf{B}^T(\vec{x}-\textbf{B}\boldsymbol{\lambda})=0\\
+	&\iff\textbf{B}^T\textbf{B}\boldsymbol{\lambda}=\textbf{B}^T\vec{x}.
+		\end{align*} Thus the coordinate (coefficient) is\[
+		\boldsymbol{\lambda}=(\textbf{B}^T\textbf{B})^{-1}\textbf{B}^T\vec{x}.
+		\]
+		\item Find the projection \(\pi_U(\vec{x})\in U\). \[
+		\pi_U(\vec{x})=\textbf{B}\boldsymbol{\lambda}=\textbf{B}(\textbf{B}^T\textbf{B})^{-1}\textbf{B}^T\vec{x}.
+		\]
+		\item Find the projection \(\textbf{P}_\pi\). \[
+		\textbf{P}_\pi=\textbf{B}(\textbf{B}^T\textbf{B})^{-1}\textbf{B}^T.
+		\]
+	\end{enumerate}
+	\vspace{4pt}
+	\begin{example}[Projection onto a Two-dimensional Subspace]
+		For a subspace \[U=\textnormal{span}\bigg\langle\begin{bmatrix}
+			1\\1\\1
+		\end{bmatrix}\begin{bmatrix}
+		0\\1\\2
+	\end{bmatrix}\bigg\rangle\subseteq\R^3\quad\text{and}\quad\vec{x}=\begin{bmatrix}
+	6\\0\\0
+\end{bmatrix}\in\R^3,\] find the coordinates \(\lambda\) of \(\vec{x}\) in terms of the subspace \(U\), the projection point \(\pi_U(\vec{x})\) and the projection matrix \(\textbf{P}_\pi\).
+	\begin{proof}[\sol]
+		\[
+		\vec{x}=\begin{bmatrix}
+			6\\0\\0
+		\end{bmatrix}\implies\textbf{P}_\pi\vec{x}=5\begin{bmatrix}
+		1\\1\\1
+	\end{bmatrix}+(-3)\begin{bmatrix}
+	0\\1\\2
+\end{bmatrix}.
+		\]
+	\end{proof}
+	\end{example}
+
+	\subsection{Gram-Shmidt Orthogonalization}
+	The \textit{Gram-Schmidt orthogonalization} method iteratively constructs an orthogonal basis \((\textbf{u}_1,\dots,\textbf{u}_n)\) from any basis \((\vec{b}_1,\dots,\vec{b}_n)\) of \(V\) as follows: \begin{align*}
+		\vec{u}_1&:=\vec{b}_1\\
+		\vec{u}_2&:=\vec{b}_2-\pi_{\Span{\vec{u}_1}}(\vec{b}_2)\\
+		&\vdots\\
+		\vec{u}_k&:=\vec{b}_k-\pi_{\Span{\vec{u}_1,\dots,\vec{u}_{k-1}}}(\vec{b}_k),\quad k=2,\dots, n.
+	\end{align*}
+	If we normalize \(\vec{u}_k\) at each step, that is \[
+	\hat{\vec{u}}_k:=\frac{\vec{u}_k}{\norms{\vec{u}_k}},
+	\] we obtain an orthonormal basis.
+	
+	\newpage
+	\chapter{Matrix Decompositions}
+	\section{Determinant and Trace}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Determinant }]
+		\begin{definition}
+			The \textbf{determinant} of a square matrix \(\textbf{A}\in M_{n\by n}(\R)\) is a function \[
+			\fullfunction{\det}{M_{n\by n}}{\R}{A}{\det(A)}.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		 \ \begin{enumerate}[(1)]
+			\item ($n=2$) \[
+			\textbf{A}=\begin{bmatrix}
+				a&b\\c&d
+			\end{bmatrix}\implies\det\textbf{A}=ad-bc.
+			\]
+			\item ($n=3$) \begin{align*}
+				\det\textbf{A}=\begin{vmatrix}
+					a_{11}&a_{12}&a_{13}\\
+					a_{21}&a_{22}&a_{23}\\
+					a_{31}&a_{32}&a_{33}
+				\end{vmatrix}=&a_{11}\begin{vmatrix}
+				a_{22}&a_{23}\\a_{32}&a_{33}
+			\end{vmatrix}-a_{12}\begin{vmatrix}
+			a_{21}&a_{23}\\a_{31}&a_{33}
+		\end{vmatrix}+a_{13}\begin{vmatrix}
+		a_{21}&a_{22}\\a_{31}&a_{32}
+	\end{vmatrix}\\
+			=&a_{11}(a_{22}a_{33}-a_{23}a_{32})
+			-a_{12}(a_{21}a_{33}-a_{23}a_{31})\\
+			&+a_{13}(a_{21}a_{32}-a_{22}a_{31}).
+			\end{align*}
+		\end{enumerate}
+	\end{remark}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			Let \(\textbf{A}\in M_{n\by n}(\R)\). $
+			\exists\textbf{A}^{-1}\iff\det(\textbf{A})\neq 0.
+			$	
+		\end{theorem}
+	\end{tcolorbox}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Upper and Lower Triangluar Matrix}]
+		\begin{definition}
+			\ \begin{enumerate}[(1)]
+				\item \textbf{U} is an upper triangular matrix if \(u_{ij}=0\) for \(i>j\).
+				\item \textbf{L} is an lower triangular matrix if \(l_{ij}=0\) for \(i<j\).
+			\end{enumerate}	
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		Note that \(\det\textbf{U}=\sum_{i=1}^n u_{ii}\) and \(\det\textbf{L}=\sum_{i=1}^nl_{ii}\).
+	\end{remark}
+	\newpage
+	\begin{tcolorbox}[colframe=procolor,title={\color{white}\bf }]
+		\begin{proposition}
+			\ \begin{enumerate}[(1)]
+				\item \(\det(\textbf{A}\textbf{B})=\det(\textbf{A})\det(\textbf{B})\)
+				\item \(\det(\textbf{A})=\det(\textbf{A}^T)\)
+				\item \(\det(\textbf{A}^{-1})=\sbr{\det(\textbf{A})}^{-1}\)
+				\item \(\textbf{B}=\textbf{S}^{-1}\textbf{A}\textbf{S}\implies\det(\textbf{A})=\det(\textbf{B})\)
+				\item \(\det(\lambda\textbf{A})=\lambda^n\det(\textbf{A})\) for \(\textbf{A}\in M_{n\by n}(\R)\)
+			\end{enumerate}
+		\end{proposition}
+	\end{tcolorbox}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			Let \(\textbf{A}\in M_{n\by n}(\R)\). Then \[
+			\det(\textbf{A})\neq 0\iff\rank(\textbf{A})=n.
+			\] In other words, \(\textbf{A}\) is invertible if and only if it is full rank.
+		\end{theorem}
+	\end{tcolorbox}
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Trace}]
+		\begin{definition}
+			The \textbf{trace} of a square matrix \(\textbf{A}\in M_{n\by n}(\R)\) is defined as \[
+			\tr(\textbf{A}):=\sum_{i=1}^na_{ii},
+			\] \ie, the trace is the sum of the diagonal elements of \(\textbf{A}\).
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=procolor,title={\color{white}\bf }]
+		\begin{proposition}
+			\ \begin{enumerate}[(1)]
+				\item \(\tr(\textbf{A}+\textbf{B})=\tr(\textbf{A})+\tr(\textbf{B})\) for \(\textbf{A},\textbf{B}\in M_{n\by n}(\R)\)
+				\item \(\tr(\alpha\textbf{A})=\alpha\tr(\textbf{A})\) for \(\alpha\in\R,\textbf{A}\in M_{n\by n}(\R)\)
+				\item \(\tr(\textbf{I}_n)=n\)
+				\item \(\tr(\textbf{A}\textbf{B})=\tr(\textbf{B}\textbf{A})\) for \(\textbf{A}\in M_{n\by k}(\R),\textbf{B}\in M_{k\by n}(\R)\)
+			\end{enumerate}
+		\end{proposition}
+	\end{tcolorbox}
+	\begin{proof}
+		(4) Let \(\textbf{A}=[a_{ij}]_{n\by k}\) and \(\textbf{B}=[b_{ij}]_{k\by n}\), and let
+		\begin{align*}
+			\textbf{AB}:=\textbf{C}=[c_{ij}]_{n\by n}\quad\text{with}\quad c_{ij}=\sum_{l=1}^na_{il}b_{lj},\\
+			\textbf{BA}:=\textbf{D}=[d_{ij}]_{k\by k}\quad\text{with}\quad d_{ij}=\sum_{l=1}^kb_{il}a_{lj}.
+		\end{align*}
+		Then \begin{align*}
+			\tr(\textbf{A}\textbf{B})=\sum_{l=1}^{m}c_{ll}
+		\end{align*}
+	\end{proof}
+	
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Charateristic Polynomial}]
+		\begin{definition}
+			Let \(\lambda\in\R\) and \(\textbf{A}\in M_{n\by n}(\R)\). Then \[
+			p_\textbf{A}(\lambda):=\det(\textbf{A}-\lambda\textbf{I}_n)=\sum_{i=0}^nc_i\lambda^n\quad\text{with}\quad c_i=\quad\begin{cases}
+				\det(\textbf{A}) &:i=0\\
+				(-1)^n\tr(\textbf{A})&:i\in(0,n)\\
+				(-1)^n &:i=n
+			\end{cases}
+			\] is the \textbf{characteristic polynomial} of \(\textbf{A}\).
+		\end{definition}
+	\end{tcolorbox}
+	
+	\newpage
+	\section{Eigenvalues and Eigenvectors}
+	\subsection{Eigenvalues and Eigenvectors}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Eigenvalue and Eigenvetor}]
+		\begin{definition}
+			Let \(\textbf{A}\in M_{n\by n}(\R)\). Then \(\lambda\in\R\) is an \textbf{eigenvalue} of \(\textbf{A}\) and \(\textbf{v}\in\R^n\setminus\set{\textbf{0}}\) is the corresponding eigenvector of \(\textbf{A}\) if \[
+			\textbf{Av}=\lambda\textbf{v}.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			TFAE(The following are equivalent):
+			\begin{enumerate}[(1)]
+				\item \(\lambda\) is an eigenvalue of \(\textbf{A}\in M_{n\by n}(\R)\).
+				\item \(\exists\vec{v}\in\R^n\setminus\set{\textnormal{\bf 0}}:\textbf{Av}=\lambda\vec{v}\).
+				\item \(\rank(\textbf{A}-\lambda\textbf{I}_n)<n\).
+				\item \(\det(\textbf{A}-\lambda\textbf{I}_n)=0\).
+			\end{enumerate}
+		\end{theorem}
+	\end{tcolorbox}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			\(\lambda\in\R\) is an eigenvalue of \(\textbf{A}\) \(\iff\) \(\lambda\) is a root of the characteristic polynomial \(p_\textbf{A}(\lambda)\) of \(\textbf{A}\).
+		\end{theorem}
+	\end{tcolorbox}
+	\vspace{4pt}
+	\begin{example}[Computing Eigenvalue, Eigenvectors, and Eigenspaces]
+		Find the eigenvalues and eigenvectors of the \(2\by 2\) matrix \[
+		\textbf{A}=\begin{bmatrix}
+			4&2\\1&3
+		\end{bmatrix}.
+		\]
+		\begin{proof}[\sol]
+			\begin{enumerate}[\bf (Step 1)]
+				\item \textbf{Characteristic Polynomial and Eigenvalues.} 
+				\begin{align*}
+					p_\textbf{A}(\lambda)=\det(\textbf{A}-\lambda \textbf{I}_2)=\begin{vmatrix}
+						4-\lambda&2\\13-\lambda
+					\end{vmatrix}
+				=(4-\lambda)(3-\lambda)-2&=\lambda^2-7\lambda+10\\
+				&=(\lambda-2)(\lambda-5).
+				\end{align*} Thus, we obtain roots \(\lambda_1=2\) and \(\lambda_2=5\).
+				\item \textbf{Eigenvalues and Eigenspaces.} We solve $
+				\begin{bmatrix}
+					4-\lambda&2\\1&3-\lambda
+				\end{bmatrix}\textbf{x}=\textbf{0}.
+				$ \begin{enumerate}[(i)]
+					\item (\(\lambda_1=2\))\begin{align*}
+						\begin{bmatrix}
+							2&2\\1&1
+						\end{bmatrix}\begin{bmatrix}
+						x_1\\x_2
+					\end{bmatrix}=\begin{bmatrix}
+					0\\0
+				\end{bmatrix}\implies\begin{bmatrix}
+				x_1\\x_2
+			\end{bmatrix}=\begin{bmatrix}
+			1\\-1
+		\end{bmatrix}\implies C(\lambda_1)=\textnormal{span}\bigg\langle\begin{bmatrix}
+		1\\-1
+	\end{bmatrix}\bigg\rangle.
+					\end{align*}
+				\item (\(\lambda_1=5\))\begin{align*}
+					\begin{bmatrix}
+						-1&2\\1&-2
+					\end{bmatrix}\begin{bmatrix}
+						x_1\\x_2
+					\end{bmatrix}=\begin{bmatrix}
+						0\\0
+					\end{bmatrix}\implies\begin{bmatrix}
+						x_1\\x_2
+					\end{bmatrix}=\begin{bmatrix}
+						2\\1
+					\end{bmatrix}\implies C(\lambda_2)=\textnormal{span}\bigg\langle\begin{bmatrix}
+					2\\1
+				\end{bmatrix}\bigg\rangle.
+				\end{align*}
+				\end{enumerate}
+			\end{enumerate}
+		\end{proof}
+	\end{example}
+
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Defective}]
+		\begin{definition}
+			A square matrix \(\textbf{A}\in M_{n\by n}(\R)\) is \textbf{defective} if it possesses fewer than \(n\) linearly independent eigenvectors.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item \(\textbf{A}\) has \(n\) distinct eigenvalue \(\Rightarrow\) \textbf{A} is not defective.
+			\item For a defective matrix \(\textbf{A}\in M_{n\by n}(\R)\), the sum of the dimension of eigenspaces \(<n\).
+			\item A defective matrix has at lest one eigenvalue \(\lambda_i\) with an algebraic multiplicity \(m>1\) and a geometric multiplicity of less than \(m\). Note that \[
+			\text{``Algebraic Multiplicity''}\geq\text{``Geometric Multiplicity''}
+			\]
+			\item \(\textbf{A}\) is defective iff \(\sum_i\dim C(\lambda_i)\neq n\).
+		\end{enumerate}
+	\end{remark}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			\ \begin{enumerate}[(1)]
+				\item $\textbf{A}$, $\textbf{A}^T$ have the same eigenvalues.
+				\item Similar matrices have the same eigenvalues.
+				\item \hl{Symmetric, positive definite matrices always have positive real eigenvalues}.
+			\end{enumerate}
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		\begin{enumerate}[(1)]
+			\item Since \((\textbf{A}-\lambda I)^T=\textbf{A}^T-\lambda I\) and \(\det(\textbf{A})=\det(\textbf{A}^T)\), \[
+			\det(\textbf{A}^T-\lambda \textbf{I})=\det((\textbf{A}-\lambda \textbf{I})^T)=\det(\textbf{A}-\lambda\textbf{I}).
+			\]
+			\item Let \(\hat{\textbf{A}}=\textbf{S}^{-1}\textbf{A}\textbf{S}\). Since \[
+			\hat{\textbf{A}}-\lambda\textbf{I}=\textbf{S}^{-1}\textbf{A}\textbf{S}-\textbf{S}^{-1}\lambda\textbf{I}\textbf{S}=\textbf{S}^{-1}[\textbf{A}-\lambda\textbf{I}]\textbf{S},
+			\] we have \[
+			\det(\hat{\textbf{A}}-\lambda\textbf{I})=\det(\textbf{S}^{-1}[\textbf{A}-\lambda\textbf{I}]\textbf{S})=\det(\textbf{S}^{-1})\det(\textbf{A}-\lambda\textbf{I})\det(\textbf{S})=\det(\textbf{A}-\lambda\textbf{I}).
+			\]
+			\item Let \(\textbf{A}\) is symmetric, positive definite matrix. Let \(\textbf{A}\textbf{x}=\lambda\vec{x}\). Then \[
+			\textbf{x}^TA\textbf{x}=\textbf{x}^T\lambda\vec{x}=\lambda\norms{\vec{x}}\geq 0.
+			\] Since \(\vec{x}\neq 0\implies\norms{\vec{x}}>0\land\vec{x}^T\textbf{A}\vec{x}>0\), we have \(\lambda>0\).
+		\end{enumerate}
+	\end{proof}
+	\vspace{4pt}
+	\begin{example}[Defective Matrix]
+		Let \[
+		\textbf{A}=\begin{bmatrix}
+			2&1&0\\0&2&0\\0&0&3
+		\end{bmatrix}.
+		\] Then \[
+		\det(\textbf{A}-\lambda\textbf{I})=\begin{vmatrix}
+			2-\lambda&1&0\\0&2-\lambda&0\\0&0&3-\lambda
+		\end{vmatrix}=(3-\lambda)(2-\lambda)^2=0\implies\begin{cases}
+		\lambda_1=3\\
+		\lambda_2=2.
+	\end{cases}
+		\] And so \begin{align*}
+			&(\textbf{A}-\lambda_1\textbf{I})\textbf{x}_1=0\iff\begin{bmatrix}
+				-1&1&0\\0&-1&0\\0&0&0
+			\end{bmatrix}\textbf{x}_1=\textbf{0}&\implies\textbf{x}_1=\begin{bmatrix}
+			0\\0\\1
+		\end{bmatrix},\\
+		&(\textbf{A}-\lambda_2\textbf{I})\textbf{x}_2=0\iff\begin{bmatrix}
+			0&1&0\\0&0&0\\0&0&1
+		\end{bmatrix}\textbf{x}_1=\textbf{0}&\implies\textbf{x}_1=\begin{bmatrix}
+			1\\0\\0
+		\end{bmatrix}.
+		\end{align*}
+	\end{example}
+	\vspace{4pt}
+	\begin{example}
+		Let \[
+		\textbf{A}=\begin{bmatrix}
+			0&1&\\-1&0
+		\end{bmatrix}\in M_{2\by 2}(\R).
+		\] Then \[
+		\det(\textbf{A}-\lambda\textbf{I})=\begin{vmatrix}
+			-\lambda&1\\-1&-\lambda
+		\end{vmatrix}=\lambda^2+1=0.
+		\] And so \begin{align*}
+			(\textbf{A}-\lambda_1\textbf{I})\textbf{x}_1=\textbf{0}&\iff\begin{bmatrix}
+				-i&1\\-1&-i
+			\end{bmatrix}\textbf{x}_1=\textbf{0}&\implies\textbf{x}_1=\begin{bmatrix}
+			1\\i
+		\end{bmatrix},\\
+		(\textbf{A}-\lambda_2\textbf{I})\textbf{x}_2=\textbf{0}&\iff\begin{bmatrix}
+		i&1\\-1&i
+	\end{bmatrix}\textbf{x}_1=\textbf{0}&\implies\textbf{x}_1=\begin{bmatrix}
+	1\\-i
+\end{bmatrix}.
+		\end{align*}
+	\end{example}
+	\vspace{4pt}
+	\begin{example}
+		Let \[
+		\textbf{A}=\begin{bmatrix}
+			2&3-3i&\\3+3i&5
+		\end{bmatrix}\in M_{2\by 2}(\C).
+		\] Then \[
+		\det(\textbf{A}-\lambda\textbf{I})=\begin{vmatrix}
+			2-\lambda&3-3i\\3+3i&5-\lambda
+		\end{vmatrix}=\lambda^2-7\lambda-8=(\lambda+1)(\lambda-8)=0\implies\begin{cases}
+		\lambda_1=8\\ \lambda_2=-1.
+	\end{cases}
+		\] And so \begin{align*}
+			(\textbf{A}-\lambda_1\textbf{I})\textbf{x}_1=\textbf{0}&\iff\begin{bmatrix}
+				-6&3-3i\\3+3i&-3
+			\end{bmatrix}\textbf{x}_1=\textbf{0}&\implies\textbf{x}_1=\begin{bmatrix}
+				1\\1+i
+			\end{bmatrix},\\
+			(\textbf{A}-\lambda_2\textbf{I})\textbf{x}_2=\textbf{0}&\iff\begin{bmatrix}
+				3&3-3i\\3+3i&6
+			\end{bmatrix}\textbf{x}_1=\textbf{0}&\implies\textbf{x}_1=\begin{bmatrix}
+				1-i\\-i
+			\end{bmatrix}.
+		\end{align*}
+	\end{example}
+
+	\subsection{Complex Matrices}
+	Consider complex vector \[
+	\vec{w}=(w_1,\dots,w_n)\in\C^n\quad\text{with}\quad w_j=x_j+iy_j,
+	\] where \(x_j,y_j\in\R\). Then \begin{enumerate}[(1)]
+		\item Norm: \[
+		\norms{\vec{w}}^2=\sum_{j=1}^n\abs{w_j}^2\quad\text{with}\quad \abs{w_j}=\sqrt{x_j^2+y_j^2}.
+		\]
+		\item Inner Product: For \(\vec{w},\vec{z}\in\C^n\), \[		
+		\inner{\vec{w},\vec{z}}:=\conjugate{\vec{w}^T}\vec{z}=\sum_{j=1}^n\conjugate{w}_jz_j.
+		\] Note that \(\inner{\vec{z},\vec{z}}=\sum_{j=1}^n\conjugate{z}_jz_j=\sum_{j=1}^n\abs{z_j}^2=\norms{\vec{z}}^2\).
+	\end{enumerate} 
+	\vspace{8pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Hermition}]
+		\begin{definition}
+			Let \(\textbf{A}\in M_{n\by n}(\C)\). Then \[
+			\textbf{A}^H:\conjugate{\textbf{A}}^T.
+			\] is called \textbf{Hermition} of \(\textbf{A}\).
+		\end{definition}
+	\end{tcolorbox}
+	\begin{example}
+		\[
+		\textbf{A}=\begin{bmatrix}
+			1&1+i\\1-i&i
+		\end{bmatrix}\implies\conjugate{\textbf{A}}=\begin{bmatrix}
+		1&1-i\\1+i&-i
+	\end{bmatrix}\implies\textbf{A}^H=\conjugate{\textbf{A}}^T=\begin{bmatrix}
+	1&1+i\\1-i&-i
+\end{bmatrix}.
+		\]
+	\end{example}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Hermitian Matrix}]
+		\begin{definition}
+			\(\textbf{A}\) is a \textbf{Hermitian matrix} if \(\textbf{A}=\textbf{A}^H\).
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item A real symmetric matrix \(\textbf{A}\) is a Hermitian matrix.
+			\item A Hermitian matrix has real eigenvalues.
+		\end{enumerate}
+	\end{remark}
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf H1}]
+		\begin{theorem}
+			\(\textbf{A}=\textbf{A}^H\implies (\forall\vec{x}\in\C^n)\  \vec{x}^H\textbf{A}\vec{x}\in\R\).
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Suppose that \(\textbf{A}=\textbf{A}^H\). Let \(\textbf{y}:=\textbf{x}^H\textbf{A}\textbf{x}\). We must show that \[
+		\textbf{y}=\textbf{y}^H,\quad\ie,\quad \textbf{y}=\conjugate{\textbf{y}}\ (\Rightarrow\textbf{y}\in\R).
+		\] \[
+		\textbf{y}^H=\del{\vec{x}^H\textbf{A}\vec{x}}^H=\vec{x}^H\textbf{A}^H(\vec{x}^H)^H=\textbf{x}^H\textbf{A}\vec{x}=\vec{y}.
+		\]
+	\end{proof}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf H2}]
+		\begin{theorem}
+			If \textbf{A} is Hermitian, then every eigenvalue is real.
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let \(\textbf{A}\vec{v}=\lambda\vec{v}\) with $\vec{v}\neq\textbf{0}$. By Theorem H1, \[
+		\vec{v}^H\textbf{A}\vec{v}=\vec{v}^H(\lambda\vec{v})=\lambda\vec{v}^H\vec{v}=\lambda\norms{\vec{v}}^2\implies\lambda=\frac{\vec{v}^H\textbf{A}\vec{v}}{\norms{\vec{v}}^2}\in\R.
+		\]
+	\end{proof}
+	\vspace{4pt}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf H3}]
+		\begin{theorem}
+			If \(\textbf{A}\in M_{n\by n}(\C)\) is Hermitian, then two eigenvectors corresponding to different eigenvalues are orthogonal.
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		For a Hermitian matrix \(\textbf{A}\), let \[
+		\textbf{A}\vec{v}_1=\lambda_1\vec{v}_1,\quad\textbf{A}\vec{v}_2=\lambda_2\vec{v}_2
+		\] with \(\lambda_1\neq\lambda_2\). Then 
+		\begin{align*}
+			&\vec{v}_1\textbf{A}\vec{v}_2=\vec{v}_1^H\lambda_2\vec{v}_2=\lambda_2\vec{v}_1^H\vec{v}_2,\\
+			&\vec{v}_1\textbf{A}\vec{v}_2=\vec{v}_1^H\textbf{A}^H\vec{v}_2=(\textbf{A}\vec{v}_1)^H\vec{v}_2=(\lambda_1\vec{v}_1)^H\vec{v}_2=\lambda_1\vec{v}_1^H\vec{v}_2.
+		\end{align*} Thus, 
+		\begin{align*}
+			&\lambda_1\vec{v}_1^H\vec{v}_2=\lambda_2\vec{v}_1^H\vec{v}_2\\
+			\iff&\lambda_1\inner{\vec{v}_1,\vec{v}_2}-\lambda_2\inner{\vec{v}_1,\vec{v}_2}=0\\
+			\iff&(\lambda_1-\lambda_2)\inner{\vec{v}_1,\vec{v}_2}=0\\
+			\iff&\inner{\vec{v}_1,\vec{v}_2}=0\quad\because\lambda_1\neq\lambda_2\\
+			\iff&\vec{v}_1\perp\vec{v}_2.
+		\end{align*}
+	\end{proof}
+	\newpage
+	\subsubsection{Spectral Theorem}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Spectral Theorem}]
+		\begin{theorem}
+			Let \(\textbf{A}\in M_{n\by n}(\R)\) is symmetric. Then \[
+			\exists\text{orthonormal basis of the corresponding vector space $V$ consisting of}
+			\] eigenvalues of \(\textbf{A}\), and each eigenvalue is real.
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+	By Theorem H1, every eigenvalue is real. We remain to show that eigenvalues generate orthonormal basis.
+	\begin{enumerate}[(i)]
+		\item All eigenvalues are distinct, say, \(\lambda_1\neq\lambda_2\neq\cdots\neq\lambda_n\). By Theorem H3, \[
+		\vec{v}_i\neq\vec{v}_j\quad\text{if}\quad i\neq j.
+		\] Then \(\set{\vec{v}_1,\dots,\vec{v}_n}\) is orthogonal basis of \(\R^n\).
+		\item \(\lambda_1,\lambda_2,\dots,\lambda_k\) are distinct \(k\) eigenvalues with \(k<n\). Consider \begin{align*}
+			C(\lambda_1)&:=\Span{\vec{v}_{1,1},\vec{v}_{1,2},\dots,\vec{v}_{1,n_1}},\\
+			C(\lambda_2)&:=\Span{\vec{v}_{2,1},\vec{v}_{2,2},\dots,\vec{v}_{1,n_2}},\\
+			&\vdots\\
+			C(\lambda_k)&:=\Span{\vec{v}_{k,1},\vec{v}_{k,2},\dots,\vec{v}_{1,n_k}}.
+		\end{align*} By Gram-Schmidt orthogonalization process, we have orthogonal basis of \(C(\lambda_i)\) as follows:
+		\[
+		\set{\textbf{w}_{1,1},\cdots,\vec{w}_{1,n},\cdots,\textbf{w}_{k,1},\cdots,\vec{w}_{k,n_k}}.
+		\] Note that \[
+		\sum_{i=1}^k\dim C(\lambda_i)=n_1+\cdots+n_k=n
+		\] if \textbf{A} is Hermitian.
+	\end{enumerate}
+	\end{proof}
+	\vspace{4pt}
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Spectral Decomposition}]
+		\begin{theorem}
+			Let \(\textbf{A}\) be a real symmetric. Then \[
+			\textbf{A}=\textbf{P}\textbf{D}\textbf{P}^T,
+			\] where $\textbf{D}=\begin{bmatrix}
+				\lambda_1 &&0\\ &\ddots&\\0&&\lambda_n
+			\end{bmatrix}$ is diagonal and \(\textbf{P}\) orthogonal matrix.
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let \(\lambda_1,\dots,\lambda_n\) are solutions, counting multiplicity, of \(\det(\textbf{A}-\lambda\textbf{I}_n)=0\), and let \(\vec{v}_1,\cdots,\vec{v}_n\) are eigenvectors corresponding to \(\lambda_1,\dots,\lambda_n\), respectively. Since \(\set{\vec{v}_1,\dots,\vec{v}_n}\) is orthogonal basis of \(\R^n\), \[
+		\textbf{P}:=\begin{bmatrix}
+			\vec{v}_1&\cdots&\vec{v}_n
+		\end{bmatrix}
+		\] be a orthogonal matrix, and so \(\textbf{P}=\textbf{P}^T\). Then 
+		\begin{align*}\textbf{A}\textbf{P}=\textbf{A}\begin{bmatrix}
+				\vec{v}_1&\cdots&\vec{v}_n
+			\end{bmatrix}&=\begin{bmatrix}
+				\textbf{A}\vec{v}_1&\cdots&\textbf{A}\vec{v}_n
+			\end{bmatrix}=\begin{bmatrix}
+			\lambda_1\vec{v}_1&\cdots&\lambda_n\vec{v}_n
+		\end{bmatrix}\\
+		&=\begin{bmatrix}
+			\vec{v}_1&\cdots&\vec{v}_n
+		\end{bmatrix}\begin{bmatrix}
+			\lambda_1 &&0\\ &\ddots&\\0&&\lambda_n
+		\end{bmatrix}\\
+		&=\textbf{P}\textbf{D}.
+		\end{align*} Hence \[
+		\textbf{AP}=\textbf{PD}\implies\textbf{A}=\textbf{PD}\textbf{P}^{-1}=\textbf{PD}\textbf{P}^T.
+		\]
+	\end{proof}
+	\begin{remark}
+		Let \(\textbf{A}\) be a real symmetric matrix. Then
+		\begin{align*}
+			\textbf{A}=\textbf{PD}\textbf{P}^T&=\begin{bmatrix}
+				\vec{v}_1&\cdots&\vec{v}_n
+			\end{bmatrix}\begin{bmatrix}
+				\lambda_1 &&0\\ &\ddots&\\0&&\lambda_n
+			\end{bmatrix}\begin{bmatrix}
+			\vec{v}_1^T\\ \vdots\\\vec{v}_n^T
+		\end{bmatrix}\\
+		&=\begin{bmatrix}
+			\vec{v}_1\lambda_1&\dots&\lambda_n\vec{v}_n
+		\end{bmatrix}\begin{bmatrix}
+			\vec{v}_1^T\\ \vdots\\\vec{v}_n^T
+		\end{bmatrix}\\
+		&=\sum_{i=1}^n\lambda_i\vec{v}_i\vec{v}_i^T.
+		\end{align*}
+		\begin{itemize}
+			\item We call \(\lambda_i[\vec{v}_i\vec{v}_i^T]\) the principal component as an approximation of \(\textbf{A}\).
+		\end{itemize}
+	\end{remark}
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Cholesky Decomposition}]
+		\begin{theorem}
+			Let \(\textbf{A}\) be a symmetric, positive definite matrix. Then \[
+			\textbf{A}=\textbf{L}\textbf{L}^T,
+			\] where $\textbf{L}$ is a lower triangular matrix with positive diagonal elements.
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let $\textbf{A}v_i=\lambda_iv_i$ with $v_i\neq 0$ for $i=1,\dots,n$. By spectral decomposition, we have \[
+		\textbf{A}=\textbf{P}\textbf{D}\textbf{P}^T=\begin{bmatrix}
+			v_1&\cdots& v_n
+		\end{bmatrix}\begin{bmatrix}
+		\lambda_1&\cdots&0\\&\ddots&\\0&\cdots&\lambda_n
+	\end{bmatrix}\begin{bmatrix}
+	v_1\\ \vdots\\ v_n 
+\end{bmatrix}.
+		\] Note that \begin{align*}
+			\textbf{A}=\textbf{PDP}^T&=\textbf{P}\sqrt{\textbf{D}}\sqrt{\textbf{D}}\textbf{P}^T\\
+			&=\textbf{P}\sqrt{\textbf{D}}\sqrt{\textbf{D}}^T\textbf{P}^T\\
+			&=(\textbf{P}\sqrt{\textbf{D}})(\textbf{P}\sqrt{\textbf{D}})^T\\
+			&=\textbf{L}\textbf{L}^T.
+		\end{align*}
+	\end{proof}
+
+	\section{Eigendecomposition and Diagonalization}
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Diagonalizable}]
+		\begin{definition}
+			A matrix \(\textbf{A}\in M_{n\by n}(\R)\) is \textbf{diagonalizable} if \[
+			\exists\textbf{P}\in M_{n\by n}(\R):\textbf{D}=\textbf{P}^{-1}\textbf{A}\textbf{P},
+			\] \ie, if it is similar to a diagonal matrix.
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{8pt}
+	
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Eigendecomposition}]
+		\begin{theorem}
+			A square matrix $\textbf{A}\in M_{n\by n}(\R)$ can be factorized into \[
+			\textbf{A}=\textbf{PDP}^{-1}
+			\] where $\textbf{P}\in M_{n\by n}(\R)$ and \textbf{D} is a diagonal matrix whose diagonal entries are the eigenvalues of \textbf{A}, if and only if the eigenvectors of \(\textbf{A}\) form a basis of \(\R^n\).
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let \(\lambda_1,\dots,\lambda_n\) are the eigenvalues of \(\textbf{A}\) and \(\vec{v}_1,\dots,\vec{v}_n\) are corresponding eigenvectors of \(\textbf{A}\). Let \(\textbf{P}=\begin{bmatrix}
+			\vec{v}_1&\dots&\vec{v}_n
+		\end{bmatrix}\) and \(\textbf{D}=\begin{bmatrix}
+		\lambda_1 &&\\&\ddots&\\ &&\lambda_n
+	\end{bmatrix}\). Then \begin{align*}
+		&\textbf{AP}=\begin{bmatrix}
+			\textbf{A}\vec{v}_1 &\cdots& \textbf{A}\vec{v}_n
+		\end{bmatrix},\\
+		&\textbf{PD}=\begin{bmatrix}
+			\vec{v}_1&\dots&\vec{v}_n
+		\end{bmatrix}\begin{bmatrix}
+			\lambda_1 &&\\&\ddots&\\ &&\lambda_n
+		\end{bmatrix}=\begin{bmatrix}
+		\lambda_1\vec{v}_1&\cdots&\lambda_n\vec{v}_n
+	\end{bmatrix}.
+	\end{align*} Since \(\textbf{A}\vec{v}_i=\lambda_i\vec{v}_i\) for all \(i=1,\dots, n\), we have \[
+	\textbf{AP}=\textbf{PD}\implies \textbf{A}=\textbf{A}\textbf{P}\textbf{P}^{-1}.
+	\]
+	\end{proof}
+
+	\newpage
+	\section{Singular Value Decomposition}
+	
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf SVD Theorem}]
+		\begin{theorem}
+			Let \(\textbf{A}\in M_{m\by n}(\R)\) be a rectangular matrix of rank \(r\in\intcc{0,\min(m,n)}\). The SVD of \(\textbf{A}\) is a decomposition of the form \[
+			\textbf{A}=\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T
+			\] with \begin{enumerate}[(i)]
+				\item an orthogonal matrix \(\textbf{U}\in M_{m\by m}\) with column vectors \(\textbf{u}_i\) for $i=1,\dots, m$,
+				\item and an orthogonal matrix \(\textbf{V}\in M_{n\by n}\) with column vectors \(\textbf{v}_j\) for $j=1,\dots, n$.
+				\item Moreover, \(\boldsymbol{\Sigma}\in M_{m\by n}(\R)\) with \(\Sigma_{ii}=\begin{cases}
+					\sigma_i\geq0 &:i=j,\\
+					0 &:i\neq j.
+				\end{cases}\)
+			\end{enumerate}
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{remark}
+		\[
+		\R^n\xrightarrow[\text{basis change}]{\textbf{V}^T}\R^n\xrightarrow[\text{scaling}
+			(\text{embedding}
+			/\text{projection})]{\boldsymbol{\Sigma}}\R^m\xrightarrow[\text{basis change}]{\textbf{U}}\R^m
+		\]
+	\end{remark}
+	\begin{remark}
+		\ \begin{enumerate}[(1)]
+			\item Since \(\textbf{U}\) is orthogonal, \(\textbf{UU}^T=\textbf{I}_m\)
+			\item Since \(\textbf{V}\) is orthogonal, \(\textbf{VV}^T=\textbf{I}_n\)
+			\item \[
+			\boldsymbol{\Sigma}=\begin{cases}
+				\begin{bmatrix}
+					\sigma_1 & 0 & 0 & 0 & \cdots & 0\\
+					0 & \ddots & 0 & \vdots & & \vdots\\
+					0 & 0 & \sigma_m & 0 & \cdots & 0
+				\end{bmatrix}&:m<n\\
+				\\
+				\begin{bmatrix}
+					\sigma_1 & 0 & 0\\
+					0 & \ddots & 0\\
+					0 & 0 & \sigma_n\\
+					0 & \cdots & 0\\
+					\vdots &  & \vdots\\
+					0 & \cdots & 0
+				\end{bmatrix}&:m>n
+			\end{cases}
+			\]
+		\end{enumerate}
+	\end{remark}
+	
+	\newpage
+	\subsection{Construction of SVD}
+	
+	Let \(\textbf{A}\in M_{m\by n}(\R)\).
+	
+	\begin{enumerate}[(Step 1)]
+		\item \textbf{Find a symmetric, positive semi-definite matrix.} Let \(\textbf{S}:=\textbf{A}^T\textbf{A}\in M_{n\by n}(\R)\). Then
+		\begin{enumerate}[(i)]
+			\item \(\textbf{S}\) is symmetric: \(\textbf{S}^T=(\textbf{A}^T\textbf{A})^T=\textbf{A}^T(\textbf{A}^T)^T=\textbf{A}^T\textbf{A}=\textbf{S}\).
+			\item \(\textbf{S}\) is positive semi-definite: for \(\vec{v}\in\R\),\[
+			\vec{v}^T\textbf{S}\vec{v}=\vec{v}^T\textbf{A}^T\textbf{A}\vec{v}=(\textbf{A}\vec{v})^T(\textbf{A}\vec{v})=\norms{\textbf{A}\vec{v}}^2\geq 0.
+			\]
+		\end{enumerate}
+		\vspace{4pt}
+		\item \textbf{Spectral Decomposition.} \[
+		\textbf{S}=\textbf{A}^T\textbf{A}=\textbf{P}\textbf{D}\textbf{P}^T=
+		\textbf{P}\begin{bmatrix}
+			\lambda_1&&0\\&\ddots&\\0&&\lambda_n
+		\end{bmatrix}\textbf{P}^T\quad\text{with}\quad\textbf{PP}^T=\textbf{I}_n.
+		\]
+		\vspace{4pt}
+		\item \textbf{Assume the SVD of A$\in M_{m\by n}(\R)$ exists}, \ie, \(\textbf{A}=\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T\). Then
+		\begin{align*}
+			\textbf{S}=\textbf{A}^T\textbf{A}&=(\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T)^T(\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T)\\
+			&=\textbf{V}\boldsymbol{\Sigma}^T(\textbf{U}^T\textbf{U})\boldsymbol{\Sigma}\textbf{V}^T\\
+			&=\textbf{V}\boldsymbol{\Sigma}^T\boldsymbol{\Sigma}\textbf{V}\quad\text{by orthogonality of \textbf{U}}\\
+			&=\textbf{V}\begin{bmatrix}
+				\sigma_1^2 &  & 0\\
+				 & \sigma_2^2 & \\
+				0 &  & \ddots
+			\end{bmatrix}\textbf{V}^T
+		\end{align*} Thus \[
+		\textbf{P}=\textbf{V}\quad\text{and}\quad\lambda_i=\sigma_i^2.
+		\]
+		\item Find \(\textbf{U}\) s.t. \begin{align*}
+			\textbf{S}=\textbf{A}\textbf{A}^T&=(\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T)(\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T)^T\\
+			&=\textbf{U}\boldsymbol{\Sigma}(\textbf{V}^T\textbf{V})\boldsymbol{\Sigma}^T\textbf{U}^T\\
+			&=\textbf{U}\boldsymbol{\Sigma}\boldsymbol{\Sigma}^T\textbf{U}^T\quad\text{by orthogonality of \textbf{V}}\\
+			&=\textbf{U}\begin{bmatrix}
+				\sigma_1^2 &  & 0\\
+				& \sigma_2^2 & \\
+				0 &  & \ddots
+			\end{bmatrix}\textbf{U}^T.
+		\end{align*} Note that \(\textbf{A}\) and \(\textbf{A}^T\) have the same eigenvalues. Let \[
+		\textbf{V}:=\begin{bmatrix}
+			\vec{v}_1&\cdots&\vec{v}_n
+		\end{bmatrix},
+		\] where $\vec{v}_i$ is eigenvector of \(\textbf{A}^T\textbf{A}\) for $i=1,\dots,n$. Then \[
+		i\neq j\implies\inner{\textbf{A}\vec{v}_i,\textbf{A}\vec{v}_j}=\vec{v}_i^T\textbf{A}^T\textbf{A}\vec{v}_j=\vec{v}_i^T\lambda_j\vec{v}_j=\lambda_j\vec{v}_i^T\vec{v}_j=0,
+		\] and so \(\set{\textbf{A}\vec{v}_1,\dots,\textbf{A}\vec{v}_r}\) forms a orthogonal basis of \(\textnormal{Im}(\textbf{A})\in\R^m\).
+		Since \[
+		\norms{\textbf{A}\vec{v}_i}^2=\inner{\textbf{A}\vec{v}_i,\textbf{A}\vec{v}_i}=\lambda_i\vec{v}_i\vec{v}_i^T\vec{v}_i=\lambda_i\norms{\vec{v}_i}^2=\lambda_i,
+		\] we have \[
+		\textbf{u}_i:=\frac{\textbf{A}\vec{v}_i}{\norms{\textbf{A}\vec{u}_i}}=\frac{1}{\sqrt{\lambda_i}}\textbf{A}\vec{v}_i
+		\] for \(i=1,\dots, r\).
+		Therefore \begin{align*}
+			\textbf{A}\textbf{V}=\textbf{A}\begin{bmatrix}
+				\vec{v}_1&\cdots&\vec{v}_r
+			\end{bmatrix}=\begin{bmatrix}
+			\sigma_1\vec{u}_1&\cdots&\sigma_r\vec{u}_r
+		\end{bmatrix}
+		=\begin{bmatrix}
+			\vec{u}_1 &\cdots&\vec{u}_2
+		\end{bmatrix}\begin{bmatrix}
+		\sigma_1 &&0\\&\ddots&\\0&&\sigma_r
+	\end{bmatrix}=\textbf{U}\boldsymbol{\Sigma}.
+		\end{align*}
+	\end{enumerate}
+	
+	Hence \[
+	\textbf{AV}=\textbf{U}\boldsymbol{\Sigma}\implies\textbf{A}=\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T.
+	\]
+	\newpage
+	\begin{example}[Computing the SVD]
+		Find the singular value decomposition of \[
+		\textbf{A}=\begin{bmatrix}
+			-1 & 1 & 0\\
+			0 & -1 & 1
+		\end{bmatrix}\in M_{2\by 3}(\R).
+		\]
+		\begin{proof}[\sol]
+			The SVD requires us to compute the right-singular vectors $v_j$ , the singular
+			values $\sigma_k$, and the left-singular vectors $u_i$.
+			\begin{enumerate}[(Step 1)]
+				\item \textbf{Right-singular vectors as the eigenbasis of $\textbf{A}^T\textbf{A}$.} 
+				\begin{enumerate}[(i)]
+					\item Create real symmetric matrix. \[
+					\textbf{A}^T\textbf{A}=\begin{bmatrix}
+						-1 & 0\\
+						1 & -1\\
+						0 & 1
+					\end{bmatrix}\begin{bmatrix}
+						-1 & 1 & 0\\
+						0 & -1 & 1
+					\end{bmatrix}=\begin{bmatrix}
+						1 & -1 & 0\\
+						-1 & 2 & -1\\
+						0 & -1 & 1
+					\end{bmatrix}.
+					\]
+					\item Spectral Decomposition. 
+					\begin{align*}
+						\det\del{\textbf{A}^T\textbf{A}-\lambda\textbf{I}_3}&=\begin{vmatrix}
+							1-\lambda & -1 & 0\\
+							-1 & 2-\lambda & -1\\
+							0 & -1 & 1-\lambda
+						\end{vmatrix}\\
+					&=(1-\lambda)\sbr{(2-\lambda)(1-\lambda)-1}-(-1)\sbr{\lambda-1}\\
+					&=(1-\lambda)(2-3\lambda+\lambda^2-1-1)\\
+					&=(1-\lambda)(-3\lambda+\lambda^2)\\
+					&=\lambda(1-\lambda)(\lambda-3)=0.
+					\end{align*} Let \(\lambda_1=3,\lambda_2=1\) and \(\lambda_3=0\).
+					\begin{enumerate}[(a)]
+						\item ($\lambda_1=3$) \[
+						\begin{bmatrix}
+							-2& -1 &0\\
+							-1& -1 &-1\\
+							0& -1 &-2\\
+						\end{bmatrix}\vec{v}_1=\vec{0}\implies\vec{v}_1=\begin{bmatrix}
+						1\\-2\\1
+					\end{bmatrix}\implies\hat{\vec{v}}_1=\frac{1}{\sqrt{6}}\begin{bmatrix}
+					1\\-2\\1
+				\end{bmatrix}.
+						\]
+						\item ($\lambda_2=1$) \[
+						\begin{bmatrix}
+							0& -1 &0\\
+							-1& 1 &-1\\
+							0& -1 &0\\
+						\end{bmatrix}\vec{v}_2=\vec{0}\implies\vec{v}_2=\begin{bmatrix}
+							1\\0\\-1
+						\end{bmatrix}\implies\hat{\vec{v}}_2=\frac{1}{\sqrt{2}}\begin{bmatrix}
+							1\\0\\-1
+						\end{bmatrix}.
+						\]
+						\item ($\lambda_3=0$) \[
+						\begin{bmatrix}
+							1& -1 &0\\
+							-1& 2 &-1\\
+							0& -1 &1\\
+						\end{bmatrix}\vec{v}_3=\vec{0}\implies\vec{v}_3=\begin{bmatrix}
+							1\\1\\1
+						\end{bmatrix}\implies\hat{\vec{v}}_3=\frac{1}{\sqrt{3}}\begin{bmatrix}
+							1\\1\\1
+						\end{bmatrix}.
+						\]
+					\end{enumerate}
+					Thus, \[
+					\textbf{A}\textbf{A}^T=\textbf{PDP}^T=\begin{bmatrix}
+						1/\sqrt{6} & 1/\sqrt{2} & 1/\sqrt{3}\\
+						-2/\sqrt{6} & 0 & 1/\sqrt{3}\\
+						1/\sqrt{6} & -1/\sqrt{2} & 1/\sqrt{3}
+					\end{bmatrix}\begin{bmatrix}
+					3&0&0\\0&1&0\\0&0&0
+				\end{bmatrix}\begin{bmatrix}
+				1/\sqrt{6} & -2/\sqrt{6} & 1/\sqrt{6}\\
+				1/\sqrt{2} & 0 & -1/\sqrt{2}\\
+				1/\sqrt{3} & 1/\sqrt{3} & 1/\sqrt{3}
+			\end{bmatrix}.
+					\] Here, let \(\textbf{V}:=\begin{bmatrix}
+						\vec{v}_1&\vec{v}_2&\vec{v}_3
+					\end{bmatrix}=\textbf{P}\).
+				\end{enumerate}
+				\item \textbf{Singular-value matrix.} Let \[
+				\sigma_1:=\sqrt{\lambda_1}=\sqrt{3},\quad\sigma_2:=\sqrt{\lambda_2}=1,\quad\sigma_3:=\sqrt{\lambda_3}=\sqrt{0}=0.
+				\] Then \[
+				\boldsymbol{\Sigma}:=\begin{bmatrix}
+					\sigma_1 & 0 & 0\\
+					0 & \sigma_2 & 0
+				\end{bmatrix}=\begin{bmatrix}
+				\sqrt{3} & 0 & 0\\
+				0 & 1 & 0
+			\end{bmatrix}.
+				\]
+				\item \textbf{Left-singular vectors as the normalized image of the right-
+				singular vectors.} \begin{align*}
+				\vec{u}_1&:=\frac{1}{\sigma_1}\textbf{A}\vec{v}_1=\frac{1}{\sqrt{3}}\begin{bmatrix}
+					-1 & 1 & 0\\
+					0 & -1 & 1
+				\end{bmatrix}\frac{1}{\sqrt{6}}\begin{bmatrix}
+				1\\-2\\1
+			\end{bmatrix}=\frac{1}{3\sqrt{2}}\begin{bmatrix}
+			-3\\3
+		\end{bmatrix}=\frac{1}{\sqrt{2}}\begin{bmatrix}
+		-1\\1
+	\end{bmatrix},\\
+			\vec{u}_2&:=\frac{1}{\sigma_2}\textbf{A}\vec{v}_2=\begin{bmatrix}
+				-1 & 1 & 0\\
+				0 & -1 & 1
+			\end{bmatrix}\frac{1}{\sqrt{2}}\begin{bmatrix}
+				1\\0\\-1
+			\end{bmatrix}=\frac{1}{\sqrt{2}}\begin{bmatrix}
+				-1\\-1
+			\end{bmatrix}.
+			\end{align*} Thus, \[
+			\textbf{U}=\begin{bmatrix}
+				\vec{u}_1&\vec{u}_2
+			\end{bmatrix}=\frac{1}{\sqrt{2}}\begin{bmatrix}
+			-1&-1\\1&-1
+		\end{bmatrix}.
+			\]
+			\end{enumerate}
+			By Step 1-3, we have \[
+			\textbf{A}=\textbf{U}\boldsymbol{\Sigma}\textbf{V}^T=\frac{1}{\sqrt{2}}\begin{bmatrix}
+				-1&-1\\1&-1
+			\end{bmatrix}\begin{bmatrix}
+			\sqrt{3} & 0 & 0\\
+			0 & 1 & 0
+		\end{bmatrix}\begin{bmatrix}
+		1/\sqrt{6} & -2/\sqrt{6} & 1/\sqrt{6}\\
+		1/\sqrt{2} & 0 & -1/\sqrt{2}\\
+		1/\sqrt{3} & 1/\sqrt{3} & 1/\sqrt{3}
+	\end{bmatrix}.
+			\]
+		\end{proof}
+	\end{example}
+	
+\newpage
+\chapter{Vector Calculus (Multi-Variate Calculus)}
+\begin{note}
+	Evaluate $f(x_k)$ using the date set $\set{(\vec{x}_i,f(\vec{x}_i))}_{i=1}^N$.
+\begin{figure}[h!]\centering
+	\begin{tikzpicture}[scale=1]
+		\begin{axis}[
+			%		xlabel={$x$},
+			%		ylabel={$f(x)$},
+			%		axis lines=middle,
+			%		xmin=-10, xmax=10,
+			%		ymin=-10, ymax=100,
+			domain=-10:10,
+			samples=100,
+			%		grid=both,
+			%		grid style={line width=.1pt, draw=gray!10},
+			%		major grid style={line width=.2pt,draw=gray!50},
+			%		minor tick num=5,
+			%		enlargelimits={abs=0.5},
+			%		axis line style={latex-latex},
+			%		ticklabel style={font=\small,fill=white},
+			%		xlabel style={at={(ticklabel* cs:1)},anchor=north west},
+			%		ylabel style={at={(ticklabel* cs:1)},anchor=south west}
+			]
+			
+			% Define the function f(x)
+			\addplot[blue, ultra thick] {x^2};
+			\addlegendentry{$f(x) = x^2$}
+			
+			% Plot the dataset points
+			\addplot[only marks, mark=*, mark options={fill=red}] coordinates {
+				(-9, 97)
+				(-8, 64)
+				(-7, 55)
+				(-6, 31)
+				(-4, 25)
+				(-3, 9)
+				% Add all your data points here
+				(5, 27)
+				(6, 33)
+				(9, 81)
+			};
+			\addlegendentry{Data points}
+			
+			% Highlight the point x_k
+			\node[label={90:{$f(x_k)$}},circle,fill,inner sep=2pt, cyan] at (axis cs:2,4) {};
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+\end{note}
+\vspace{20pt}
+\begin{note}[Neural Network]% Define layer separation length
+\newlength{\layersep}
+\setlength{\layersep}{5cm}
+\ \begin{figure}[h!]\centering
+\begin{tikzpicture}[shorten >=1pt,->,draw=gray, node distance=\layersep]
+	\tikzstyle{every pin edge}=[<-,shorten <=1pt]
+	\tikzstyle{neuron}=[circle,fill=black!25,minimum size=17pt,inner sep=0pt]
+	\tikzstyle{input neuron}=[neuron, fill=cyan!50];
+	\tikzstyle{output neuron}=[neuron, fill=red!50];
+	\tikzstyle{hidden neuron}=[neuron, fill=blue!50];
+	\tikzstyle{annot} = [text width=4em, text centered]
+	\tikzstyle{connection}=[line width=1pt] % Adjust line width here
+	
+	% Draw the input layer nodes
+	\foreach \name / \y in {1,...,4}
+	% This is here to adjust the vertical position of the nodes
+	\node[input neuron, pin=left:Input \y] (I-\name) at (0,-\y) {};
+	
+	% Draw the hidden layer nodes
+	\foreach \name / \y in {1,...,5}
+	\path[yshift=0.5cm]
+	node[hidden neuron] (H-\name) at (\layersep,-\y cm) {};
+	
+	% Draw the output layer node
+	\node[output neuron,pin={[pin edge={->}]right:Output}] (O) at (2*\layersep, -2.5cm) {};
+	
+	% Connect every node in the input layer with every node in the
+	% hidden layer.
+	\foreach \source in {1,...,4}
+	\foreach \dest in {1,...,5}
+	\path[connection] (I-\source) edge (H-\dest);
+	
+	% Connect every node in the hidden layer with the output layer
+	\foreach \source in {1,...,5}
+	\path[connection] (H-\source) edge (O);
+	
+	% Annotate the layers
+	\node[annot,above of=H-1, node distance=1cm] {Hidden layer};
+%	\node[annot,left=of H-1] {Input layer};
+%	\node[annot,right=of H-3] {Output layer};
+\end{tikzpicture}
+\end{figure}
+\end{note}
+\section{Differentiation of Univariate Functions}
+\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Derivative}]
+	\begin{definition}
+		For $h>0$ the \textbf{derivative} of $f$ at $x$ is defined as \[
+		\od{f}{x}:=\lim\limits_{h\to 0}\frac{f(x+h)-f(x)}{h}.
+		\]
+	\end{definition}
+\end{tcolorbox}
+
+\subsection{Taylor Series}
+\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Taylor Polynomial}]
+	\begin{definition}
+		The \textbf{Taylor polynomial} of degree $n$ of $f:\R\to\R$ at $x_0$ is defined as \[
+		T_n(x):=\sum_{k=0}^n\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k,
+		\] where $f^{(k)}(x_0)$ is the $k$-th derivative of $f$ at $x_0$ and $\frac{f^{(k)}(x_0)}{k!}$ are the coefficients of the polynomial.
+	\end{definition}
+\end{tcolorbox}
+\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Taylor Series}]
+\begin{definition}
+	For a smooth function $f\in\mathcal{C}^\infty$, $f:\R\to\R$, the the \textbf{Taylor series} of degree $n$ of $f:\R\to\R$ at $x_0$ is defined as \[
+	T_\infty(x):=\sum_{k=0}^\infty\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k.
+	\] For $x_0=0$, we obtain the \textbf{Maclaurin series} as a special case of the Taylor series.
+\end{definition}
+\end{tcolorbox}
+\begin{example}
+	\ \begin{enumerate}[(1)]
+		\item $\displaystyle e^x=1+x+\frac{1}{2!}x^2+\frac{1}{3!}x^3+\cdots=\sum_{k=0}^\infty\frac{x^k}{k!}.
+		$.
+		\item $\displaystyle \cos x=1-\frac{1}{2!}x^2+\frac{1}{4!}x^4+\cdots=\sum_{k=0}^\infty(-1)^k\frac{1}{(2k)!}x^{2k}.
+		$
+		\item $\displaystyle \sin x=x-\frac{1}{3!}x^3+\frac{1}{5!}x^5+\cdots=\sum_{k=0}^\infty(-1)^k\frac{1}{(2k+1)!}x^{2k+1}.
+		$
+	\end{enumerate}
+\end{example}
+
+\subsection{Differentiation Rules}
+\begin{tcolorbox}[colback=white,colframe=thmcolor,arc=5pt,title={\color{white}\bf Chain Rule}]
+	\begin{theorem}
+		Let $I,J$ be intervals in $\R$, let $g:J\to\R$ and $f:I\to\R$ be functions such that $f[I]\subseteq J$, and let $a\in I$. Then $
+		\exists f'(a)\exists g'(f(a))\implies\exists(g\circ f)'(a)
+		$ and $$(g\circ f)'(a)=g'(f(a))f'(a).$$
+	\end{theorem}
+\end{tcolorbox}
+
+\section{Partial Differentiation and Gradients}
+\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Partial Derivative}]
+	\begin{definition}
+		For a function\[
+		\fullfunction{f}{\R^n}{\R}{\vec{x}=(x_1,\cdots, x_n)}{y=f(\vec{x})}.
+		\] of $n$ variables $x_1,\dots,x_n$ we define the \textbf{partial derivatives} as 
+		\begin{align*}
+			\pd{f}{x_1}&=\lim\limits_{h\to 0}\frac{f(x_1+h,x_2,\dots, x_n)-f(\vec{x})}{h}\\
+			&\vdots\\
+			\pd{f}{x_n}&=\lim\limits_{h\to 0}\frac{f(x_1,\dots,x_{n-1}, x_n+h)-f(\vec{x})}{h}
+		\end{align*} and collect them in the row vector
+		\[
+		\nabla_{\vec{x}}f=\textnormal{grad}\ f=\begin{bmatrix}
+			\pd{f(\vec{x})}{x_1} & \pd{f(\vec{x})}{x_2} & \cdots & \pd{f(\vec{x})}{x_n}
+		\end{bmatrix}\in M_{1\by n}(\R).
+		\]
+	\end{definition}
+\end{tcolorbox}
+\begin{example}[Chain Rule]
+	$g:\R\xrightarrow{\vec{x}}\R^2\xrightarrow{f}\R:t\mapsto\vec{x}(t)=\of{x_1(t),x_2(t)}\mapsto f(x_1(t),x_2(t))$
+	\begin{figure}[h!]\centering
+		% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZARgBoAGAXVJADcBDAGwFcYkQAzEAX1PU1z5CKcqWLU6TVuwAeAfWI8+IDNjwEiAJjESGLNohDzNS-mqFEym3VIMgcPCTCgBzeEVAcAThAC2SUXsIJDIQAAsYeih2SDA2Xk8ff0RQnGDEAGYaCKiYgnjlbz8AmjSkbXDI6MNYgsTixAqyzOyqvLjHbiA
+		\begin{tikzcd}
+			& f \arrow[ld, no head] \arrow[rd, no head] &                         \\
+			x_1 \arrow[rd, no head] &                                           & x_2 \arrow[ld, no head] \\
+			& t                                         &                        
+		\end{tikzcd}
+	\end{figure}
+	\begin{align*}
+		\od{g}{t}=\od{f(x_1(t),x_2(t))}{t}=&=\pd{f}{x_1}\od{x_1}{t}+\pd{f}{x_2}\od{x_2}{t}\\
+		&=\begin{bmatrix}
+			\pd{f}{x_1} & \pd{f}{x_2}
+		\end{bmatrix}\begin{bmatrix}
+			\od{x_1}{t}\\ \od{x_2}{t}
+		\end{bmatrix}\\
+		&=\nabla f(x_1,x_2)\cdot\od{\vec{x}}{t}
+	\end{align*}
+\end{example}
+
+\begin{example}
+	
+	
+	
+	
+	
+\end{example}
+
+
+\section{Gradients of Vector-Valued Functions}
+\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Vector-valued Function (Vector Field)}]
+	\begin{definition}
+		\[
+		\fullfunction{\textbf{f}}{\R^n}{\R^m}{\vec{x}=\begin{bmatrix}
+				x_1\\ \vdots\\ x_n
+			\end{bmatrix}_{n\by 1}}{\vec{f}(\vec{x})=\begin{bmatrix}
+				f_1(\vec{x})\\ \vdots\\ f_m(\vec{x})
+			\end{bmatrix}=\begin{bmatrix}
+				f_1(x_1,\cdots,x_n)\\ \vdots\\f_m(x_1,\cdots,x_n)
+			\end{bmatrix}_{m\by 1}}
+		\]
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	The partial derivative of a vector-valued function $\textbf{f}:\R^n\to\R^m$ with respect to $x_i\in\R$, $i=1,\dots,n$, is given as the vector \[
+	\pd{\vec{f}}{x_i}=\lim\limits_{h\to0}\frac{\vec{f}(x_1,\cdots,x_i+h,\cdots,x_n)-\vec{f}(\vec{x})}{h}=\begin{bmatrix}
+		\pd{f_1}{x_i} \\ \vdots\\ \pd{f_m}{x_i}
+	\end{bmatrix}=
+	\begin{bmatrix}
+		\lim\limits_{h\to 0}\frac{f_1(x_1,\cdots,x_i+h,\cdots,x_n)-f_1(\vec{x})}{h}\\ \vdots\\ 
+		\lim\limits_{h\to 0}\frac{f_m(x_1,\cdots,x_i+h,\cdots,x_n)-f_m(\vec{x})}{h}
+	\end{bmatrix}\in\R^m
+	\]
+\end{remark}
+\vspace{20pt}
+\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Jacobian}]
+	\begin{definition}
+		The collection of all first-order partial derivatives of a vector-valued function $\textbf{f}:\R^n\to\R^m$ is called the \textbf{Jacobian}.
+		\begin{align*}
+			\textbf{J}=\nabla_{\vec{x}}\vec{f}=
+			\sbr{\pd{f_i}{x_i}}_{m\by n}&=\begin{bmatrix}
+				\pd{\vec{f}\of{\vec{x}}}{x_1} &\cdots &
+				\pd{\vec{f}\of{\vec{x}}}{x_n}
+			\end{bmatrix}
+			=\begin{bmatrix}
+				\pd{f_1(\vec{x})}{x_1} & \cdots & \pd{f_1(\vec{x})}{x_n}\\
+				\vdots&\ddots&\vdots\\
+				\pd{f_m(\vec{x})}{x_1} & \cdots & \pd{f_m(\vec{x})}{x_n}
+			\end{bmatrix}\in M_{m\by n}(\R).
+		\end{align*} In other words, \[	
+		\begin{bmatrix}
+			\pd{\vec{f}}{x_1} & \cdots & \pd{\vec{f}}{x_n}
+		\end{bmatrix}
+			=\textbf{J}=
+		\begin{bmatrix}
+			\nabla_\textbf{x} f_1 \\ \vdots \\ \nabla_\textbf{x} f_m
+		\end{bmatrix}.
+		\]
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	\ \begin{itemize}
+		\item 
+		The Jocobian approximates a nonlinear transformation locally with a linear transformation.
+		\item The determinant of the Jacobian of $\textbf{f}$ can be used to compute the magnifier
+		between two area.
+	\end{itemize}
+\end{remark}
+\newpage
+\begin{example}[\bf Gradient of a Least-Squares Loss in a Linear Model]
+	Consider the linear model \[
+	\vec{y}=\mvec{\Phi}\mvec{\theta},
+	\] where \begin{enumerate}[(i)]
+		\item $\mvec{\theta}\in\R^D$ is a parameter vector,
+		\item $\mvec{\Phi}\in M_{N\by D}(\R)$ are input features and
+		\item $\vec{y}\in\R^N$ are corresponding observations.
+	\end{enumerate} Define the functions \begin{align*}
+		L(\mvec{\varepsilon})&=\R^N\to\R:=\mvec{\varepsilon}^T\mvec{\varepsilon}=\norms{\mvec{\varepsilon}}^2,\\
+		\mvec{\varepsilon}(\mvec{\theta})&=\R^D\to\R^N:=\vec{y}-\mvec{\Phi}\mvec{\theta}.
+	\end{align*} $L$ is called a \textit{least-squares loss} function. Consider $L\circ\mvec{\varepsilon}:\R^D\to\R$. Then \begin{align*}
+	\pd{L}{\mvec{\theta}}=\pd{L}{\mvec{\varepsilon}}\pd{\mvec{\varepsilon}}{\mvec{\theta}}\iff\grad_{\mvec{\theta}}L=\grad_{\mvec{\varepsilon}}L\grad_{\mvec{\theta}}\mvec{\varepsilon}&=2\mvec{\varepsilon}^T(-\mvec{\Phi})\quad (2\mvec{\varepsilon}^T\in\ M_{1\by N}(\R),\ -\mvec{\Phi}\in M_{N\by D}(\R))\\
+	&=-2(\vec{y}^T-\mvec{\theta}^T\mvec{\Phi}^T)\mvec{\Phi}\in M_{1\by D}(\R).
+\end{align*} Note that \begin{align*}
+\grad_{\mvec{\theta}}L=0\iff-2(\vec{y}^T-\mvec{\theta}^T\mvec{\Phi}^T)\mvec{\Phi}=0&\iff\vec{y}^T\mvec{\Phi}=\mvec{\theta}^T\mvec{\Phi}^T\mvec{\Phi}\\
+&\iff\mvec{\Phi}^T\vec{y}=\mvec{\Phi}^T\mvec{\Phi}\mvec{\theta}\\
+&\iff\mvec{\theta}=\of{\mvec{\Phi}^T\mvec{\Phi}}^{-1}\mvec{\Phi}^T\vec{y}.
+\end{align*}
+\begin{figure}[h!]\centering
+\begin{tikzpicture}[scale=1.05]
+	\begin{axis}[
+		width=10cm,
+		height=10cm,
+		view={120}{40},
+		grid=major,
+		xmin=-1, xmax=5,
+		ymin=-1, ymax=5,
+		zmin=-1, zmax=5,
+		xlabel={$\theta_1$},
+		ylabel={$\theta_2$},
+		zlabel={$y$},
+		3d box=complete,
+		ticklabel style={font=\tiny},
+		label style={font=\small}
+		]
+		
+		% Define the column space plane (for simplicity, this is a plane through the origin)
+		\addplot3[
+		surf,
+		opacity=0.5,
+		color=blue!50,
+		domain=0:3,
+		domain y=0:3,
+		samples=2,
+		samples y=2,
+		] {0.5*x + 0.5*y};
+		\addlegendentry{Column space of $\mvec{\Phi}$}
+		
+		% Draw the observation vector y (assuming some values)
+		\addplot3[
+		-stealth,
+		color=red,
+		very thick,
+		] coordinates {(0,0,0) (3,3,4)};
+		\addlegendentry{Observations $\vec{y}$}
+		
+		% Draw the projected vector onto the column space (assuming the projection is at (3,3,3))
+		\addplot3[
+		-stealth,
+		color=green,
+		very thick,
+		] coordinates {(0,0,0) (3,3,3)};
+		\addlegendentry{Projection of $\vec{y}$ onto $\mvec{\Phi}$}
+		
+		% Draw the error vector (from the projection to the vector y)
+		\addplot3[
+		-stealth,
+		color=orange,
+		very thick,
+		] coordinates {(3,3,3) (3,3,4)};
+		\addlegendentry{Error vector $\mvec{\varepsilon}(\mvec{\theta})$}
+		
+		% Optional: Projection line (dashed line from y to its projection)
+		\addplot3[
+		dashed,
+		color=black,
+		] coordinates {(3,3,4) (3,3,3)};
+		
+	\end{axis}
+\end{tikzpicture}
+\end{figure}
+\end{example}
+
+\newpage
+\section{Useful Identities for Computing Gradients}
+\begin{tcolorbox}[colframe=procolor,title={\color{white}\bf }]
+	\begin{proposition}
+		Let $\vec{x},\vec{a}\in\R^n$ and $\vec{B}\in M_{n}(\R)$. \begin{enumerate}[(1)]
+			\item $\pd{}{\vec{x}}\of{\vec{x}^T\vec{a}}=\vec{a}^T$
+			\item $\pd{}{\vec{x}}\of{\vec{a}^T\vec{x}}=\vec{a}^T$
+			\item $\pd{}{\vec{X}}\of{\vec{a}^T\vec{X}\vec{b}}=\vec{a}\vec{b}^T$
+			\item $\pd{}{\vec{x}}\of{\vec{x}^T\vec{B}\vec{x}}=\vec{x}^T(\vec{B}+\vec{B}^T)$
+			\item $\pd{}{\vec{s}}\sbr{(\vec{x}-\vec{A}\vec{s})^T\vec{W}(\vec{x}-\vec{A}\vec{s})}=-2(\vec{x}-\vec{A}\vec{s})^T\vec{W}\vec{A}$\quad for symmetric $\vec{W}$.
+		\end{enumerate}
+	\end{proposition}
+\end{tcolorbox}
+\begin{proof}
+	\begin{enumerate}[(1)]
+		\item Let \[
+		f(\vec{x})=\vec{x}^T\vec{a}=\begin{bmatrix}
+			x_1 & \cdots & x_n
+		\end{bmatrix}\begin{bmatrix}
+		a_1 \\ \vdots \\ a_n
+	\end{bmatrix}=\sum_{i=1}^na_ix_i.
+		\] Then \[
+		\grad_\vec{x}f=\begin{bmatrix}
+			\pd{}{x_1}f & \cdots & \pd{}{x_n}f
+		\end{bmatrix}=\begin{bmatrix}
+		a_1 & \cdots & a_n
+	\end{bmatrix}=\vec{a}^T.
+		\]
+		\item Let \[
+		\grad_\vec{x}\of{\vec{a}^T\vec{x}}\overset{\vec{a}^T\vec{x}\in\R}{=}
+		\grad_\vec{x}(\vec{a}^T\vec{x})^T=\grad_\vec{x}\of{\vec{x}^T\vec{a}}=\vec{a}^T.
+		\]
+		\item 
+		\item Let $f:\R^n\to\R$ is defined by 
+		\begin{align*}
+			f(\vec{x})=\vec{x}^T\vec{B}\vec{x}&=\begin{bmatrix}
+				x_1 & \cdots & x_n
+			\end{bmatrix}\begin{bmatrix}
+				B_{11} & \cdots & B_{1n}\\
+				\vdots & \ddots & \vdots\\
+				B_{n1} & \cdots & B_{nn}\\
+			\end{bmatrix}\begin{bmatrix}
+			x_1 \\ \vdots \\ x_n
+		\end{bmatrix}\\
+			&=\begin{bmatrix}
+				x_1 & \cdots & x_n
+			\end{bmatrix}\begin{bmatrix}
+				\sum_{s=1}^nB_{1s}x_s \\ \vdots \\ \sum_{s=1}^nB_{ns}x_s
+			\end{bmatrix}\\
+			&=\sum_{r=1}^nx_r\of{\sum_{s=1}^nB_{rs}x_s}\\
+			&=\sum_{r,s=1}^nx_rB_{rs}x_s.
+		\end{align*} Recall that Kronecker $\delta_{ij}=\begin{cases}
+		1 &:i=j,\\
+		0 &:i\neq j.
+	\end{cases}$ and $\pd{x_i}{x_j}=\delta_{ij}$. Then 
+	\begin{align*}
+		\frac{\partial f}{\partial x_i}&=\frac{\partial}{\partial x_i}\of{\sum_{r,s=1}^nx_rB_{rs}x_s}\\
+		&=\sum_{r,s=1}^n\frac{\partial}{\partial x_i}\of{x_rB_{rs}x_s}\\
+		&=\sum_{r,s=1}^n\of{\frac{\partial x_r}{\partial x_i}\of{B_{rs}x_s}+x_r\frac{\partial(B_{rs}x_s)}{\partial x_i}}\quad\text{Product Rule for Differentiation}\\
+		&=\sum_{r,s}\of{\delta_{ri}B_{rs}x_s+x_rB_{rs}\delta_{si}}\\
+		&=\sum_{s}\sum_{r}\delta_{ri}B_{rs}x_s+\sum_{r}\sum_{s}\delta_{si}x_rB_{rs}\\
+		&=\sum_{s}\crossout[red]{1}{\delta_{ii}}B_{is}x_s+\sum_{r}\crossout[red]{1}{\delta_{ii}}x_rB_{ri}\\
+		&=\sbr{\vec{B}\vec{x}}_i+\sbr{\vec{x}^T\vec{B}}_i\\
+		&=\sbr{\vec{x}^T\vec{B}^T}_i+\sbr{\vec{x}^T\vec{B}}_i\quad\because\vec{B}\vec{x}\in\R\Rightarrow(\vec{B}\vec{x})^T=\vec{B}\vec{x}\\
+		&=\sbr{\vec{x}^T(\vec{B}^T+\vec{B})}_i.
+	\end{align*} Thus \[
+	\grad_{\vec{x}}f=\begin{bmatrix}
+		\pd{f}{x_1} &\cdots &\pd{f}{x_i}&\cdots&\pd{f}{x_D}
+	\end{bmatrix}=\vec{x}^T(\vec{B}^T+\vec{B}).
+	\]
+		\item Let $f:\R^n\to\R$ is defined by 
+		\begin{align*}
+			f(\vec{s})=(\vec{x}-\vec{A}\vec{s})^T\vec{W}(\vec{x}-\vec{A}\vec{s})&=\begin{bmatrix}
+				x_1 & \cdots & x_n
+			\end{bmatrix}\begin{bmatrix}
+				B_{11} & \cdots & B_{1n}\\
+				\vdots & \ddots & \vdots\\
+				B_{n1} & \cdots & B_{nn}\\
+			\end{bmatrix}\begin{bmatrix}
+				x_1 \\ \vdots \\ x_n
+			\end{bmatrix}\\
+			&=\begin{bmatrix}
+				x_1 & \cdots & x_n
+			\end{bmatrix}\begin{bmatrix}
+				\sum_{s=1}^nB_{1s}x_s \\ \vdots \\ \sum_{s=1}^nB_{ns}x_s
+			\end{bmatrix}\\
+			&=\sum_{i,j=1}^n\sbr{\vec{x}-\vec{A}\vec{s}}_iW_{ij}\sbr{\vec{x}-\vec{A}\vec{s}}_j\\
+			&=\sum_{i,j}\of{x_i\sum_{r}A_{ir}s_r}W_{ij}\of{x_j-\sum_{t}A_{jt}s_t}
+		\end{align*}
+	\end{enumerate}
+\end{proof}
+
+	\newpage
+	\chapter{Probability and Distributions}
+	
+	Probability $\approx$ Study of Uncertainty
+	\\
+	Probability vs Statistics
+	\begin{itemize}
+		\item Probability: Model of Process ( Axiomatic). A random variable explains the underlying uncertainty.
+		\item Statistics: ``Observations''. Try to figure out the underlying process which explains the observations
+	\end{itemize}
+	Machine Learning is close to statistics. Data(Observation) $\to$ Functions(Process)
+	\\
+	Keywords
+	\begin{itemize}
+		\item Random Variable $X$
+		\item Probability Distribution $\mathcal{D}$
+		\begin{figure}[h!]\centering
+			\begin{tabular}{c|cccc}
+				$X$ & $x_1$ & $x_2$ & $\cdots$ & $x_n$\\
+				\hline
+				$\Pr[X=x_i]$ & $p_1$ & $p_2$ & $\cdots$ & $p_n$
+			\end{tabular}
+		\end{figure}
+		\item Sample Space
+		\item Event
+		\item Joint Distribution
+		\item Marginal Distribution\begin{center}
+			\begin{tabular}{c|cc|c}
+				$X\backslash Y$ & $0$ & $1$ & $\Pr[X]$\\
+				\hline
+				$0$ & $1/4$ & $1/2$ & $3/4$\\
+				$1$ & $1/8$ & $1/8$ & $1/4$\\
+				\hline
+				$\Pr[Y]$ & $3/8$ & $5/8$ &
+			\end{tabular}
+		\end{center}
+		\item $X,Y$ are independent if $p(x,y)=p(x)p(y)$.
+		\item Conditional Probability: \[
+		p(x\mid y):=\Pr[X=x\mid Y=y].
+		\] Since $p(x\mid y)=\frac{p(x,y)}{p(y)}$, $\Pr[x\mid Y=0]=\begin{cases}
+			\Pr[X=0\mid Y=0]=\frac{1/4}{3/8}=\frac{2}{3}\\
+			\Pr[X=1\mid Y=0]=\frac{1/8}{3/8}=\frac{1}{3}
+		\end{cases}$
+	\end{itemize}
+	\ \\
+	Bayes' Theorem () \[
+	p(x\mid y)=\frac{p(y\mid x)\cdot p(x)}{p(y)}
+	\]
+	\begin{proof}
+		$p(x\mid y)=\frac{p(x,y)}{p(y)}\implies p(y\mid x)p(x)=p(x,y)=p(x\mid y)p(y)\implies p(x\mid y)p(y)=p(y\mid x)p(x)$
+	\end{proof}
+
+	\[
+	p(y\mid x)=\begin{cases}
+		\text{(1) Probability $y$ given $x$}\\
+		\text{(2) likelihood of $x$ given $y$}
+	\end{cases}
+	\]
+	
+	\begin{example}
+		dice with \$ sign(s). \# of \$ signs is unknown and fixed.
+		Let $X$: \# of \$ signs observed in $n$ trials. $X\in\set{1,2,\cdots,n}$.
+		\begin{center}
+			\begin{tabular}{c|cccc}
+				$X$ & $0$ & $1$ & $k$ & $n$\\
+				$\Pr[X]$ & \multicolumn{4}{c}{$\binom{b}{k}p^k(1-p)^{n-k}$}
+			\end{tabular}
+		\end{center} Let $p$: probability of a single event. $X\sim\mathcal{B}(n,p)$. Binomial Distribution
+		\[
+		\Pr[X=k]=\binom{n}{k}p^k(1-p)^{n-k}\quad\text{for}\quad k=0,1,\cdots, n.	
+		\]
+		Q: Assume that we do not know the number of \$ signs ($Y$). We observe two \$ signs out of 10 trials. What would be a good guess? \begin{center}
+			\begin{tabular}{c|c}
+				Hard & Easy\\
+				\hline
+				$\max_y\Pr[Y=y\mid X=2]$ & $\Pr[X=2\mid Y=y]$
+			\end{tabular}
+		\end{center}
+		$\Pr[X=2\mid Y=y]$. $Y=y$ is \# of \$. It is likelihood of $Y$ given $X=2$.
+	\end{example}
+	
+	Random variable $X\sim p(x)=\Pr[X=x]$. pmf(probability mass function)
+	\begin{itemize}
+		\item Expected Value $\E[g(x)]=\sum_xp(x)g(x)$
+		\item Mean $\E[X]=\sum_xp(x)x$
+		\item Variance $\E[X^2]-\set{\E[X]}^2$
+	\end{itemize}
+	
+	$X,Y$ are random variables. \[
+	\Cov\sbr{x,y}=\E_{X,Y}\sbr{(X-\E_X[X])(Y-\E[Y])}=\E_{X,Y}[XY]-\E_X[X]\E_Y[Y].
+	\]
+	$\Cov[X,X]=\E[X^2]-\set{\E[X]}^2$
+	\[
+	\corr(X,Y)=\frac{\Cov(XY)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}}\in\sbr{-1,1}
+	\]\[
+	\Cov(X,Y)=\begin{cases}
+		1 &: X=Y\\
+		-1&: X=-Y\\
+		0 &: \text{$X,Y$ are independent}
+	\end{cases}
+	\]
+	\begin{example}
+		\ \begin{center}
+			\begin{tabular}{c|ccc|c}
+				$Y\backslash X$ & -1 & 0 & 1 & $\Pr[Y]$\\
+				\hline
+				$0$ & 0 & 1/3 & 0 & 1/3\\
+				$1$ & 1/3 & 0 & 1/3 & 2/3\\
+				\hline
+				$\Pr[X]$ & 1/3 & 1/3 & 1/3 &
+			\end{tabular}
+		\end{center}\[
+	\begin{cases}
+		\E[X]=\sum_xp(x)x=(-1)\cdot\frac{1}{3}+0\cdot\frac{1}{3}+1\cdot\frac{1}{3}=0\\
+		\E[Y]=\sum_yp(y)y=0\cdot\frac{1}{3}+0\cdot\frac{2}{3}=\frac{2}{3}.
+	\end{cases}
+	\] \[
+	\Cov(X,Y)=\E[XY]-\E[X]\E[Y]=\sum_{x,y}p(x,y)xy-0=0.
+	\]
+	\end{example}
+
+	Multi-dimensional Case
+	
+	Let $\vec{X}=\begin{bmatrix}
+		X_1\\ \vdots\\ X_D
+	\end{bmatrix}\in\R^D$ be a random variable.
+	\begin{itemize}
+		\item Expected Value $\E[\vec{X}]=\begin{bmatrix}
+			\E[X_1]\\ \vdots\\ \E[X_D]
+		\end{bmatrix}\in\R^D$
+	\item Let $\vec{X}\in\R^D$ and $\vec{Y}\in\R^E$ are random variables. Then \begin{align*}
+		\Cov(\vec{X},\vec{Y})&=\E\sbr{(\vec{X}-\E[\vec{X}])(\vec{Y}-\E[\vec{Y}])^T}\\
+		&=\E[\vec{X}\vec{Y}^T]-\E[\vec{X}]\E[\vec{Y}]^T
+	\end{align*}
+	\item Variance \begin{align*}
+		\Var[\vec{X}]&=\Cov[\vec{X},\vec{X}]\\
+		&=\E[\vec{X}\vec{X}^T]-\E[\vec{X}]\E[\vec{X}]^T\\
+		&=\begin{bmatrix}
+			\Cov[X_1,X_1] & \cdots & \Cov[X_1,X_D]\\
+			\vdots & \ddots & \vdots\\
+			\Cov[X_D,X_1] & \cdots & \Cov[X_D,X_D]\\
+		\end{bmatrix}
+	\end{align*}
+	$\Cov[X_i,X_j]=\E[X_iX_j]-\E[X_i]\E_[X_j]=\Cov[X_j,X_i]$. $\Var[\vec{X}]$ is symmetric and positive semi-define matrix, \ie, $\vec{x}\Var[\vec{X}]\vec{x}\geq 0$ for all $\vec{x}$.
+	
+		i.i.d. independent and identically distributed.
+	
+	$X_1,\dots,X_n$: i.i.d. if \begin{enumerate}[(1)]
+		\item Mutually independent $p(x_i,x_j)=p(x_i)p(x_j)$ for all $i,j$ with $i\neq j$.
+		\item Identically Distributed.
+	\end{enumerate}
+	
+	Def. (Conditionally Independent) $X,Y$ are conditionally independent given $Z$ if \[
+	p(x,y\mid z)=p(x\mid z)p(y\mid z).
+	\]
+	
+	Gaussian Distribution. \[
+	p_{\mu^2,\sigma}(x)=\frac{1}{\sqrt{2\pi\sigma}}\exp\sbr{-\frac{(x-\mu)^2}{2\sigma^2}}
+	\]
+	
+	Let $\vec{X}\in\R^D$, $\mvec{\mu}\in\R^D$ and $\mvec{\Sigma}\in M_{D}(\R)$. Note that $\abs{\sigma}=\sqrt{\sigma^2}$ and $\sqrt{\mvec{\Sigma}}=\abs{\mvec{\Sigma}}^{1/2}$. Then \[
+	p_{\mvec{\mu},\mvec{\Sigma}}(\vec{X})=(2\pi)^{-D/2}\abs{\mvec{\Sigma}}^{-1/2}\exp\sbr{-\frac{1}{2}(\vec{x}-\mvec{\mu})^T\mvec{\Sigma}^{-1}(\vec{x}-\mvec{\mu})}.
+	\]
+	\end{itemize}
+	
+	\newpage
+	\section{Introduction}
+	This series of lecture notes covers advanced concepts in applied mathematics with a focus on Machine Learning. We delve into the study of probability and statistics as tools to understand and model uncertainty and observations.
+	
+	\section{Probability vs Statistics}
+	In this section, we explore the differences between probability and statistics and their applications in Machine Learning.
+	
+	\subsection{Probability}
+	\begin{definition}[Probability]
+		Probability is the study of uncertainty. It provides a mathematical framework to model and analyze the likelihood of various outcomes.
+	\end{definition}
+	
+	A \textbf{random variable} is a fundamental concept in probability, representing the uncertain outcomes quantitatively.
+	
+	\subsection{Statistics}
+	\begin{definition}[Statistics]
+		Statistics is the discipline that concerns the collection, analysis, interpretation, and presentation of data. In the context of Machine Learning, it involves inferring the processes that generate the data.
+	\end{definition}
+	
+	\section{Machine Learning and Data}
+	Machine Learning is closely related to statistics as it often involves creating functions that can predict or categorize data based on observed inputs.
+	
+	\section{Key Concepts in Probability}
+	This section outlines the key concepts and definitions used in the study of probability.
+	
+	\begin{itemize}
+		\item Random Variable $X$
+		\item Probability Distribution $\mathcal{D}$
+	\end{itemize}
+	
+	\subsection{Probability Distributions}
+	The probability distribution of a random variable $X$ is a description of the probabilities associated with each of its possible values.
+	
+	\begin{example}
+		Consider a random variable $X$ representing the roll of a die, with $X$ taking values from 1 to 6, each with a probability of $\frac{1}{6}$.
+	\end{example}
+	
+	\begin{exercise}
+		Show that the probabilities in a distribution sum up to 1.
+	\end{exercise}
+	
+	\subsection{Sample Space and Events}
+	\begin{definition}[Sample Space]
+		The sample space of an experiment or random trial is the set of all possible outcomes.
+	\end{definition}
+	
+	\begin{definition}[Event]
+		An event is a set of outcomes of an experiment to which a probability is assigned.
+	\end{definition}
+	
+	\subsection{Joint and Marginal Distributions}
+	The joint distribution of a pair of random variables $(X, Y)$ gives the probability that each variable simultaneously falls within any specified range or discrete set of values.
+	
+	\begin{table}[ht]
+		\centering
+		\begin{tabular}{c|cc|c}
+			\toprule
+			$X\backslash Y$ & $0$ & $1$ & $\Pr[X]$ \\
+			\midrule
+			$0$ & $1/4$ & $1/2$ & $3/4$ \\
+			$1$ & $1/8$ & $1/8$ & $1/4$ \\
+			\midrule
+			$\Pr[Y]$ & $3/8$ & $5/8$ & \\
+			\bottomrule
+		\end{tabular}
+		\caption{Joint distribution of $X$ and $Y$.}
+		\label{tab:joint_dist}
+	\end{table}
+	
+	\subsection{Independence and Conditional Probability}
+	\begin{definition}[Independence]
+		Two events are independent if the occurrence of one does not affect the probability of the occurrence of the other.
+	\end{definition}
+	
+	\begin{definition}[Conditional Probability]
+		The probability of an event given that another event has occurred is called the conditional probability.
+	\end{definition}
+	
+	\section{Bayes' Theorem}
+	Bayes' Theorem is a fundamental theorem in probability that describes the probability of an event, based on prior knowledge of conditions that might be related to the event.
+	
+	\begin{theorem}[Bayes' Theorem]
+		\label{thm:bayes}
+		For any two events $A$ and $B$, if $P(B) \neq 0$, then
+		\[
+		P(A\mid B) = \frac{P(B\mid A)P(A)}{P(B)}.
+		\]
+	\end{theorem}
+	
+	\begin{proof}
+		Starting from the definition of conditional probability:
+		\[
+		P(A\mid B) = \frac{P(A \cap B)}{P(B)}.
+		\]
+		Similarly, we have:
+		\[
+		P(B\mid A) = \frac{P(A \cap B)}{P(A)}.
+		\]
+		Thus, by rearranging the terms, we get:
+		\[
+		P(A\mid B)P(B) = P(B\mid A)P(A).
+		\]
+		Dividing both sides by $P(B)$, we obtain the statement of Bayes' Theorem.
+	\end{proof}
+	\section{Conditional Probability and the Binomial Distribution}
+	Conditional probability is a measure of the probability of an event occurring given that another event has already occurred. The notation $p(y \mid x)$ represents the probability of event $y$ occurring given that event $x$ has occurred. This can be formally defined as follows:
+	
+	\[
+	p(y\mid x)=
+	\begin{cases}
+		\text{(1) Probability of $y$ given $x$} \\
+		\text{(2) Likelihood of $x$ given $y$}
+	\end{cases}
+	\]
+	
+	\subsection{Binomial Distribution}
+	The binomial distribution is a discrete probability distribution that models the number of successes in a sequence of independent experiments.
+	
+	\begin{definition}[Binomial Distribution]
+		A random variable $X$ follows a binomial distribution $\mathcal{B}(n, p)$, denoted by $X \sim \mathcal{B}(n, p)$, if the probability mass function of $X$ is given by:
+		\[
+		\Pr[X=k]=\binom{n}{k}p^k(1-p)^{n-k},\quad\text{for}\quad k=0,1,\cdots,n,
+		\]
+		where $n$ is the number of trials, $p$ is the probability of success on a single trial, and $k$ is the number of successes.
+	\end{definition}
+	
+	\begin{example}
+		Consider a dice with an unknown fixed number of sides marked with a dollar sign (\$). Let $X$ denote the number of \$ signs observed in $n$ trials, such that $X \in \{1, 2, \cdots, n\}$. If $p$ is the probability of observing a \$ sign on a single trial, the distribution of $X$ can be represented as follows:
+		
+		\begin{center}
+			\begin{tabular}{c|cccc}
+				$X$ & $0$ & $1$ & $k$ & $n$ \\
+				\hline
+				$\Pr[X]$ & \multicolumn{4}{c}{$\binom{n}{k}p^k(1-p)^{n-k}$} \\
+			\end{tabular}
+		\end{center}
+		
+		Question: If the actual number of \$ signs on the dice, denoted by $Y$, is unknown, and we observe two \$ signs out of 10 trials, what would be our best guess for $Y$? The probability $\Pr[X=2 \mid Y=y]$ represents the likelihood of observing exactly 2 \$ signs given a specific number $y$ of \$ signs on the dice.
+		
+		The estimation problem can be approached from two perspectives:
+		
+		\begin{center}
+			\begin{tabular}{c|c}
+				Hard & Easy \\
+				\hline
+				$\max_y \Pr[Y=y \mid X=2]$ & $\Pr[X=2 \mid Y=y]$ \\
+			\end{tabular}
+		\end{center}
+		
+		The "hard" approach involves maximizing the probability of $Y$ given the observation $X=2$, while the "easy" approach involves directly computing the probability of observing $X=2$ given a particular value of $Y$.
+	\end{example}
+
+	\section{Properties of Random Variables}
+	A random variable \( X \) is a variable whose value is subject to variations due to chance. We denote by \( X \sim p(x) = \Pr[X = x] \) the probability mass function (pmf) of the random variable \( X \).
+	
+	\subsection{Expected Value and Variance}
+	The expected value and variance are two fundamental concepts in the theory of random variables.
+	
+	\begin{definition}[Expected Value]
+		The expected value of a function \( g(x) \) of a random variable \( X \) is given by
+		\[
+		\E[g(x)] = \sum_x p(x) g(x),
+		\]
+		where \( p(x) \) is the probability mass function of \( X \).
+	\end{definition}
+	
+	\begin{definition}[Mean and Variance]
+		The mean or expected value of a random variable \( X \) is defined as
+		\[
+		\E[X] = \sum_x p(x) x,
+		\]
+		and the variance is defined as
+		\[
+		\Var[X] = \E[X^2] - \left(\E[X]\right)^2.
+		\]
+	\end{definition}
+	
+	\subsection{Covariance and Correlation}
+	Covariance and correlation are measures of how much two random variables change together.
+	
+	\begin{definition}[Covariance]
+		The covariance of two random variables \( X \) and \( Y \) is defined as
+		\[
+		\Cov[X, Y] = \E_{X,Y}\left[(X - \E_X[X])(Y - \E_Y[Y])\right] = \E_{X,Y}[XY] - \E_X[X]\E_Y[Y].
+		\]
+		For the special case of \( X \) with itself, it simplifies to
+		\[
+		\Cov[X, X] = \Var[X].
+		\]
+	\end{definition}
+	
+	\begin{definition}[Correlation]
+		The correlation coefficient between \( X \) and \( Y \) is given by
+		\[
+		\corr(X, Y) = \frac{\Cov(X, Y)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}} \in [-1, 1].
+		\]
+	\end{definition}
+	
+	The covariance and correlation can have special values under certain conditions:
+	\[
+	\Cov(X, Y) = 
+	\begin{cases}
+		1 & : X = Y,\\
+		-1 & : X = -Y,\\
+		0 & : \text{if \( X, Y \) are independent}.
+	\end{cases}
+	\]
+	
+	\begin{example}
+		Consider a discrete distribution of random variables \( X \) and \( Y \) with the following joint probability distribution:
+		
+		\begin{center}
+			\begin{tabular}{c|ccc|c}
+				\( Y \backslash X \) & -1 & 0 & 1 & \( \Pr[Y] \) \\
+				\hline
+				0 & 0 & \( \frac{1}{3} \) & 0 & \( \frac{1}{3} \) \\
+				1 & \( \frac{1}{3} \) & 0 & \( \frac{1}{3} \) & \( \frac{2}{3} \) \\
+				\hline
+				\( \Pr[X] \) & \( \frac{1}{3} \) & \( \frac{1}{3} \) & \( \frac{1}{3} \) & \\
+			\end{tabular}
+		\end{center}
+		
+		Using the definitions above, we can compute the expected values of \( X \) and \( Y \) as follows:
+		\[
+		\begin{aligned}
+			\E[X] &= \sum_x p(x)x = (-1) \cdot \frac{1}{3} + 0 \cdot \frac{1}{3} + 1 \cdot \frac{1}{3} = 0, \\
+			\E[Y] &= \sum_y p(y)y = 0 \cdot \frac{1}{3} + 1 \cdot \frac{2}{3} = \frac{2}{3}.
+		\end{aligned}
+		\]
+		The covariance of \( X \) and \( Y \) is computed to be
+		\[
+		\Cov(X, Y) = \E[XY] - \E[X]\E[Y] = \sum_{x,y} p(x, y)xy - \E[X]\E[Y] = 0 - 0 \cdot \frac{2}{3} = 0.
+		\]
+		This implies that \( X \) and \( Y \) are uncorrelated since their covariance is zero.
+	\end{example}
+	
+	\section{Multidimensional Random Variables}
+	
+	In the multidimensional case, we consider random vectors and their associated expected values, covariance matrices, and variance matrices.
+	
+	\subsection{Expected Value of a Random Vector}
+	Let \( \vec{X} \) be a random vector in \( \mathbb{R}^D \) represented as:
+	\[
+	\vec{X} = \begin{bmatrix}
+		X_1 \\
+		\vdots \\
+		X_D
+	\end{bmatrix}.
+	\]
+	The expected value of \( \vec{X} \) is a vector in \( \mathbb{R}^D \) whose elements are the expected values of the individual random variables that make up \( \vec{X} \):
+	\[
+	\E[\vec{X}] = \begin{bmatrix}
+		\E[X_1] \\
+		\vdots \\
+		\E[X_D]
+	\end{bmatrix}.
+	\]
+	
+	\subsection{Covariance Matrix}
+	For random vectors \( \vec{X} \in \mathbb{R}^D \) and \( \vec{Y} \in \mathbb{R}^E \), the covariance matrix is defined as:
+	\begin{align*}
+		\Cov(\vec{X},\vec{Y}) &= \E\left[(\vec{X} - \E[\vec{X}])(\vec{Y} - \E[\vec{Y}])^\top\right] \\
+		&= \E[\vec{X}\vec{Y}^\top] - \E[\vec{X}]\E[\vec{Y}]^\top.
+	\end{align*}
+	This matrix contains the covariances between each pair of elements in the two random vectors.
+	
+	\subsection{Variance Matrix}
+	The variance matrix for \( \vec{X} \), also known as the covariance matrix of \( \vec{X} \) with itself, is given by:
+	\begin{align*}
+		\Var[\vec{X}] &= \Cov[\vec{X},\vec{X}] \\
+		&= \E[\vec{X}\vec{X}^\top] - \E[\vec{X}]\E[\vec{X}]^\top \\
+		&= \begin{bmatrix}
+			\Cov[X_1,X_1] & \cdots & \Cov[X_1,X_D] \\
+			\vdots & \ddots & \vdots \\
+			\Cov[X_D,X_1] & \cdots & \Cov[X_D,X_D] \\
+		\end{bmatrix}.
+	\end{align*}
+	The covariance between any two elements \( X_i \) and \( X_j \) of \( \vec{X} \) is symmetrical, such that \( \Cov[X_i,X_j] = \Cov[X_j,X_i] \), and it is defined as:
+	\[
+	\Cov[X_i,X_j] = \E[X_iX_j] - \E[X_i]\E[X_j].
+	\]
+	The variance matrix \( \Var[\vec{X}] \) is symmetric and positive semidefinite, meaning that for any vector \( \vec{x} \in \mathbb{R}^D \), it holds that:
+	\[
+	\vec{x}^\top \Var[\vec{X}] \vec{x} \geq 0.
+	\]
+	
+	\section{Probability Distributions and Independence}
+	
+	\subsection{Independent and Identically Distributed Random Variables}
+	
+	Random variables \( X_1, \dots, X_n \) are said to be independent and identically distributed (i.i.d.) if they satisfy the following conditions:
+	
+	\begin{enumerate}[(1)]
+		\item \textbf{Mutual Independence:} Each pair of variables is independent, which means that for all \( i, j \) with \( i \neq j \), the joint probability \( p(x_i, x_j) \) can be expressed as the product of their individual probabilities: \( p(x_i, x_j) = p(x_i)p(x_j) \).
+		\item \textbf{Identical Distribution:} All variables share the same probability distribution.
+	\end{enumerate}
+	
+	\subsection{Conditional Independence}
+	
+	\begin{definition}[Conditionally Independent]
+		Two random variables \( X \) and \( Y \) are conditionally independent given a third variable \( Z \) if:
+		\[
+		p(x, y \mid z) = p(x \mid z)p(y \mid z).
+		\]
+	\end{definition}
+	
+	This means that knowing the value of \( Z \) renders \( X \) and \( Y \) independent of each other.
+	
+	\subsection{Gaussian Distribution}
+	
+	The Gaussian or normal distribution is one of the most important probability distributions in statistics.
+	
+	\begin{definition}[Gaussian Distribution]
+		A random variable \( X \) with mean \( \mu \) and variance \( \sigma^2 \) has the Gaussian distribution given by:
+		\[
+		p_{\mu, \sigma^2}(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left[-\frac{(x - \mu)^2}{2\sigma^2}\right].
+		\]
+	\end{definition}
+	
+	\subsection{Multivariate Gaussian Distribution}
+	
+	In the multidimensional case, the Gaussian distribution is extended to account for vectors and matrices.
+	
+	\begin{definition}[Multivariate Gaussian Distribution]
+		Let \( \vec{X} \in \mathbb{R}^D \), \( \mvec{\mu} \in \mathbb{R}^D \), and \( \mvec{\Sigma} \in M_{D}(\mathbb{R}) \) be the mean vector and covariance matrix, respectively. The multivariate Gaussian distribution of \( \vec{X} \) is then defined as:
+		\[
+		p_{\mvec{\mu}, \mvec{\Sigma}}(\vec{X}) = (2\pi)^{-\frac{D}{2}}|\mvec{\Sigma}|^{-\frac{1}{2}}\exp\left[-\frac{1}{2}(\vec{x} - \mvec{\mu})^\top\mvec{\Sigma}^{-1}(\vec{x} - \mvec{\mu})\right].
+		\]
+	\end{definition}
+	
+	Note that \( |\sigma| = \sqrt{\sigma^2} \) for the scalar case, and \( \sqrt{\mvec{\Sigma}} = |\mvec{\Sigma}|^{1/2} \) denotes the matrix square root of the determinant of \( \mvec{\Sigma} \).
+	
+	
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf }]
+		\begin{definition}
+			
+		\end{definition}
+	\end{tcolorbox}
+	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf }]
+		\begin{theorem}
+			
+		\end{theorem}
+	\end{tcolorbox}
+
+	\begin{thebibliography}{9}
+		\bibitem{textbook}
+		M. P. Deisenroth, A. A. Faisal, and C. S. Ong, \textit{Mathematics for Machine Learning}. 1st ed. Cambridge, U.K.: Cambridge University Press, 2020.
+	\end{thebibliography}
+	% End document
+\end{document}
