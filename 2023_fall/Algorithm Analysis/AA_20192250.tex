@@ -162,6 +162,7 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
 \usepackage{caption}
+\usepackage{lipsum} % Package to generate dummy text throughout this template
 
 %Tcolorbox
 \usepackage[most]{tcolorbox}
@@ -892,7 +893,7 @@ void insertion(int* arr, int num) {
 	\subsection{Time Analysis 1}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=.45]{insert.png}
+%		\includegraphics[scale=.45]{insert.png}
 	\end{figure}
 	
 	\begin{itemize}
@@ -1479,6 +1480,290 @@ void bubble(int* arr, int num) {
 		\end{figure}
 	\end{example}
 	
+	\newpage
+	\chapter{Summary}
+	
+	\section{Sorting of Numbers}
+	\begin{itemize}
+		\item Input: A sequence of \( n \) numbers \( [a_1, a_2, \ldots, a_n] \).
+		\item Output: A permutation (reordering) \( [a'_1, a'_2, \ldots, a'_n] \) of the input sequence such that \( a'_1 \leq a'_2 \leq \ldots \leq a'_n \).
+	\end{itemize}
+	
+	\section{The Divide-and-Conquer Approach}
+	\begin{itemize}
+		\item Divide the problem into a number of subproblems.
+		\item Conquer the subproblems by solving them recursively. If the subproblem sizes are small enough, solve the subproblems in a straightforward manner.
+		\item Combine the solutions to the subproblems into the solution for the original problem.
+	\end{itemize}
+	
+	\section{Merge-Sort Algorithm}
+	\begin{itemize}
+		\item Divide: Divide the \( n \)-element sequence to be sorted into two subsequences of \( n/2 \) elements each.
+		\item Conquer: Sort the two subsequences recursively using merge sort.
+		\item Combine: Merge the two sorted subsequences to produce the sorted answer.
+	\end{itemize}
+	
+	\section{Merge Procedure}
+	[Details of the merge procedure]
+	
+	\section{Example Merge Procedure}
+	[Details of the example merge procedure]
+	
+	\section{Correctness of Merge Procedure}
+	\begin{itemize}
+		\item Loop invariant: [Description of the loop invariant]
+	\end{itemize}
+	
+	\section{Merging - Worst Case Example}
+	\begin{itemize}
+		\item Symmetrically sized inputs (e.g., two times four elements): 67775558.
+		\item We compare 6 with all 5s and 8 (4 comparisons).
+		\item We compare 8 with all 7s (3 comparisons).
+		\item Generalized for \( n \) elements: worst case requires \( n - 1 \) comparisons.
+	\end{itemize}
+	
+	\section{Analysis of Merge-Sort Regarding Comparisons}
+	\begin{itemize}
+		\item When \( n \geq 2 \) for merge-sort steps:
+		\begin{itemize}
+			\item Divide: Just compute \( q \) as the average of \( p \) and \( r \) \( \Rightarrow \) no comparisons.
+			\item Conquer: Recursively solve two subproblems each of size \( n/2 \) \( \Rightarrow 2T(n/2) \).
+			\item Combine: MERGE on an \( n \)-element subarray requires \( cn \) comparisons \( \Rightarrow cn = \Theta(n) \).
+		\end{itemize}
+	\end{itemize}
+	
+	\section{Merge-Sort Recurrences}
+	\begin{itemize}
+		\item Recurrence regarding comparisons: [Details of the recurrence]
+		\item Time complexity: [Details of the time complexity]
+	\end{itemize}
+	
+	\section{Figures}
+	\begin{figure}[h!]
+		\centering
+%		\includegraphics[width=0.5\textwidth]{path_to_image.png}
+		\caption{Example figure caption.}
+	\end{figure}
+
+	\section{Introduction to Merging}
+	Merging is the process of combining two adjacent sorted sequences into a single sorted sequence. The operation takes two sequences of sizes \( m \) and \( n \) and produces a sorted sequence of \( m + n \) elements.
+	
+	\subsection{Example of Merging}
+	\begin{align*}
+		\text{Input Sequences:} &\quad 4, 91 \quad \text{and} \quad 3, 92 \\
+		\text{Merged Sequence:} &\quad 3, 4, 91, 92
+	\end{align*}
+	
+	\section{Stability in Sorting Algorithms}
+	Stability is a property of a sorting algorithm which maintains the relative order of equal elements from the input in the output.
+	
+	\subsection{Stability Example}
+	
+	\subsection{Importance of Stability}
+	The stability of a sorting algorithm is crucial in scenarios where the relative ordering of equivalent elements carries significance, such as in radix sort or when multiple keys are used for sorting.
+	
+	\section{Case Study: Radix Sort}
+	\subsection{Radix Sort Process}
+	
+	\subsection{Implications of Stability in Radix Sort}
+	Stability ensures that radix sort maintains the relative ordering of elements with equal keys, which is essential for the correctness of the algorithm.
+	
+	\begin{theorem}
+		The merge-sort algorithm is stable under the condition that the merge operation is implemented in a stable manner.
+	\end{theorem}
+
+\section{Highlights}
+\begin{itemize}
+	\item Worst-case running time: \( \Theta(n^2) \)
+	\item Expected running time: \( \Theta(n \log n) \)
+	\item Constants hidden in \( \Theta(n \log n) \) are small.
+	\item Sorts in place.
+\end{itemize}
+
+\section{Divide and Conquer Strategy with Quicksort}
+\begin{itemize}
+	\item \textbf{Divide:} Partition \( A[p \ldots r] \) into two (possibly empty) subarrays \( A[p \ldots q-1] \) and \( A[q+1 \ldots r] \) such that each element in the first subarray is \( \leq A[q] \) and \( A[q] \) is \( \leq \) each element in the second subarray.
+	\item \textbf{Conquer:} Sort the two subarrays by recursive calls to QUICKSORT.
+	\item \textbf{Combine:} No work is needed to combine the subarrays because they are sorted in place.
+\end{itemize}
+
+\section{Creation of Partitions (Divide Step)}
+\subsection{Loop invariant}
+\begin{enumerate}
+	\item All entries in \( A[p \ldots i] \) are \( \leq \) pivot.
+	\item All entries in \( A[i+1 \ldots j-1] \) are \( > \) pivot.
+	\item \( A[r] = \) pivot.
+\end{enumerate}
+
+\subsection{Time for partitioning}
+\begin{itemize}
+	\item \( \Theta(n) \) to partition an \( n \)-element subarray.
+\end{itemize}
+
+\section{Correctness of Partition}
+\begin{itemize}
+	\item \textbf{Initialization:} Before the first iteration of the loop, the loop invariant is trivially satisfied as the subarrays are empty.
+	\item \textbf{Maintenance:} During each iteration, if \( A[j] \leq \) pivot, we swap \( A[j] \) with \( A[i+1] \) and increment both \( i \) and \( j \). If \( A[j] > \) pivot, we only increment \( j \).
+	\item \textbf{Termination:} When \( j = r-1 \), the array is partitioned into \( A[p \ldots i] \leq \) pivot, \( A[i+1 \ldots r-1] > \) pivot, and \( A[r] = \) pivot.
+\end{itemize}
+
+\section{Performance Cases}
+\subsection{Worst-Case Scenario}
+\begin{itemize}
+	\item Occurs when the subarrays are unbalanced, with 0 elements in one and \( n-1 \) in the other.
+	\item Recurrence: \( T(n) = T(n-1) + \Theta(n) = \Theta(n^2) \).
+\end{itemize}
+
+\subsection{Best-Case Scenario}
+\begin{itemize}
+	\item Occurs when the subarrays are balanced each time, with \( \leq n/2 \) elements.
+	\item Recurrence: \( T(n) = 2T(n/2) + \Theta(n) = \Theta(n \log n) \).
+\end{itemize}
+
+\subsection{Average-Case Analysis}
+\begin{itemize}
+	\item Average running time is much closer to the best case.
+	\item If partitioning always produces a 9-to-1 split, the recurrence is \( T(n) \leq T(9n/10) + T(n/10) + \Theta(n) = O(n \log n) \).
+\end{itemize}
+
+\section{Randomized Version of Quicksort}
+\begin{itemize}
+	\item To ensure performance, randomization is added to quicksort.
+	\item The algorithm assumes all input permutations are equally likely.
+\end{itemize}
+
+\section{Detailed Average Case Analysis}
+\begin{itemize}
+	\item Dominant cost is partitioning, which is called at most \( n \) times.
+	\item Total work done is \( O(n + X) \), where \( X \) is the total number of comparisons.
+\end{itemize}
+
+\section{Figures}
+\begin{figure}[htp]
+	\centering
+%	\includegraphics[width=.8\textwidth]{path/to/your/image.png}
+	\caption{Detailed recursion tree of quicksort.}
+\end{figure}
+
+% Include other figures as necessary, adjusting paths and captions accordingly.
+\section{Decision-Tree for Insertion Sort on 3 Elements}
+
+The decision tree model provides an abstraction of comparison sorts, representing the sequence of comparisons that a sorting algorithm makes over all possible inputs of a given size.
+
+\section{Algorithm Analysis}
+
+\subsection{Decision Tree}
+\begin{itemize}
+	\item A decision tree is an abstraction of any comparison sort.
+	\item It represents the comparisons made by a specific sorting algorithm on inputs of a given size.
+	\item This model abstracts away everything else such as control and data movement, focusing only on the comparisons.
+\end{itemize}
+
+\subsection{Decision Tree Properties}
+\begin{itemize}
+	\item There are at least \( n! \) leaves on the decision tree since every permutation of the input array appears at least once.
+	\item The length of the longest path from root to leaf depends on the algorithm:
+	\begin{itemize}
+		\item Insertion sort: \( \Theta(n^2) \)
+		\item Merge sort: \( \Theta(n \log n) \)
+	\end{itemize}
+\end{itemize}
+
+\subsection{Lower Bound on the Height of Decision Trees}
+\begin{theorem}
+	Any decision tree that sorts \( n \) elements has a height of \( \Omega(n \log n) \).
+\end{theorem}
+
+\begin{proof}
+	Consider the height \( h \) of the decision tree. There must be at least \( n! \) leaves to account for every permutation of the input. Taking logarithms, we have \( h \geq \log(n!) \). By Stirling's approximation, we know that \( \log(n!) \) is \( \Omega(n \log n) \), which implies the height \( h \) must also be \( \Omega(n \log n) \).
+\end{proof}
+
+\section{Figures}
+% Assuming figures are saved in the same directory as your LaTeX file
+\begin{figure}[ht]
+	\centering
+%	\includegraphics[width=0.8\textwidth]{insertion_sort_decision_tree.png}
+	\caption{Decision tree for insertion sort on 3 elements.}
+\end{figure}
+
+\section{Polynomial-Time Algorithms}
+Polynomial-time algorithms are significant in the study of computational complexity. They represent algorithms whose worst-case running time is a polynomial function of the size of the input.
+
+\begin{itemize}
+	\item Polynomial-time algorithms: On inputs of size \( n \), their worst-case running time is \( O(n^k) \) for some constant \( k \).
+	\item The class \( \mathcal{P} \) represents the set of problems solvable by a deterministic Turing machine in polynomial time. The "P" stands for "polynomial time."
+	\item Problems in \( \mathcal{P} \) are considered "easy" or "tractable" in terms of computation, as they can be solved efficiently.
+\end{itemize}
+
+\section{Determinism and Nondeterminism}
+The concepts of determinism and nondeterminism are central to understanding computational complexity classes such as P and NP.
+
+\begin{itemize}
+	\item In a deterministic computation, each step follows uniquely from the preceding step. Given the current state and the next input symbol, the next state is determined.
+	\item In a nondeterministic machine, multiple choices may exist for the next state at any point. The machine has the flexibility to proceed along various possible paths during computation.
+	\item The computation of a nondeterministic Turing machine is a tree whose branches correspond to different possible computation paths. If any branch leads to the accept state, the machine accepts its input.
+	\item The class NP represents the set of problems solvable by a nondeterministic Turing machine in polynomial time. "NP" stands for "nondeterministic polynomial time."
+\end{itemize}
+
+\section{The Class NP}
+The class NP consists of problems that are "verifiable" in polynomial time.
+
+\begin{itemize}
+	\item If given a "certificate" of a solution, it could be verified that the certificate is correct in polynomial time relative to the size of the input to the problem.
+	\item Example: For the satisfiability problem, a certificate would be an assignment of values to variables. It is possible to check in polynomial time that this assignment satisfies the formula in conjunctive normal form.
+\end{itemize}
+
+\section{The Satisfiability Problem}
+The satisfiability problem is a central problem in computational complexity.
+
+\begin{itemize}
+	\item It asks whether there is an assignment of variables that satisfies a given Boolean formula.
+	\item The satisfiability problem is in NP because a given assignment can be verified efficiently.
+\end{itemize}
+
+\section{The (k-CNF) Satisfiability Problem}
+\begin{itemize}
+	\item This is a specific type of satisfiability problem where the formula is in conjunctive normal form with \( k \) literals per clause.
+	\item The complexity of this problem is significant in the study of NP-completeness.
+\end{itemize}
+
+\section{P vs. NP Question}
+\begin{itemize}
+	\item The open question is whether P is a proper subset of NP.
+	\item To date, no polynomial-time algorithm has been discovered for an NP-complete problem, nor has it been proven that no such algorithm can exist.
+	\item The P vs. NP question has been one of the most profound and perplexing open research problems in theoretical computer science since it was first posed in 1971.
+\end{itemize}
+
+\section{Figures}
+\begin{figure}[ht]
+	\centering
+%	\includegraphics[width=0.8\textwidth]{figure1.png}
+	\caption{Computation tree of a nondeterministic Turing machine.}
+\end{figure}
+
+\section{NP-Complete Languages}
+
+\subsection{Decision Problems}
+Decision problems ask a yes-no question about the input. The class NP-complete consists of those languages for which the question can be answered in polynomial time by a nondeterministic Turing machine, and the answer can be verified in polynomial time by a deterministic Turing machine.
+
+\section{Polynomial Reducibility}
+A language \( A \) is polynomial-time reducible to language \( B \) (denoted as \( A \leq_p B \)) if there exists a polynomial-time computable function \( f \) such that for every string \( w \), \( w \) is in \( A \) if and only if \( f(w) \) is in \( B \). This notion of reducibility is used to relate the complexities of different decision problems.
+
+\section{Function Reducing \( A \) to \( B \)}
+Given a function \( f \) that reduces \( A \) to \( B \), if \( B \) can be decided quickly (in polynomial time), then so can \( A \), since we can apply \( f \) to the instance of \( A \) and then solve the instance of \( B \) in polynomial time.
+
+\section{Decidability}
+\begin{definition}[Decidability]
+	A language \( A \) is \textbf{decidable} if and only if there exists a Turing machine \( M \) that accepts input \( w \) if \( w \) is in \( A \), and rejects \( w \) if \( w \) is not in \( A \), for all \( w \) in \( \Sigma^* \). Such a Turing machine is called a \textbf{decider}.
+\end{definition}
+
+\section{The Satisfiability Problem}
+The Satisfiability Problem (SAT) is one of the most well-known NP-complete problems. In 1971, Stephen Cook proved that SAT is NP-complete by showing that every problem in NP is polynomial-time reducible to SAT.
+
+\section{Figures}
+% Include the figures from the PDF document here.
+% You will need to extract the images from the PDF and include them with the \includegraphics command.
+
 	
 	\newpage
 	\chapter{Further Efficient Algorithms}
