@@ -23,7 +23,7 @@
 
 % Page layout
 \usepackage{geometry}
-\geometry{a4paper,left=1.1in,right=.7in,top=1in,bottom=1in,heightrounded}
+\geometry{a4paper,left=1in,right=.7in,top=1in,bottom=1in,heightrounded}
 \usepackage{fancyhdr}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
@@ -111,6 +111,7 @@
 \SetKwFunction{KeyGen}{KeyGen}
 
 
+
 %---------------------------My Preamble
 \usepackage{marvosym} %Lightning
 \usepackage{booktabs}
@@ -126,6 +127,8 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes.multipart}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
 
 %Tcolorbox
 \usepackage[most]{tcolorbox}
@@ -885,6 +888,141 @@
 		\end{tabularx}
 	\end{figure}
 	\end{example}
+	\newpage
+	\chapter{Examples of Markov chains}
+	\newpage
+	\chapter{Statistical Inferences}
+	\newpage
+	\chapter{Statistical Tests for Randomness}
+	Statistical tests for random number generators (RNGs) are crucial in assessing the quality of the RNGs, which purport to produce random sequences. While it is not possible to mathematically prove that a sequence is random, these tests can reveal certain weaknesses. The tests work by evaluating sample outputs from the RNG against attributes expected from truly random sequences. The outcomes of these tests are probabilistic and not definite. If a sequence fails any of the tests, it may be rejected as non-random, or subjected to further testing. Passing all the tests allows the RNG to be accepted as random, or more precisely, not rejected, as it only provides probabilistic evidence of randomness.
+	
+	\section{Statistical tests for RNGs}
+	Statistical tests for RNGs measure the quality of a bit generator's randomness. These tests are essential in identifying weaknesses in the generators by applying various statistical methods to the output sequences. For instance, a sequence that passes all the tests is not definitively random but is likely to exhibit characteristics of randomness, whereas a sequence that fails any test is potentially non-random and may require additional testing or rejection.
+	
+	\newpage
+	\subsection{Golomb’s randomness postulates}
+	Golomb’s randomness postulates are historical attempts to define necessary conditions for periodic pseudorandom sequences to appear random. They are not sufficient conditions for randomness but were among the first efforts to systematically address the randomness in sequences. These postulates serve as a fundamental basis for more complex tests and are critical in understanding the nature of pseudorandom sequences and their applications.
+	
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
+		\begin{definition}
+			Let \[
+			s=s_0,s_1,s_2,\dots
+			\] be an infnite sequence. The subsequence consisting of the first $n$ terms of $s$ is denoted by \[
+			s^n=s_0,s_1,\cdots,s_{n-1}.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		$s$ is the bit sequence if $s_i\in\set{0,1}$.
+	\end{remark}
+	
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf $N$-Periodic}]
+		\begin{definition}
+			The sequence $s=s_0,s_1,s_2,\dots$ is said to be \textbf{$N$-periodic} if \[
+			s_i=s_{i+N}
+			\] for all $i\geq 0$.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		If $s$ is a $N$-periodic sequence, then the \textbf{cycle} of $s$ is the subsequence $s^N$.
+	\end{remark}
+	\vspace{12pt}
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Run - Gap / Block}]
+		\begin{definition}
+			Let $s$ be a sequence. \begin{itemize}
+				\item A \textbf{run} of $s$ is a subsequence of $s$ consisting of consecutive $0$'s or $1$'s.
+				\item A run of $0$'s is called a \textbf{gap}.
+				\item A run of $1$'s is called a \textbf{block}.
+			\end{itemize}
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{24pt}
+	\newpage
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Autocorrelation Function}]
+		\begin{definition}
+			Let $s$ be a $N$-periodic sequence. The \textbf{autocorrelation function} of $s$ is the integer-value function $C(t):\set{s_i}\to\Z$ defined as \[
+			C(t) = \frac{1}{N}\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)
+			\] for $0\leq t\leq N-1$.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		
+	\end{remark}
+	\begin{remark}
+		The autocorrelation function $C(t)$ measure the amount of similarity between the sequence $s$ and a shift of $s$ by $t$ positions. If $s$ is a random $N$-periodic sequence, then $\abs{N\cdot C(t)}$ can be expected to be quite small for all vlaue of $t\in\intoo{0,N}$. 
+	\end{remark}
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's randomness postulates}]
+		\begin{definition}
+			Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
+			\begin{enumerate}[\textbf{R}1]
+				\item In the cycle \( s^N \) of \( s \), the number of 1’s differs from the number of 0’s by at most 1.
+				\item In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, and so on, as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
+				\item The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
+				\[
+				N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
+				\begin{cases} 
+					N, & : t = 0, \\
+					K, & : 1 \leq t \leq N - 1.
+				\end{cases}
+				\]
+			\end{enumerate}
+		\end{definition}
+	\end{tcolorbox}
+
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf \textbf{Pseudo-Noise Sequence} (\textbf{pn-sequence})}]
+		\begin{definition}
+			A binary sequence which satisfies Golomb's randomness postulates is called a \textbf{pseudo-noise sequence} (\textbf{pn-sequence}).
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		Pseudo-noise sequences arise in practice as output sequences of \textbf{maximum-length linear }
+	\end{remark}
+	
+	The significance of Golomb’s randomness postulates lies in their ability to provide a framework for the evaluation of periodic sequences. A periodic sequence with period \( N \) is assessed based on the following criteria:
+	
+\newpage
+\subsection{Golomb’s randomness postulates}
+Solomon W. Golomb's randomness postulates are a cornerstone in the field of cryptography and sequence design, primarily due to their foundational role in the analysis and interpretation of sequences as random. These postulates provide a mathematical framework for evaluating the randomness of binary sequences. Specifically, they set forth criteria that a sequence must meet to be considered random. 
+
+The postulates are as follows:
+
+\begin{enumerate}
+	\item The number of ones and zeros in the sequence should be approximately equal, which is necessary for the sequence to have no bias.
+	\item The distance between consecutive ones should follow a geometric distribution. For binary sequences that are infinitely long, this implies that the probability of a 'gap' of length \( n \) between ones is \( (1/2)^{n+1} \), representing the lack of structure in the sequence.
+	\item The sequence should be balanced, which means that for any binary substring, the number of occurrences of this substring and its complement should be approximately the same. This property is also referred to as the run property, where a 'run' is a substring of consecutive identical digits.
+\end{enumerate}
+
+Golomb’s postulates are integral in the design and analysis of pseudo-random number generators (PRNGs), as they serve as a benchmark for the sequence's randomness. A sequence that fulfills these postulates is considered to be a good candidate for cryptographic applications because it exhibits the unpredictability necessary for securing communications.
+
+\textbf{Application in Cryptography:}
+In cryptography, the randomness of key material is paramount. Golomb's postulates are used to ensure that the generated keys do not exhibit patterns or regularities that could be exploited by adversaries. By applying these postulates to evaluate the randomness of binary sequences, cryptographers can quantify the security level of cryptographic systems.
+
+\textbf{Mathematical Implications:}
+The postulates form the basis of several statistical tests, such as the runs test and the autocorrelation test. These tests are applied to binary sequences to check for the presence of patterns and correlations that would indicate non-randomness. The theoretical underpinnings of Golomb's postulates also contribute to the field of combinatorics and information theory, where they have implications for the construction of codes and error correction.
+
+In conclusion, Golomb’s randomness postulates are not only historically significant but also remain highly relevant in the modern analysis of cryptographic systems. They
+
+\chapter{Statistical Tests for Randomness}
+
+\section{Introduction}
+Statistical tests for randomness play a pivotal role in validating the quality and integrity of random number generators (RNGs). These tests serve as a benchmark against which RNGs are measured to ensure that their output sequences exhibit properties characteristic of true randomness. Despite the intrinsic limitations in proving randomness, these tests can effectively identify non-randomness in sequences, which is vital for applications in cryptography, simulations, and various stochastic modeling scenarios.
+
+\section{Statistical tests for RNGs}
+The purpose of statistical tests for RNGs is to analyze sequences for unpredictability, lack of patterns, and uniform distribution—traits expected from ideal random sequences. These tests range from simple frequency analysis to complex tests for serial correlation, and no single test can validate randomness conclusively. Hence, a battery of tests is typically employed, where failure of any test suggests non-randomness, prompting further scrutiny or rejection of the RNG.
+
+\subsection{Golomb’s randomness postulates}
+Golomb's randomness postulates, rooted in the theory of shift register sequences, lay foundational criteria for assessing the randomness of periodic sequences. These postulates dictate:
+
+\begin{enumerate}
+	\item \textbf{The Frequency Postulate}: The number of zeros and ones in a sequence should be approximately the same, reflecting the balance of a sequence.
+	\item \textbf{The Run Postulate}: A sequence should contain runs of various lengths distributed according to expected probabilities. For instance, in a binary sequence, half of the runs should be of length one, one-fourth should be of length two, and so forth.
+	\item \textbf{The Autocorrelation Postulate}: The autocorrelation function of the sequence should rapidly drop to zero as the shift increases, which implies that each bit should be independent of others at a certain distance.
+\end{enumerate}
+
+These postulates form the basis for more sophisticated tests, and while they are not sufficient to declare a sequence as random, they are necessary conditions. In particular, they address the uniformity and independence of a sequence, which are critical aspects in cryptographic applications.
+
+Implementing these postulates in practical statistical tests has advanced the analysis of pseudorandom number generators (PRNGs), providing a methodology to assess their suitability for various applications. The evaluation of PRNGs against these postulates often involves chi-squared tests, spectral tests, and other statistical methodologies to detect non-random behavior in generated sequences.
+
 	
 	% End document
 \end{document}
