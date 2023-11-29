@@ -2002,5 +2002,150 @@
 			f(x)=\inner{f(x),\frac{1}{\sqrt{2\pi}}}\cdot\frac{1}{\sqrt{2\pi}}+\sum_{n=1}^\infty\of{\inner{f(x),\frac{\cos nx}{\sqrt{\pi}}}\frac{\cos nx}{\sqrt{\pi}}+\inner{f(x),\frac{\sin nx}{\sqrt{\pi}}}\frac{\sin nx}{\sqrt{\pi}}}.
 			\]
 	\end{note}
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Series of a Periodic Function of Period \(2L\))}]
+		\begin{theorem}
+			A function \(f(x)\) of period \(p = 2L\) has a \textbf{Fourier series}. This series can be written:
+			\[
+			f(x) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos \frac{n\pi x}{L} + b_n \sin \frac{n\pi x}{L} \right)
+			\]
+			with the \textbf{Fourier coefficients} of \(f(x)\) given by the \textbf{Euler formulas}, for $n=1,2,\cdots$,
+			\[
+			\begin{aligned}
+				a_0 &= \frac{1}{2L} \int_{-L}^{L} f(x) \ dx,\\
+				a_n &= \frac{1}{L} \int_{-L}^{L} f(x) \cos \frac{n\pi x}{L} \ dx,\\
+				b_n &= \frac{1}{L} \int_{-L}^{L} f(x) \sin \frac{n\pi x}{L} \ dx.
+			\end{aligned}
+			\]
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		\ \begin{center}
+			\begin{tikzpicture}[>=stealth]
+				% Draw horizontal lines for number lines
+				\draw[->] (-2,0) -- (2,0) node[below] {};
+				\draw[->] (4,0) -- (8,0) node[below] {};
+				
+				% Draw vertical lines for limits
+				\draw (-1.5,0.1) -- (-1.5,-0.1) node[below] {$-L$};
+				\draw (1.5,0.1) -- (1.5,-0.1) node[below] {$L$};
+				\draw (4.5,0.1) -- (4.5,-.1) node[below] {$\pi$};
+				\draw (7.5,0.1) -- (7.5,-.1) node[below] {$-\pi$};
+				
+				% Place the variable x
+				\fill (.5,0) circle (2pt) node[below] {$x$};
+				
+				% Draw the arrow for function f
+				\draw[->,line width=0.5mm,blue] (.5,0) to[bend left=20] node[midway, above] {$f$} (6.5,0);
+
+				% Place the variable v
+				\fill (6.5,0) circle (2pt) node[below] {$v$};
+			\end{tikzpicture}
+		\end{center}
+		Let $v=\frac{\pi}{L} x$. Then a function $g(v)$ defined by \[
+		f(x)=f\of{\frac{L}{\pi}v}=:g(v)
+		\] has period of $2\pi$. Then $g(v)$ has the Fourier series \[
+		g(v)=a_0+\sum_{i=0}^\infty\of{a_n\cos nv+b_n\sin nv}\quad\text{with}\quad \begin{cases}
+			\displaystyle a_0=\frac{1}{2\pi}\int_{-\pi}^{\pi}g(v)\ dv,\\
+			\\
+			\displaystyle a_n=\frac{1}{\pi}\int_{-\pi}^{\pi}g(v)\cos nv\ dv,\\
+			\\
+			\displaystyle b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}g(v)\sin nv\ dv.
+		\end{cases}
+		\] Since $dv = \frac{\pi}{L} dx$, we have
+		\[
+		f(x)=a_0+\sum_{i=0}^\infty\of{a_n\cos\frac{n\pi x}{L}+b_n\sin \frac{n\pi x}{L}}\quad\text{with}\quad \begin{cases}
+			\displaystyle a_0=\frac{1}{2L}\int_{-L}^{L}f(x)\ dx,\\
+			\\
+			\displaystyle a_n=\frac{1}{L}\int_{-L}^{L}f(x)\cos\frac{n\pi x}{L}\ dx,\\
+			\\
+			\displaystyle b_n=\frac{1}{L}\int_{-\pi}^{\pi}f(x)\sin\frac{n\pi x}{L}\ dx.
+		\end{cases}
+		\]
+	\end{proof}
+	\begin{example}[Example (Half-Wave Rectifier)]
+		A sinusoidal voltage \(E \sin \omega t\), where \(t\) is time, is passed through a half-wave rectifier that clips the negative portion of the wave. Let
+		\[
+		u(t) = 
+		\begin{cases}
+			0 & \text{if } -L < t < 0, \\
+			E \sin \omega t & \text{if } 0 < t < L,
+		\end{cases}
+		\quad p = 2L = \frac{2\pi}{\omega}.
+		\]
+		Then, find the Fourier series of the periodic function \(u(t)\).
+		\begin{proof}[\sol]
+			The Fourier series of the \(u(t)\) is
+			\[
+			u(t) = \frac{E}{\pi} + \frac{E}{2} \sin \omega t - \frac{2E}{\pi} \left( \frac{1}{1\cdot 3} \cos 2\omega t + \frac{1}{3\cdot 5} \cos 4\omega t + \cdots \right).
+			\]
+		\end{proof}
+	\end{example}	
+	\vspace{24pt}
+	\newpage
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Even and Odd Functions}]
+		\begin{definition}
+			\ \begin{enumerate}[(1)]
+				\item A function \( y = f(x) \) is \textbf{even} if
+				\[
+				f(-x) = f(x), \quad x \in \mathbb{R}.
+				\]
+				The graph of such a function is symmetric with respect to the \( y \)-axis.
+				\item A function \( g(x) \) is \textbf{odd} if
+				\[
+				g(-x) = -g(x), \quad x \in \mathbb{R}.
+				\]
+				The graph of such a function is symmetric with respect to the origin.
+			\end{enumerate}
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		\( f(x) \) and \( g(x) \) satisfy
+		\[
+		\int_{-L}^{L} f(x) \, dx = 2 \int_{0}^{L} f(x) \, dx \quad \text{and} \quad \int_{-L}^{L} g(x) \, dx = 0.
+		\]
+	\end{remark}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{theorem}
+			\begin{enumerate}[(1)]
+				\item The Fourier series of an even function of period \(2L\) is a \textbf{Fourier cosine series}
+				\[
+				f(x) = a_0 + \sum_{n=1}^{\infty} a_n \cos \frac{n\pi x}{L}
+				\]
+				with coefficients
+				\[
+				a_0 = \frac{1}{L} \int_{0}^{L} f(x) \, dx \quad \text{and} \quad a_n = \frac{2}{L} \int_{0}^{L} f(x) \cos \frac{n\pi x}{L} \, dx, \quad n = 1,2,\ldots .
+				\]
+				
+				\item The Fourier series of an odd function of period \(2L\) is a \textbf{Fourier sine series}
+				\[
+				f(x) = \sum_{n=1}^{\infty} b_n \sin \frac{n\pi x}{L}
+				\]
+				with coefficients
+				\[
+				b_n = \frac{2}{L} \int_{0}^{L} f(x) \sin \frac{n\pi x}{L} \, dx, \quad n = 1,2,\ldots .
+				\]
+			\end{enumerate}
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		content...
+	\end{proof}
+
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{theorem}
+			content...
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{definition}
+			content...
+		\end{definition}
+	\end{tcolorbox}
+	
+	
+	
 	% End document
 \end{document}
