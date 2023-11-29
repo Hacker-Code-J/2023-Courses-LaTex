@@ -1349,6 +1349,25 @@
 		\item The purpose of this test is to detect periodic features (i.e., \textit{repetitive patterns} that are near each other) in the tested sequence that would indicate a deviation from the assumption of randomness.
 		\item The intention is to detect whether the number of peaks exceeding the 95\% threshold is significantly different than 5\%.
 	\end{itemize}
+
+	\section*{Random Excursions Test}
+	
+	\begin{itemize}
+		\item The focus of this test is the number of cycles having exactly \( K \) visits in a cumulative sum random walk.
+		\begin{itemize}
+			\item The cumulative sum random walk is derived from partial sums after the (0,1) sequence is transferred to the appropriate (-1,+1) sequence.
+			\item A cycle of a random walk consists of a sequence of steps of unit length taken at random that begin at and return to the origin.
+		\end{itemize}
+		\item The purpose of this test is to determine if the number of visits to a particular state within a cycle deviates from what one would expect for a random sequence.
+		\begin{itemize}
+			\item This test is actually a series of eight tests (and conclusions), one test and conclusion for each of the states: -4, -3, -2, -1 and +1, +2, +3, +4.
+		\end{itemize}
+		\item This test is based on considering successive sums of the binary bits (plus or minus simple ones) as a one dimensional random walk.
+		\begin{itemize}
+			\item The test detects deviations from the distribution of the number of visits of the random walk to a certain "state," i.e., any integer value.
+		\end{itemize}
+	\end{itemize}
+
 	\newpage
 	\section{Testing Strategy and Result Interpretation}
 	The publication details a five-stage strategy for the statistical analysis of RNGs, encompassing selection, generation, execution, examination, and assessment.
