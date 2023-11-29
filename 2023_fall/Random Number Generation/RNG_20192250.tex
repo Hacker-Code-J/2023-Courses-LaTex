@@ -1,5 +1,5 @@
 \documentclass[12pt,openany]{book}
-
+\usepackage{kotex}
 \usepackage{amsmath,amsthm,amsfonts,amscd} % Packages for mathematics
 \usepackage{commath} %absolute value
 % Colors
@@ -60,41 +60,6 @@
 	urlcolor=titleblue,
 }
 
-%Listing
-\usepackage{listings} %Code
-\renewcommand{\lstlistingname}{Code}%
-
-\definecolor{sagegreen}{rgb}{0.0,0.6,0.4}
-\definecolor{sagepurple}{rgb}{0.6,0.0,0.4}
-\definecolor{sageblue}{rgb}{0.0,0.4,0.6}
-\definecolor{sageorange}{rgb}{1.0,0.4,0.0}
-\definecolor{sagegray}{rgb}{0.4,0.4,0.4}
-
-\lstdefinestyle{sage}{
-	language=Python,
-	backgroundcolor=\color{white},
-	basicstyle=\small\ttfamily\color{black}, 
-	basicstyle=\footnotesize\ttfamily\color{black},
-	keywordstyle=\color{blue!60!black},
-	commentstyle=\color{green!60!black},
-	stringstyle=\color{purple!60!black},
-	showstringspaces=false,
-	breaklines=true,
-	tabsize=4,
-	morekeywords={True, False, None},
-	frame=leftline, % Remove the border
-	framesep=3pt,
-	frameround=tttt,
-	framexleftmargin=3pt,
-	numbers=left,
-	numberstyle=\small\color{gray},
-	xleftmargin=15pt, % Increase the left margin
-	xrightmargin=5pt,
-	captionpos=b,
-	belowskip=0pt,
-	aboveskip=4pt
-}
-
 %Ceiling and Floor Function
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -128,6 +93,7 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes.multipart}
 \usepackage{pgfplots}
+\usetikzlibrary{patterns}
 \pgfplotsset{compat=newest}
 
 %Tcolorbox
@@ -979,6 +945,437 @@
 	\end{remark}
 	
 	The significance of Golomb’s randomness postulates lies in their ability to provide a framework for the evaluation of periodic sequences. A periodic sequence with period \( N \) is assessed based on the following criteria:
+	
+	\newpage
+	\chapter{NIST SP 800-22}
+	This document provides a detailed summary of the NIST Special Publication 800-22r1a. The publication is central to understanding the statistical test suite designed for evaluating random and pseudorandom number generators (RNGs) used in cryptographic applications.
+	
+	\section{Testing Strategy and Result Interpretation}
+	The publication outlines a comprehensive strategy for statistically analyzing RNGs, which is crucial for ensuring the reliability and security of cryptographic systems.
+	
+	\subsection{Strategies for Statistical Analysis of an RNG}
+	The strategy involves five key stages:
+	\begin{enumerate}
+		\item \textbf{Selection of a Generator:} Choosing a suitable hardware or software-based RNG.
+		\item \textbf{Binary Sequence Generation:} Generating a set of binary sequences using the selected RNG.
+		\item \textbf{Execution of the Statistical Test Suite:} Applying the NIST Statistical Test Suite to the generated sequences.
+		\item \textbf{Examination of P-values:} Analyzing the P-values obtained from the test suite to evaluate the quality of the sequences.
+		\item \textbf{Assessment: Pass/Fail Assignment:} Determining whether each sequence passes or fails the statistical tests based on P-value thresholds.
+	\end{enumerate}
+	
+	\begin{remark}
+		\ \begin{itemize}
+			\item 
+			$H0$ (null hypothesis) : The sequence being tested is random.
+			\item $H_a$ (alternative hypothesis) : The sequence is not random.
+			\item Level of significance : $\alpha = 0.01$ ($\alpha$ is chosen in the range $[0.001, 0.01]$.)
+			\begin{itemize}
+				\item $P$-value $< \alpha = 0.01\implies$ Reject $H_0$ (not random)
+				\item $P$-value $\geq \alpha = 0.01\implies$ Accept $H_0$ (random)
+			\end{itemize}
+		\end{itemize}
+		\begin{tikzpicture}
+			% Draw horizontal line for alpha level
+			\draw[red, thick] (0,2) -- (10,2) node[right] {$\alpha = 0.01$};
+			
+			% Annotate for Accept H0 and Reject H0
+			\draw (5,1) node {Accept $H_0$ (random)};
+			\draw (5,3) node {Reject $H_0$ (not random)};
+			
+			% Highlight areas for p-value comparison
+			\fill[green, opacity=0.3] (0,0) rectangle (10,2);
+			\fill[blue, opacity=0.3] (0,2) rectangle (10,4);
+			
+			% Add labels
+			\draw (0,2) node[left] {$\alpha = 0.01$};
+			
+			% Add P-value lines for illustration (optional)
+			\draw[dashed] (2,0) -- (2,4) node[above] {P-value $< \alpha$};
+			\draw[dashed] (8,0) -- (8,4) node[above] {P-value $\geq \alpha$};
+			
+			% Draw axes
+			\draw[thick,->] (0,0) -- (10,0) node[below right] {P-value};
+			\draw[thick,->] (0,0) -- (0,4) node[left] {Probability};
+		\end{tikzpicture}
+	\end{remark}
+	
+	\section{The Interpretation of Empirical Results}
+	\subsection{Proportion of Sequences Passing a Test}
+%Proportion of Sequences Passing a Test
+%Given the empirical results for a particular statistical test,
+%compute the proportion of sequences that pass. For
+%example, if 1000 binary sequences were tested (i.e., m =
+%1000), α = 0.01 (the significance level), and 996 binary
+%sequences had P-values ≥ .01, then the proportion is
+%996/1000 = 0.9960.
+%The range of acceptable proportions is determined using
+%the confidence interval defined as, p̂ ± 3
+%Figure 4-1: P-value Plot
+%
+%where p = 1-α, and m is the sample size. If the proportion
+%falls outside of this interval, then there is evidence that the
+%data is non-random. Note that other standard deviation
+%values could be used. For the example above, the
+%confidence interval is .99 ± 3 .99(.01 ) = .99 ± 0.0094392 (i.e., the proportion should lie above 0.9805607. This
+%1000
+%can be illustrated using a graph as shown in Figure 4-1. The confidence interval was calculated using a
+%normal distribution as an approximation to the binomial distribution, which is reasonably accurate for
+%large sample sizes (e.g., n ≥ 1000).
+
+	\subsection{Uniform Distribution of P-values}
+	
+	\subsection{General Recommendations and Guidelines}
+	Key recommendations include:
+	\begin{itemize}
+		\item Addressing programming errors in statistical tests.
+		\item Dealing with underdeveloped statistical tests.
+		\item Correcting flaws in RNG implementation.
+		\item Ensuring accuracy in data processing for tests.
+		\item Using quality mathematical routines for computing P-values.
+		\item Making appropriate choices for test input parameters.
+	\end{itemize}
+	
+	\subsection{Application of Multiple Tests}
+	The publication highlights the importance of using multiple tests to ensure a wide-ranging assessment of RNGs. A study conducted by NIST revealed minimal redundancy among tests, confirming the suite's ability to thoroughly evaluate different aspects of randomness.
+	
+	\subsection{Conclusion}
+	NIST SP 800-22r1a provides an essential framework for the evaluation of RNGs in cryptographic applications. Its structured approach, comprising detailed testing strategies and guidelines, is crucial for ensuring the integrity and security of cryptographic systems.
+	
+	\section{Useful Functions}
+	
+	\begin{itemize}
+		\item \textbf{Standard Normal (Cumulative Distribution) Function}
+		\[
+		\Phi(z)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^ze^{-u^2/2}\ du.
+		\]
+		\item \textbf{Complementary Error Function}
+		\[
+		\textnormal{erfc}(z)=\frac{2}{\sqrt{\pi}}\int_{z}^{\infty}e^{-u^2}\ du.
+		\]
+	\end{itemize}
+
+	\begin{enumerate}[(1)]
+		\item Starting Point: The given definition of $\Phi(z)$.
+		\[
+		\Phi(z) = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{z} e^{-\frac{u^2}{2}}\ du.
+		\]
+		\item Change of Variable:  To relate 
+		$\Phi(z)$ to 
+		$\textnormal{erfc}
+		(z)$, we make a change of variable in the integral. Let 
+		$v=u/\sqrt{2}$, which implies 
+		$u=\sqrt{2}v$ and 
+		$du=\sqrt{2}dv$. \[
+			\Phi(z) = \frac{1}{\sqrt{\pi}}\int_{-\infty}^{\frac{z}{\sqrt{2}}} e^{-v^2}\ dv.
+			\]
+		\item Expressing \(\Phi(z)\) in terms of \(\text{erfc}(z)\): he error function is defined as $\textnormal{erfc}(z)=\frac{2}{\sqrt{\pi}}\int_{z}^{\infty}e^{-u^2}\ du.$. Hence, the complementary error function is 
+		$\textnormal{erfc}(z)=1-\textnormal{erf}(z)$.
+		\[
+			\text{erfc}(z) = 1 - \frac{2}{\sqrt{\pi}}\int_{0}^{z} e^{-u^2}\ du
+		\]
+		\item Connecting \(\Phi(z)\) and \(\text{erfc}(z)\): We observe that 
+		$\Phi(z)$ integrates from 
+		$-\infty$ to a positive value, while 
+		$\textnormal{erfc}(z)$ integrates from a positive value to 
+		$\infty$. They are complementary in nature. Therefore, we can write:
+		\[
+			\Phi\left(\frac{z}{\sqrt{2}}\right) = \frac{1}{2} \text{erfc}\left(-\frac{z}{\sqrt{2}}\right)
+		\]
+		\item Final Expression for \(\text{erfc}(z)\): Rearranging the last equation for 
+		$\textnormal{erfc}(z)$, we get:
+		\[
+			\text{erfc}(z) = 2 \left( 1 - \Phi\left(\frac{z}{\sqrt{2}}\right) \right)
+		\]
+		\item Converting Back to Integral Form:
+		Finally, substituting the integral form of 
+		$\Phi(z)$ into the equation for 
+		$\textnormal{erfc}(z)$, we arrive at the desired expression:
+		\[
+			\text{erfc}(z) = \frac{2}{\sqrt{\pi}}\int_{z}^{\infty}e^{-u^2}\ du
+		\]
+	\end{enumerate}
+	
+	\newpage
+	\section{Frequency (Monobits) Test}
+	
+	\begin{itemize}
+		\item The most basic test is that of the null hypothesis: in a sequence of independent identically distributed Bernoulli random variables the probability of ones is 1/2.
+		\item By the classic \textbf{De Moivre-Laplace theorem} (\textit{Central Limit Theorem}), for a sufficiently large number of trials, the distribution of the binomial sum, normalized by $\sqrt{n}$, is closely approximated by a standard normal distribution.
+		\item This test makes use of that approximation to assess the closeness of the fraction of 1's to 1/2.
+		\item All subsequent tests are conditioned on having passed this first basic test.
+		\item 
+		\[
+		X = 2\varepsilon-1, \quad S_n = X_1 + \cdots + X_n = 2(\varepsilon_1 + \cdots + \varepsilon_n) - n.
+		\]
+		
+		\[
+		\mathbb{E}[S_n] = 0, \quad \text{Var}(S_n) = n.
+		\]
+		
+		\[
+		\lim\limits_{n\to\infty}\Pr\sbr{\frac{S_n}{\sqrt{n}}\leq z}=\Phi(z)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{z}e^{-u^2/2}\ du,\quad \Pr\sbr{\frac{\abs{S_n}}{\sqrt{n}}\leq z}=2\Phi(z)-1.
+		\]
+		
+		\item According to the test based on the statistic $s = |S_n|/\sqrt{n}$, evaluate the observed value $|s(\text{obs})| = |X_1 + \ldots + X_n|/\sqrt{n}$, and then calculate the corresponding \textbf{P-value}, which is
+		
+		\[
+		2\left[1 - \Phi\left({|s(\text{obs})|}\right)\right] = \text{erfc}\left(\frac{|s(\text{obs})|}{\sqrt{2}}\right).
+		\]
+		
+		Here, $\text{erfc}$ is the (complementary) error function \[
+		\textnormal{erfc}(z)=\frac{2}{\sqrt{\pi}}\int_{z}^{\infty}e^{-u^2}\ du.
+		\]
+	\end{itemize}
+	
+	
+	
+	\section*{Frequency Test 수행 절차}
+	
+	\begin{enumerate}
+		\item Conversion to \(\pm 1\): The zeros and ones of the input sequence (\(e\)) are converted to values of \(-1\) and \(+1\) and are added together to produce \(S_n = X_1 + X_2 + \ldots + X_n\), where \(X_i = 2e_i - 1\).
+		
+		For example, if \(e = 1011010101\), then \(n=10\) and \(S_n = (-1) + 1 + (-1) + 1 + (-1) + 1 + (-1) + 1 + (-1) + 1 = 2\).
+		
+		\item Compute the test statistic \(s_{\text{obs}} = \frac{|S_n|}{\sqrt{n}}\)
+		
+		For the example in this section, \(s_{\text{obs}} = \frac{|2|}{\sqrt{10}} \approx 0.632455532\).
+		
+		\item Compute \(P\)-value = \(\text{erfc}\left(\frac{s_{\text{obs}}}{\sqrt{2}}\right)\), where \(\text{erfc}\) is the complementary error function as defined in Section 5.5.3.
+		
+		For the example in this section, \(P\)-value = \(\text{erfc}\left(\frac{0.632455532}{\sqrt{2}}\right) \approx 0.527089\).
+	\end{enumerate}
+
+	\section*{Example of Frequency Test}
+	
+	\begin{itemize}
+		\item[(input)] \( e = 110010100000111101101010100010000101010100011000010001010100110001001100010001100101000110010011100 \)
+		\item[(input)] \( n = 100 \)
+		\item[(processing)] \( S_{100} = -16 \)
+		\item[(processing)] \( s_{\text{obs}} = 1.6 \)
+		\item[(output)] \( P\text{-value} = 0.109599 \)
+		\item[(conclusion)] \textbf{Since \( P\text{-value} \geq 0.01 \), accept the sequence as random.}
+	\end{itemize}
+
+	\section*{Frequency Test within a Block}
+	
+	The test seeks to detect localized deviations from the ideal 50\% frequency of 1's by decomposing the test sequence into a number of overlapping subsequences and applying a chi-square test for a homogeneous match of empirical frequencies to the ideal \( \frac{1}{2} \).
+	
+	\begin{itemize}
+		\item Small \( P \)-values indicate large deviations from the equal proportion of ones and zeros in at least one of the substrings.
+		\item The string of 0's and 1's (or equivalent -1's and 1's) is partitioned into a number of disjoint substrings.
+		\item For each substring, the proportion of ones is computed.
+		\item A chi-square statistic compares these substring proportions to the ideal \( \frac{1}{2} \).
+		\item The statistic is referred to a chi-squared distribution with the degrees of freedom equal to the number of substrings.
+	\end{itemize}
+	
+	The parameters of this test are \( M \) and \( N \), so that \( n = MN \), i.e., the original string is partitioned into \( N \) substrings, each of length \( M \).
+	
+	\begin{itemize}
+		\item For each of these substrings, the probability of ones is estimated by the observed relative frequency of 1's, \( \pi_i \), for \( i = 1, \ldots, N \).
+	\end{itemize}
+
+	\section*{The reported \( P \)-value:}
+	(where \texttt{igamc} is the incomplete gamma function)
+	
+	The reported \( P \)-value is computed as:
+	\[
+	\frac{\int_{\frac{\chi^2(\text{obs})}{2}}^{\infty} e^{-u} u^{(N/2)-1} du}{\Gamma(N/2)2^{N/2}} = \frac{\int_{\frac{\chi^2(\text{obs})}{2}}^{\infty} e^{-u} u^{N/2-1} du}{\Gamma(N/2)}
+	= \texttt{igamc}\left( \frac{N}{2}, \frac{\chi^2(\text{obs})}{2} \right).
+	\]
+	
+	\subsection*{Gamma Function}
+	\[
+	\Gamma(z) = \int_{0}^{\infty} t^{z-1}e^{-t}dt
+	\]
+	
+	\subsection*{Incomplete Gamma Function}
+	\[
+	P(a,x) = \frac{\gamma(a,x)}{\Gamma(a)} = \frac{1}{\Gamma(a)}\int_{0}^{x}e^{-t}t^{a-1}dt
+	\]
+	where \(P(a,0) = 0\) and \(P(a,\infty) = 1\).
+	
+	\subsection*{Incomplete Gamma Function}
+	\[
+	Q(a,x) = 1 - P(a,x) = \frac{\Gamma(a,x)}{\Gamma(a)} = \frac{1}{\Gamma(a)}\int_{x}^{\infty}e^{-t}t^{a-1}dt
+	\]
+	where \(Q(a,0) = 1\) and \(Q(a,\infty) = 0\).
+
+	
+	\section*{Frequency Test within a Block 수행 절차}
+	
+	\begin{enumerate}
+		\item Partition the input sequence into \(N = \left\lceil \frac{n}{M} \right\rceil\) non-overlapping blocks. Discard any unused bits.
+		
+		For example, if \(n = 10\), \(M = 3\) and \(e = 0110011010\), 3 blocks (\(N = 3\)) would be created, consisting of 011, 001 and 101. The final 0 would be discarded.
+		
+		\item Determine the proportion \(\pi_i\) of ones in each \(M\)-bit block using the equation
+		\[
+		\pi_i = \frac{\sum_{j=1}^{M} e_{(i-1)M+j}}{M}
+		\]
+		for \(1 \leq i \leq N\).
+		
+		For the example in this section, \(\pi_1 = \frac{2}{3}\), \(\pi_2 = \frac{1}{3}\), and \(\pi_3 = \frac{2}{3}\).
+		
+		\item Compute the \(\chi^2\) statistic: 
+		\[
+		\chi^2(\text{obs}) = 4M \sum_{i=1}^{N} \left(\pi_i - \frac{1}{2}\right)^2.
+		\]
+		
+		For the example in this section, 
+		\[
+		\chi^2(\text{obs}) = 4 \times 3 \left(\left(\frac{2}{3} - \frac{1}{2}\right)^2 + \left(\frac{1}{3} - \frac{1}{2}\right)^2 + \left(\frac{2}{3} - \frac{1}{2}\right)^2\right) = 1.
+		\]
+	\end{enumerate}
+
+	\subsection*{Compute \( P \)-value}
+	Compute \( P \)-value \( = \texttt{igamc} \left( \frac{N}{2}, \frac{\chi^2(\text{obs})}{2} \right) \), where \texttt{igamc} is the incomplete gamma function for \( Q(a,x) \) as defined in Section 5.5.3.
+	
+	\textbf{Note:} When comparing this section against the technical description in Section 3.2, note that \( Q(a,x) = 1 - P(a,x) \).
+	
+	For the example in this section, \( P \)-value \( = \texttt{igamc} \left( \frac{3}{2}, \frac{7.2}{2} \right) = 0.801252 \).
+	
+	\section*{Example:}
+	\begin{itemize}
+		\item[(input)] \( e = 110010100000111101101010100010000101010100011000010001010100110001001100010001100101000110010011100 \)
+		\item[(input)] \( n = 100 \)
+		\item[(input)] \( M = 10 \)
+		\item[(processing)] \( N = 10 \)
+		\item[(processing)] \( \chi^2 = 7.2 \)
+		\item[(output)] \( P \)-value \( = 0.706438 \)
+		\item[(conclusion)] Since \( P \)-value \( > 0.01 \), accept the sequence as random.
+	\end{itemize}
+
+	\section*{Runs Test}
+	
+	This variant of a classic \textbf{nonparametric test} looks at ``runs'' defined as substrings of consecutive 1's and consecutive 0's, and considers whether the oscillation among such homogeneous substrings is too fast or too slow.
+	
+	The specific test used here is based on the distribution of \textbf{the total number of runs}, \( V_n \).
+	\begin{itemize}
+		\item For the fixed proportion \( \pi = \sum_{i=1}^{n} e_i / n \); \( \pi \) is an estimated parameter(Not assumed from \( H_0 \)),
+		\[
+		\lim_{n \to \infty} P\left(\frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n\pi(1 - \pi)}} \leq z\right) = \Phi(z).
+		\]
+	\end{itemize}
+	
+	To evaluate \( V_n \), define for \( k = 1, \ldots, n-1 \), \( r(k) = 0 \) if \( e_k = e_{k+1} \) and \( r(k) = 1 \) if \( e_k \neq e_{k+1} \).
+	
+	\[
+	P\text{-value} = \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n\pi(1 - \pi)}}\right).
+	\]
+	
+	Large values of \( V_n(\text{obs}) \) indicate oscillation in the string of e's which is too fast; small values indicate oscillation which is too slow.
+	
+	\section*{Test Statistic and Reference Distribution}
+	\( V_n\text{obs}: \) The total number of runs (i.e., the total number of zero runs + the total number of one-runs) across all \( n \) bits.
+	The reference distribution for the test statistic is a \( \chi^2 \) distribution.
+	
+	\section*{Test Description}
+	\textbf{Note:} The Runs test carries out a Frequency test as a prerequisite.
+	\begin{enumerate}
+		\item Compute the pre-test proportion \( \pi \) of ones in the input sequence: \( \pi = \frac{\sum e_j}{n} \).
+		
+		For example, if \( e = 1001101011 \), then \( n=10 \) and \( \pi = \frac{6}{10} = \frac{3}{5} \).
+		
+		\item Determine if the prerequisite Frequency test is passed: If it can be shown that \( | \frac{\pi - 1/2}{\sqrt{n/4}} | < t \), then the Runs test need not be performed (i.e., the test should not have been run because of a failure to pass test 1, the Frequency (Monobit) test). If the test is not applicable, then the \( P \)-value is set to 0.0000. Note that for this test, \( \frac{n}{4} \) has been pre-defined in the test code.
+		
+		For the example in this section, since \( t = \frac{\pi - 1/2}{\sqrt{n/4}} = 0.63246 \), then \( |t - 1/2| = |3/5 - 1/2| = 0.1 < t \).
+		
+		Since the observed value \( \pi \) is within the selected bounds, the runs test is applicable.
+	\end{enumerate}
+
+	\begin{enumerate}
+		\setcounter{enumi}{2} % Starts the numbering from 3
+		\item Compute the test statistic \( V_{n,\text{obs}} \):
+		\[
+		V_{n,\text{obs}} = \sum_{k=1}^{n-1} r(k+1), \text{ where } r(k)=0 \text{ if } e_k = e_{k+1}, \text{ and } r(k)=1 \text{ otherwise}.
+		\]
+		Since \( e = 001101011 \), then
+		\[
+		V_{10,\text{obs}} = (1+0+1+0+1+1+1+0+1) = 7.
+		\]
+		
+		\item Compute \( P \)-value \( = \text{erfc} \left( \frac{|V_{n,\text{obs}} - 2n\pi(1 - \pi)|}{2\sqrt{2n\pi(1 - \pi)}} \right) \).
+		
+		For the example, \( P \)-value \( = \text{erfc} \left( \frac{2 \cdot 10 \cdot \frac{3}{5} \cdot \left(1 - \frac{3}{5}\right)}{2 \cdot \sqrt{2 \cdot 10 \cdot \frac{3}{5} \cdot \left(1 - \frac{3}{5}\right)}} \right) \approx 0.147232.
+		\)
+	\end{enumerate}
+	
+	\section*{Input Size Recommendation}
+	It is recommended that each sequence to be tested consist of a minimum of 100 bits (i.e., \( n \geq 100 \)).
+	
+	\section*{Example}
+	
+	\begin{itemize}
+		\item[(input)] \( e = 110010100000111101101010100010000101010100011000010001010100110001001100010001100101000110010011100 \)
+		\item[(input)] \( n = 100 \)
+		\item[(input)] \( \tau = 0.02 \)
+		\item[(processing)] \( \pi = 0.42 \)
+		\item[(processing)] \( V_{n,\text{obs}} = 52 \)
+		\item[(output)] \( P\text{-value} = 0.500798 \)
+		\item[(conclusion)] Since \( P\text{-value} \geq 0.01 \), accept the sequence as random.
+	\end{itemize}
+	
+	\section{Binary Matrix Rank Test}
+	
+	\begin{itemize}
+		\item The focus of the test is the rank of disjoint sub-matrices of the entire sequence.
+		\item The purpose of this test is to check for \textcolor{red}{linear dependence} among fixed length substrings of the original sequence.
+		\begin{itemize}
+			\item Construct matrices of successive zeroes and ones from the sequence, and check for linear dependence among the rows or columns of the constructed matrices.
+			\item The deviation of the rank - or rank deficiency - of the matrices from a theoretically expected value gives the statistic of interest.
+		\end{itemize}
+		\item The result states that the rank \( R \) of the \( M \times Q \) random binary matrix takes values \( r = 0, 1, 2, ..., m \), where \( m = \min(M, Q) \), with probabilities
+		\[
+		P_r = 2^{r(Q+M-r)-MQ}\prod_{i=0}^{r-1}\frac{(1-2^{i-Q})(1-2^{i-M})}{1-2^{i-r}},
+		\]
+		\begin{itemize}
+			\item The probability values are fixed in the test suite code for \( M = Q = 32 \).
+			\item The number \( M \) is then a parameter of this test, so that ideally \( n = M^2N \), where \( N \) is the new ``sample size''.
+		\end{itemize}
+		\item In practice, values for \( M \) and \( N \) are chosen so that the discarded part of the string, \( n - M^2N \), is fairly small.
+	\end{itemize}
+	
+	\section*{Discrete Fourier Transform (Spectral) Test}
+	
+	\begin{itemize}
+		\item The test described here is based on the \textbf{discrete Fourier transform}.
+		\item It is a member of a class of procedures known as \textbf{spectral methods}.
+		\item The Fourier test detects \textcolor{red}{[text redacted]} that would indicate a deviation from the assumption of randomness.
+	\end{itemize}
+	
+	\subsection*{Test Purpose}
+	\begin{itemize}
+		\item The focus of this test is the peak heights in the Discrete Fourier Transform of the sequence.
+		\item The purpose of this test is to detect periodic features (i.e., \textit{repetitive patterns} that are near each other) in the tested sequence that would indicate a deviation from the assumption of randomness.
+		\item The intention is to detect whether the number of peaks exceeding the 95\% threshold is significantly different than 5\%.
+	\end{itemize}
+	\newpage
+	\section{Testing Strategy and Result Interpretation}
+	The publication details a five-stage strategy for the statistical analysis of RNGs, encompassing selection, generation, execution, examination, and assessment.
+	
+	\subsection{Strategies for Statistical Analysis of an RNG}
+	\begin{itemize}
+		\item Selection of a Generator
+		\item Binary Sequence Generation
+		\item Execution of the Statistical Test Suite
+		\item Examination of P-values
+		\item Assessment: Pass/Fail Assignment
+	\end{itemize}
+	
+	\subsection{Interpretation of Empirical Results}
+	Empirical results are interpreted through three scenarios: no deviation from randomness, clear deviation, or inconclusive results. The process involves examining sequence pass rates and P-value distributions.
+	
+	\subsection{General Recommendations and Guidelines}
+	The document provides recommendations on addressing potential issues in statistical testing, such as programming errors, underdeveloped tests, RNG implementation flaws, data processing errors, poor mathematical routines, and incorrect parameter choices.
+	
+	\section{Application of Multiple Tests}
+	A study on the interdependence of multiple tests revealed minimal redundancy, ensuring a comprehensive assessment of nonrandomness.
+	
+	\section{Conclusion}
+	NIST SP 800-22r1a presents a comprehensive approach to evaluating RNGs for cryptographic applications, providing a structured testing strategy, methods for interpreting results, and guidelines to address common issues in statistical testing.
+	
+	
+	
 	
 \newpage
 \subsection{Golomb’s randomness postulates}
