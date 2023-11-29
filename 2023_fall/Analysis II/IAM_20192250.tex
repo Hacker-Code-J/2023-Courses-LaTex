@@ -1872,6 +1872,7 @@
 	\end{remark}
 
 	\newpage
+	\section{Fourier Series}
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Series of a Periodic Function of Period $2\pi$}]
 		\begin{theorem}
 			Assume that $f(x)$ is a periodic function of period $2\pi$ and is integrable over a period, that is, \[
@@ -2003,6 +2004,7 @@
 			\]
 	\end{note}
 	\newpage
+	\section{Functions of Any Period $p = 2L$, Even and Odd Functions}
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Series of a Periodic Function of Period \(2L\))}]
 		\begin{theorem}
 			A function \(f(x)\) of period \(p = 2L\) has a \textbf{Fourier series}. This series can be written:
@@ -2011,8 +2013,8 @@
 			\]
 			with the \textbf{Fourier coefficients} of \(f(x)\) given by the \textbf{Euler formulas}, for $n=1,2,\cdots$,
 			\[
+			a_0 = \frac{1}{2L} \int_{-L}^{L} f(x) \ dx,\quad
 			\begin{aligned}
-				a_0 &= \frac{1}{2L} \int_{-L}^{L} f(x) \ dx,\\
 				a_n &= \frac{1}{L} \int_{-L}^{L} f(x) \cos \frac{n\pi x}{L} \ dx,\\
 				b_n &= \frac{1}{L} \int_{-L}^{L} f(x) \sin \frac{n\pi x}{L} \ dx.
 			\end{aligned}
@@ -2021,7 +2023,7 @@
 	\end{tcolorbox}
 	\begin{proof}
 		\ \begin{center}
-			\begin{tikzpicture}[>=stealth]
+			\begin{tikzpicture}[>=stealth,scale=1]
 				% Draw horizontal lines for number lines
 				\draw[->] (-2,0) -- (2,0) node[below] {};
 				\draw[->] (4,0) -- (8,0) node[below] {};
@@ -2085,7 +2087,7 @@
 	\newpage
 	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Even and Odd Functions}]
 		\begin{definition}
-			\ \begin{enumerate}[(1)]
+			\begin{enumerate}[(1)]
 				\item A function \( y = f(x) \) is \textbf{even} if
 				\[
 				f(-x) = f(x), \quad x \in \mathbb{R}.
@@ -2101,11 +2103,11 @@
 	\end{tcolorbox}
 	\begin{remark}
 		\( f(x) \) and \( g(x) \) satisfy
-		\[
+		$\displaystyle
 		\int_{-L}^{L} f(x) \, dx = 2 \int_{0}^{L} f(x) \, dx \quad \text{and} \quad \int_{-L}^{L} g(x) \, dx = 0.
-		\]
+		$
 	\end{remark}
-	\vspace{12pt}
+%	\vspace{12pt}
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
 			\begin{enumerate}[(1)]
@@ -2130,9 +2132,285 @@
 		\end{theorem}
 	\end{tcolorbox}
 	\begin{proof}
-		content...
+		\begin{enumerate}[(1)]
+			\item Since $f$ is even, \[
+				\begin{cases}
+					\text{$f(x)\cos x$ is even} \\
+					\\ \text{$f(x)\sin x$ is odd}
+				\end{cases}\implies\begin{cases}
+					\displaystyle a_0=\frac{1}{2L}\int_{-L}^{L}f(x)\ dx=\frac{1}{2L}\cdot 2\int_0^Lf(x)\ dx=\frac{1}{L}\int_0^Lf(x)\ dx,\\
+					\\
+					\displaystyle a_n=\frac{1}{L}\int_{-L}^{L}f(x)\cos\frac{n\pi x}{L}\ dx=\frac{2}{L}\int_{0}^{L}f(x)\cos\frac{n\pi x}{L}\ dx,\\
+					\\
+					\displaystyle b_n=\frac{1}{L}\int_{-\pi}^{\pi}f(x)\sin\frac{n\pi x}{L}\ dx=0.
+				\end{cases}
+				\]
+				\item Similarly, it holds.
+		\end{enumerate}
 	\end{proof}
 
+	\newpage
+	\begin{example}[Sawtooth Wave]
+		Find the Fourier series of the function
+		\[
+		f(x) = x + \pi
+		\]
+		with \(-\pi < x < \pi\) and \(f(x + 2\pi) = f(x)\).
+		\begin{proof}[\sol]
+			Let $f_1(x):=x$ then
+			\[
+			f(x) = \pi + x = \pi + f_1(x).
+			\]
+			Then since \(f_1(x) = x\) is odd, \(a_n = 0\) for \(n = 0,1,2,\ldots\), and
+			\[
+			b_n = \frac{2}{\pi} \int_{0}^{\pi} f_1(x) \sin \frac{n\pi x}{\pi}\,dx = \frac{2}{\pi} \int_{0}^{\pi} x \sin nx\,dx = -\frac{2}{n} \cos n\pi = (-1)^n \frac{2}{n}.
+			\]
+			Hence, the Fourier series of \(f(x)\) is
+			\[
+			f(x) = \pi + f_1(x) = \pi + 2\left( \sin x - \frac{1}{2} \sin 2x + \frac{1}{3} \sin 3x - \ldots \right).
+			\]
+		\end{proof}
+	\end{example}
+	
+	\newpage
+	\section{Introduction to Complex Fourier Series}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Complex Fourier Series}]
+		\begin{theorem}
+			For a function of period \(2\pi\), the Fourier series
+			\[
+			f(x) = a_0 + \sum_{n=1}^{\infty} (a_n \cos nx + b_n \sin nx)
+			\]
+			can be written in complex form
+			\[
+			f(x) = \sum_{n=-\infty}^{\infty} c_n e^{inx}, \quad \text{where} \quad c_n = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-inx} \, dx
+			\]
+			for \( n = 0, \pm1, \pm2, \ldots \).
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Recall the Euler formula
+		\[
+		e^{inx} = \cos nx + i \sin nx \quad \text{and} \quad e^{-inx} = \cos nx - i \sin nx.
+		\] Then, we can examine that
+		\[
+		\cos nx = \frac{1}{2} \left( e^{inx} + e^{-inx} \right) \quad \text{and} \quad \sin nx = \frac{1}{2i} \left( e^{inx} - e^{-inx} \right).
+		\] Hence,
+		\begin{align*}
+			a_n \cos nx + b_n \sin nx &= a_n \frac{1}{2} \left( e^{inx} + e^{-inx} \right) + b_n \frac{1}{2i} \left( e^{inx} - e^{-inx} \right) \\
+			&= \frac{1}{2} (a_n - ib_n)e^{inx} + \frac{1}{2} (a_n + ib_n)e^{-inx}.
+		\end{align*}
+		Let us write
+		\[
+		c_n = \frac{1}{2}(a_n - ib_n) \quad \text{and} \quad d_n = \frac{1}{2}(a_n + ib_n).
+		\] Then, we can write
+		\[
+		f(x) = c_0 + \sum_{n=1}^{\infty} \left( c_n e^{inx} + d_n e^{-inx} \right),
+		\]
+		where
+		\[
+		c_n = \frac{1}{2} (a_n - ib_n) = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x) \left( \cos nx - i \sin nx \right) dx = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-inx} dx,
+		\]
+		\[
+		d_n = \frac{1}{2} (a_n + ib_n) = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x) \left( \cos nx + i \sin nx \right) dx = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{inx} dx.
+		\] Note that \( d_n = c_{-n} \) for all \( n \).
+	\end{proof}
+	\begin{remark}
+		The \( c_n \) are called the \textbf{complex Fourier coefficients} of \( f(x) \).
+	\end{remark}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf }]
+		\begin{theorem}
+			
+			For a function of period \(2L\)
+			\[
+			f(x) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos \frac{n\pi x}{L} + b_n \sin \frac{n\pi x}{L} \right),
+			\]
+			the complex Fourier series is given by
+			\[
+			f(x) = \sum_{n=-\infty}^{\infty} c_n \exp \left( i\frac{n\pi x}{L} \right),\quad
+			\text{where}\quad
+			c_n = \frac{1}{2L} \int_{-L}^{L} f(x) \exp \left( -i\frac{n\pi x}{L} \right) dx
+			\]
+			for \( n = 0, \pm1, \pm2, \cdots \).
+		\end{theorem}
+	\end{tcolorbox}
+	
+	\section{Fourier Integrals}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Integral}]
+		\begin{theorem}
+			Let \( f \) be a nonperiodic function. Then,
+			\[
+			f(x) = \int_{0}^{\infty} \left( A(\omega) \cos \omega x + B(\omega) \sin \omega x \right) d\omega,
+			\]
+			where
+			\[
+			A(\omega) = \frac{1}{\pi} \int_{-\infty}^{\infty} f(v) \cos \omega v \, dv \quad \text{and} \quad B(\omega) = \frac{1}{\pi} \int_{-\infty}^{\infty} f(v) \sin \omega v \, dv.
+			\]
+			This is called a representation of \( f(x) \) by a \textbf{Fourier integral}.
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		\begin{enumerate}[(1)]
+			\item 
+			We consider any periodic function \( f_L(x) \) of period \( 2L \) that can be represented by a Fourier series
+			\[
+			f_L(x) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos \omega_n x + b_n \sin \omega_n x \right), \quad \omega_n = \frac{n\pi}{L},
+			\]
+			and find out what happens if we let \( L \rightarrow \infty \).
+			Let us write, for $\omega_n = \frac{n\pi}{L}$, \begin{align*}
+				f_L(x)=&  a_0 + \sum_{n=1}^{\infty} \left( a_n \cos \omega_n x + b_n \sin \omega_n x \right)
+				\\=& \frac{1}{2L} \int_{-L}^{L} f(v) \, dv \\&+ \frac{1}{L} \sum_{n=1}^{\infty} \left( \cos \omega_n x \int_{-L}^{L} f(v) \cos \omega_n v \, dv \right) \\&+ \frac{1}{L} \sum_{n=1}^{\infty} \left( \sin \omega_n x \int_{-L}^{L} f(v) \sin \omega_n v \, dv \right).
+			\end{align*} We now set
+			\[
+			\Delta \omega = \omega_{n+1} - \omega_n = \frac{(n + 1)\pi}{L} - \frac{n\pi}{L} = \frac{\pi}{L} \quad \text{implies} \quad \frac{1}{L} = \frac{\Delta \omega}{\pi}.
+			\] Then we can write the Fourier series in the form
+			\begin{align*}
+				f_L(x) =& \frac{1}{2L} \int_{-L}^{L} f(v) \, dv\\
+				& + \frac{1}{\pi} \sum_{n=1}^{\infty} \left( \cos \omega_n x \, \Delta \omega \int_{-L}^{L} f(v) \cos \omega_n v \, dv \right) \\
+				&+ \frac{1}{\pi} \sum_{n=1}^{\infty} \left( \sin \omega_n x \, \Delta \omega \int_{-L}^{L} f(v) \sin \omega_n v \, dv \right).
+			\end{align*}
+			This representation is valid for any fixed \( L \), arbitrary large, but finite.
+			\item Let \( L \to \infty \) and assume that the resulting nonperiodic function
+			\[
+			f(x) = \lim_{L \to \infty} f_L(x)
+			\]
+			is absolutely integrable on the \( x \)-axis. Then
+			\[
+			\frac{1}{2L} \int_{-L}^{L} f_L(v) \, dv \to 0 \quad \text{and} \quad \Delta \omega = \frac{\pi}{L} \to 0.
+			\] It seems plausible that the infinite series becomes an integral from 0 to \( \infty \), which represents \( f(x) \),
+			\[
+			f(x) = \frac{1}{\pi} \int_{0}^{\infty} \left[ \cos \omega x \int_{-\infty}^{\infty} f(v) \cos \omega v \, dv + \sin \omega x \int_{-\infty}^{\infty} f(v) \sin \omega v \, dv \right] d\omega.
+			\]
+		\end{enumerate}
+	\end{proof}
+	\vspace{24pt}
+	\begin{example}[Single Pulse, Sine Integral]
+		Find the Fourier integral representation of the function
+		\[
+		f(x) :=
+		\begin{cases}
+			1 & \text{if } |x| < 1, \\
+			0 & \text{if } |x| > 1
+		\end{cases}
+		\]
+		\begin{proof}[\sol]
+			Since
+			\[
+			A(\omega) = \frac{1}{\pi} \int_{-\infty}^{\infty} f(v) \cos \omega v \, dv = \frac{1}{\pi} \int_{-1}^{1} \cos \omega v \, dv = \frac{2 \sin \omega}{\pi \omega} \quad \text{and} \quad B(\omega) = 0,
+			\]
+			the Fourier integral representation of \( f(x) \) is
+			\[
+			F(x) = \frac{2}{\pi} \int_{0}^{\infty} \frac{\cos \omega x \sin \omega}{\omega} \, d\omega.
+			\]
+		\end{proof}
+	\end{example}
+	
+	\newpage
+	\begin{remark}
+		The average of the left- and right-hand limits of \( f(x) \) at \( x = 1 \) is equal to \( 1/2 \).
+		Furthermore, we obtain
+			\[
+			\int_{0}^{\infty} \frac{\cos \omega x \sin \omega}{\omega} \, d\omega =
+			\begin{cases}
+				\frac{\pi}{2} & \text{if } 0 \leq x < 1, \\
+				\frac{\pi}{4} & \text{if } x = 1, \\
+				0 & \text{if } x > 1.
+			\end{cases}
+			\]
+			This integral is called \textbf{Dirichlet’s discontinuous factor}.
+			If \( x = 0 \), then
+			\[
+			\int_{0}^{\infty} \frac{\sin \omega}{\omega} \, d\omega = \frac{\pi}{2}.
+			\]
+			We see that this integral is the limit of the so-called \textbf{sine integral}
+			\[
+			\text{Si}(x) = \int_{0}^{x} \frac{\sin \omega}{\omega} \, d\omega
+			\]
+			as \( x \to \infty \).
+	\end{remark}
+	
+
+\newpage
+	\textbf{Theorem (Fourier Sine and Cosine Integrals)}
+	
+	\begin{itemize}
+		\item If \( f(x) \) is an even function, then \( B(\omega) = 0 \) and
+		\[
+		A(\omega) = \frac{2}{\pi} \int_{0}^{\infty} f(v) \cos \omega v \, dv.
+		\]
+		The Fourier integral then reduces to the \textbf{Fourier cosine integral}
+		\[
+		f(x) = \int_{0}^{\infty} A(\omega) \cos \omega x \, d\omega.
+		\]
+		
+		\item If \( f(x) \) is an odd function, then \( A(\omega) = 0 \) and
+		\[
+		B(\omega) = \frac{2}{\pi} \int_{0}^{\infty} f(v) \sin \omega v \, dv.
+		\]
+		The Fourier integral then reduces to the \textbf{Fourier sine integral}
+		\[
+		f(x) = \int_{0}^{\infty} B(\omega) \sin \omega x \, d\omega.
+		\]
+	\end{itemize}
+	
+	\textbf{Observation}
+	
+	\begin{itemize}
+		\item If \( f(x) \) is an even function, then
+		\[
+		f(x) = \int_{0}^{\infty} \left( \frac{2}{\pi} \int_{0}^{\infty} f(v) \cos \omega v \, dv \right) \cos \omega x \, d\omega
+		= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_c(\omega) \cos \omega x \, d\omega.
+		\]
+		
+		\item If \( f(x) \) is an odd function, then
+		\[
+		f(x) = \int_{0}^{\infty} \left( \frac{2}{\pi} \int_{0}^{\infty} f(v) \sin \omega v \, dv \right) \sin \omega x \, d\omega
+		= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_s(\omega) \sin \omega x \, d\omega.
+		\]
+	\end{itemize}
+	
+	\textbf{Definition (Fourier Cosine and Sine Transforms)}
+	
+	\begin{itemize}
+		\item Fourier cosine transform for an even function:
+		\[
+		\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \cos \omega x \, dx.
+		\]
+		\item Inverse Fourier cosine transform of \( \hat{f}_c(\omega) \):
+		\[
+		\hat{f}_c^{-1}(f) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_c(\omega) \cos \omega x \, dx.
+		\]
+		\item Fourier sine transform for an odd function:
+		\[
+		\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \sin \omega x \, dx.
+		\]
+		\item Inverse Fourier sine transform of \( \hat{f}_s(\omega) \):
+		\[
+		\hat{f}_s^{-1}(f) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_s(\omega) \sin \omega x \, dx.
+		\]
+	\end{itemize}
+	
+	\textbf{Example (Fourier cosine and sine transforms)}
+	
+	Find Fourier cosine and sine transforms of the function
+	\[
+	f(x) :=
+	\begin{cases}
+		k & \text{if } 0 < x < a, \\
+		0 & \text{if } x > a
+	\end{cases}
+	\]
+	
+	\textbf{Answer.}
+	
+	Fourier cosine and sine transforms of \( f(x) \) are
+	\[
+	\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \cos \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k \sin a\omega}{\omega} \right),
+	\]
+	\[
+	\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \sin \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k(1 - \cos a\omega)}{\omega} \right).
+	\]
+	
 	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
