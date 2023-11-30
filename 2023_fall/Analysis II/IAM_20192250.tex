@@ -2412,6 +2412,199 @@
 	\]
 	
 	\newpage
+	
+	\textbf{Observation (D'Alembert's Solution)}
+	
+	\begin{itemize}
+		\item Introduce the new independent variables
+		\[
+		v = x + ct \quad \text{and} \quad z = x - ct.
+		\]
+		\item Then, applying chain rule
+		\[
+		u_x = u_v v_x + u_z z_x = u_v + u_z.
+		\]
+		\item Assume that all the partial derivatives involved are continuous, so that
+		\[
+		u_{xv} = u_{vx} \quad \text{and correspondingly} \quad u_{xx} = (u_v + u_z)_x = u_{vv} + 2u_{vz} + u_{zz}.
+		\]
+		\item Similarly,
+		\[
+		u_{tt} = c^2 (u_{vv} - 2u_{vz} + u_{zz}).
+		\]
+	\end{itemize}
+	
+	By inserting these two results in the wave equation, we get
+	\[
+	u_{vx} = \frac{\partial^2 u}{\partial z \partial v} = 0.
+	\]
+	By integrating above identity with respect to \( z \), we find
+	\[
+	\frac{\partial u}{\partial v} = h(v),
+	\]
+	where \( h(v) \) is an arbitrary function of \( v \). Integrating this with respect to \( v \) gives
+	\[
+	u = \int h(v) dv + \psi(z),
+	\]
+	where \( \psi(z) \) is an arbitrary function of \( z \). Since the integral is a function of \( v \), say, \( \phi(v) \), the solution \( u \) is of the form
+	\[
+	u(x, t) = \phi(v) + \psi(z) = \phi(x + ct) + \psi(x - ct).
+	\]
+	This is known as d'Alembert's solution of the wave equation.
+	
+	\textbf{Observation (D'Alembert's Solution with Initial Conditions)}
+	
+	\begin{itemize}
+		\item Consider the two initial conditions
+		\[
+		u(x, 0) = f(x) \quad \text{and} \quad u_t(x, 0) = g(x).
+		\]
+		\item Then, we have
+		\[
+		u(x, 0) = \phi(x) + \psi(x) = f(x) \quad \text{and} \quad u_t(x, 0) = \phi'(x) - \psi'(x) = g(x).
+		\]
+		\item Thus, we have
+		\[
+		\phi(x) - \psi(x) = k(x_0) \quad \text{where} \quad k(x_0) = \phi(x_0) - \psi(x_0).
+		\]
+		\item Therefore,
+		\[
+		\phi(x) = \frac{1}{2} f(x) + \frac{1}{2c} \int_{x_0}^{x} g(s) ds + \frac{1}{2} k(x_0)
+		\]
+		and similarly,
+		\[
+		\psi(x) = \frac{1}{2} f(x) - \frac{1}{2c} \int_{x_0}^{x} g(s) ds - \frac{1}{2} k(x_0).
+		\]
+	\end{itemize}
+	
+	\textbf{Theorem (D'Alembert's Solution of the Wave Equation)}
+	
+	The solution of the wave equation
+	\[
+	\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+	\]
+	with two initial conditions
+	\[
+	u(x, 0) = f(x) \quad \text{and} \quad u_t(x, 0) = g(x)
+	\]
+	is given by
+	\[
+	u(x, t) = \frac{1}{2} (f(x + ct) + f(x - ct)) + \frac{1}{2c} \int_{x-ct}^{x+ct} g(s) ds.
+	\]
+	\newpage
+	
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Laplace Equation}]
+		\begin{definition}
+			The two-dimensional \textbf{Laplace equation} is given by
+			\[
+			\Delta u = \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}[Boundary conditions]
+		A heat problem then consists of this equation to be considered in some region \( \Omega \) of the \( xy \)-plane and a given boundary condition on the boundary curve of \( \Omega \). This is called a boundary value problem.
+		\begin{figure}[h!]\centering
+			\begin{tikzpicture}
+				% Rectangle
+				\fill[yellow!20] (0,0) rectangle (4,2);
+				\draw (0,0) rectangle (4,2);
+				
+				% Labels
+				\node at (2,1) {$\Omega$};
+				\node at (2,2.3) {$u = f(x)$};
+				\node at (2,-0.3) {$u = 0$};
+				\node at (-0.3,1) {$u = 0$};
+				\node at (4.3,1) {$u = 0$};
+				
+				% Axes
+				\draw[->] (-0.5,0) -- (4.5,0) node[right] {$x$};
+				\draw[->] (0,-0.5) -- (0,2.5) node[above] {$y$};
+				
+				% Ticks
+				\draw (4,-0.1) -- (4,0.1);
+				\node at (4,-0.3) {$a$};
+				\draw (-0.1,2) -- (0.1,2);
+				\node at (-0.3,2) {$b$};
+			\end{tikzpicture}
+		\end{figure} 
+		
+		One calls it:
+		\begin{enumerate}
+			\item Dirichlet problem if \( u \) is prescribed on \( \partial\Omega \),
+			\item Neumann problem if the normal derivative \( \nabla u \cdot N = \frac{\partial u}{\partial N} \) is prescribed on \( \partial\Omega \),
+			\item Mixed problem if \( u \) is prescribed on a portion of \( \partial\Omega \) and \( \nabla u \cdot N \) on the rest of \( \partial\Omega \).
+		\end{enumerate}
+	\end{remark}
+	
+	\textbf{Observation (Solving Laplace Equation)}
+	Find a solution \( u(x, y) \), which satisfies the Laplace equation
+	\[
+	\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0
+	\]
+	with Dirichlet problem in a rectangle \( \Omega \), assuming that the temperature \( u(x, y) \) equals a given function \( f(x) \) on the upper side and 0 on the other three sides of the rectangle.
+	
+	\textbf{Observation (Method of Separating Variables)}
+	\begin{itemize}
+		\item Let \( u(x, y) = F(x)G(y) \).
+		\item Then, we have
+		\[
+		\frac{1}{F} \frac{d^2 F}{dx^2} = -\frac{1}{G} \frac{d^2 G}{dy^2} = -k.
+		\]
+		\item From this and the left and right boundary conditions,
+		\[
+		\frac{d^2 F}{dx^2} + kF = 0, \quad F(0) = F(a) = 0.
+		\]
+		\item This gives \( k = \left( \frac{n\pi}{a} \right)^2 \) and corresponding nonzero solutions \( F(x) = F_n(x) = \sin \frac{n\pi x}{a} \), \( n = 1,2,\ldots \).
+	\end{itemize}
+	
+	The differential equation for \( G \) then becomes
+	\[
+	\frac{d^2 G}{dy^2} - \left( \frac{n\pi}{a} \right)^2 G = 0
+	\]
+	and solutions are
+	\[
+	G(y) = G_n(y) = A_n e^{\frac{n\pi y}{a}} + B_n e^{-\frac{n\pi y}{a}}.
+	\]
+	The boundary condition \( u = 0 \) on the lower side of \( \Omega \) implies that \( G_n(0) = A_n + B_n = 0 \) or \( B_n = -A_n \). This gives
+	\[
+	G_n(y) = A_n e^{\frac{n\pi y}{a}} - A_n e^{-\frac{n\pi y}{a}} = 2A_n \sinh \frac{n\pi y}{a}.
+	\]
+	By letting \( 2A_n = A_n^* \), we obtain the eigenfunctions
+	\[
+	u_n(x, y) = F_n(x)G_n(y) = A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a}.
+	\]
+	These satisfy the boundary condition \( u = 0 \) on the left, right, and lower sides.
+	
+	
+	\textbf{Observation (Method of Separating Variables)}
+	
+	\begin{itemize}
+		\item Let
+		\[
+		u(x, y) = \sum_{n=1}^{\infty} u_n(x, y) = \sum_{n=1}^{\infty} A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a}.
+		\]
+		
+		\item From the boundary condition on the upper side \( u(x, b) = f(x) \), we have
+		\[
+		u(x, b) = f(x) = \sum_{n=1}^{\infty} \left( A_n^* \sin \frac{n\pi x}{a} \right) \sinh \frac{n\pi b}{a}.
+		\]
+		
+		\item This shows that
+		\[
+		A_n^* \sinh \frac{n\pi b}{a} = \frac{2}{a} \int_{0}^{a} f(x) \sin \frac{n\pi x}{a} \, dx.
+		\]
+		
+		\item Therefore, the solution is
+		\[
+		u(x, y) = \sum_{n=1}^{\infty} A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a},
+		\]
+		where
+		\[
+		A_n^* = \frac{2}{a \sinh \left( \frac{n\pi b}{a} \right)} \int_{0}^{a} f(x) \sin \frac{n\pi x}{a} \, dx.
+		\]
+	\end{itemize}
+	
+	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
 			content...
