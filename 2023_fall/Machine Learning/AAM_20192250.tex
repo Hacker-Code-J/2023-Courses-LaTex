@@ -62,40 +62,6 @@
 	urlcolor=titleblue,
 }
 
-%Listing
-\usepackage{listings} %Code
-\renewcommand{\lstlistingname}{Code}%
-
-\definecolor{sagegreen}{rgb}{0.0,0.6,0.4}
-\definecolor{sagepurple}{rgb}{0.6,0.0,0.4}
-\definecolor{sageblue}{rgb}{0.0,0.4,0.6}
-\definecolor{sageorange}{rgb}{1.0,0.4,0.0}
-\definecolor{sagegray}{rgb}{0.4,0.4,0.4}
-
-\lstdefinestyle{sage}{
-	language=Python,
-	backgroundcolor=\color{white},
-	basicstyle=\small\ttfamily\color{black}, 
-	basicstyle=\footnotesize\ttfamily\color{black},
-	keywordstyle=\color{blue!60!black},
-	commentstyle=\color{green!60!black},
-	stringstyle=\color{purple!60!black},
-	showstringspaces=false,
-	breaklines=true,
-	tabsize=4,
-	morekeywords={True, False, None},
-	frame=leftline, % Remove the border
-	framesep=3pt,
-	frameround=tttt,
-	framexleftmargin=3pt,
-	numbers=left,
-	numberstyle=\small\color{gray},
-	xleftmargin=15pt, % Increase the left margin
-	xrightmargin=5pt,
-	captionpos=b,
-	belowskip=0pt,
-	aboveskip=4pt
-}
 
 %Ceiling and Floor Function
 \usepackage{mathtools}
@@ -130,6 +96,7 @@
 \pgfplotsset{compat=newest}
 \usetikzlibrary{3d, calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes.multipart}
+\usetikzlibrary{patterns, patterns.meta}
 
 %Tcolorbox
 \usepackage[most]{tcolorbox}
@@ -2197,171 +2164,7 @@
 	\newpage
 	\chapter{Probability and Distributions}
 	
-	Probability $\approx$ Study of Uncertainty
-	\\
-	Probability vs Statistics
-	\begin{itemize}
-		\item Probability: Model of Process ( Axiomatic). A random variable explains the underlying uncertainty.
-		\item Statistics: ``Observations''. Try to figure out the underlying process which explains the observations
-	\end{itemize}
-	Machine Learning is close to statistics. Data(Observation) $\to$ Functions(Process)
-	\\
-	Keywords
-	\begin{itemize}
-		\item Random Variable $X$
-		\item Probability Distribution $\mathcal{D}$
-		\begin{figure}[h!]\centering
-			\begin{tabular}{c|cccc}
-				$X$ & $x_1$ & $x_2$ & $\cdots$ & $x_n$\\
-				\hline
-				$\Pr[X=x_i]$ & $p_1$ & $p_2$ & $\cdots$ & $p_n$
-			\end{tabular}
-		\end{figure}
-		\item Sample Space
-		\item Event
-		\item Joint Distribution
-		\item Marginal Distribution\begin{center}
-			\begin{tabular}{c|cc|c}
-				$X\backslash Y$ & $0$ & $1$ & $\Pr[X]$\\
-				\hline
-				$0$ & $1/4$ & $1/2$ & $3/4$\\
-				$1$ & $1/8$ & $1/8$ & $1/4$\\
-				\hline
-				$\Pr[Y]$ & $3/8$ & $5/8$ &
-			\end{tabular}
-		\end{center}
-		\item $X,Y$ are independent if $p(x,y)=p(x)p(y)$.
-		\item Conditional Probability: \[
-		p(x\mid y):=\Pr[X=x\mid Y=y].
-		\] Since $p(x\mid y)=\frac{p(x,y)}{p(y)}$, $\Pr[x\mid Y=0]=\begin{cases}
-			\Pr[X=0\mid Y=0]=\frac{1/4}{3/8}=\frac{2}{3}\\
-			\Pr[X=1\mid Y=0]=\frac{1/8}{3/8}=\frac{1}{3}
-		\end{cases}$
-	\end{itemize}
-	\ \\
-	Bayes' Theorem () \[
-	p(x\mid y)=\frac{p(y\mid x)\cdot p(x)}{p(y)}
-	\]
-	\begin{proof}
-		$p(x\mid y)=\frac{p(x,y)}{p(y)}\implies p(y\mid x)p(x)=p(x,y)=p(x\mid y)p(y)\implies p(x\mid y)p(y)=p(y\mid x)p(x)$
-	\end{proof}
-
-	\[
-	p(y\mid x)=\begin{cases}
-		\text{(1) Probability $y$ given $x$}\\
-		\text{(2) likelihood of $x$ given $y$}
-	\end{cases}
-	\]
-	
-	\begin{example}
-		dice with \$ sign(s). \# of \$ signs is unknown and fixed.
-		Let $X$: \# of \$ signs observed in $n$ trials. $X\in\set{1,2,\cdots,n}$.
-		\begin{center}
-			\begin{tabular}{c|cccc}
-				$X$ & $0$ & $1$ & $k$ & $n$\\
-				$\Pr[X]$ & \multicolumn{4}{c}{$\binom{b}{k}p^k(1-p)^{n-k}$}
-			\end{tabular}
-		\end{center} Let $p$: probability of a single event. $X\sim\mathcal{B}(n,p)$. Binomial Distribution
-		\[
-		\Pr[X=k]=\binom{n}{k}p^k(1-p)^{n-k}\quad\text{for}\quad k=0,1,\cdots, n.	
-		\]
-		Q: Assume that we do not know the number of \$ signs ($Y$). We observe two \$ signs out of 10 trials. What would be a good guess? \begin{center}
-			\begin{tabular}{c|c}
-				Hard & Easy\\
-				\hline
-				$\max_y\Pr[Y=y\mid X=2]$ & $\Pr[X=2\mid Y=y]$
-			\end{tabular}
-		\end{center}
-		$\Pr[X=2\mid Y=y]$. $Y=y$ is \# of \$. It is likelihood of $Y$ given $X=2$.
-	\end{example}
-	
-	Random variable $X\sim p(x)=\Pr[X=x]$. pmf(probability mass function)
-	\begin{itemize}
-		\item Expected Value $\E[g(x)]=\sum_xp(x)g(x)$
-		\item Mean $\E[X]=\sum_xp(x)x$
-		\item Variance $\E[X^2]-\set{\E[X]}^2$
-	\end{itemize}
-	
-	$X,Y$ are random variables. \[
-	\Cov\sbr{x,y}=\E_{X,Y}\sbr{(X-\E_X[X])(Y-\E[Y])}=\E_{X,Y}[XY]-\E_X[X]\E_Y[Y].
-	\]
-	$\Cov[X,X]=\E[X^2]-\set{\E[X]}^2$
-	\[
-	\corr(X,Y)=\frac{\Cov(XY)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}}\in\sbr{-1,1}
-	\]\[
-	\Cov(X,Y)=\begin{cases}
-		1 &: X=Y\\
-		-1&: X=-Y\\
-		0 &: \text{$X,Y$ are independent}
-	\end{cases}
-	\]
-	\begin{example}
-		\ \begin{center}
-			\begin{tabular}{c|ccc|c}
-				$Y\backslash X$ & -1 & 0 & 1 & $\Pr[Y]$\\
-				\hline
-				$0$ & 0 & 1/3 & 0 & 1/3\\
-				$1$ & 1/3 & 0 & 1/3 & 2/3\\
-				\hline
-				$\Pr[X]$ & 1/3 & 1/3 & 1/3 &
-			\end{tabular}
-		\end{center}\[
-	\begin{cases}
-		\E[X]=\sum_xp(x)x=(-1)\cdot\frac{1}{3}+0\cdot\frac{1}{3}+1\cdot\frac{1}{3}=0\\
-		\E[Y]=\sum_yp(y)y=0\cdot\frac{1}{3}+0\cdot\frac{2}{3}=\frac{2}{3}.
-	\end{cases}
-	\] \[
-	\Cov(X,Y)=\E[XY]-\E[X]\E[Y]=\sum_{x,y}p(x,y)xy-0=0.
-	\]
-	\end{example}
-
-	Multi-dimensional Case
-	
-	Let $\vec{X}=\begin{bmatrix}
-		X_1\\ \vdots\\ X_D
-	\end{bmatrix}\in\R^D$ be a random variable.
-	\begin{itemize}
-		\item Expected Value $\E[\vec{X}]=\begin{bmatrix}
-			\E[X_1]\\ \vdots\\ \E[X_D]
-		\end{bmatrix}\in\R^D$
-	\item Let $\vec{X}\in\R^D$ and $\vec{Y}\in\R^E$ are random variables. Then \begin{align*}
-		\Cov(\vec{X},\vec{Y})&=\E\sbr{(\vec{X}-\E[\vec{X}])(\vec{Y}-\E[\vec{Y}])^T}\\
-		&=\E[\vec{X}\vec{Y}^T]-\E[\vec{X}]\E[\vec{Y}]^T
-	\end{align*}
-	\item Variance \begin{align*}
-		\Var[\vec{X}]&=\Cov[\vec{X},\vec{X}]\\
-		&=\E[\vec{X}\vec{X}^T]-\E[\vec{X}]\E[\vec{X}]^T\\
-		&=\begin{bmatrix}
-			\Cov[X_1,X_1] & \cdots & \Cov[X_1,X_D]\\
-			\vdots & \ddots & \vdots\\
-			\Cov[X_D,X_1] & \cdots & \Cov[X_D,X_D]\\
-		\end{bmatrix}
-	\end{align*}
-	$\Cov[X_i,X_j]=\E[X_iX_j]-\E[X_i]\E_[X_j]=\Cov[X_j,X_i]$. $\Var[\vec{X}]$ is symmetric and positive semi-define matrix, \ie, $\vec{x}\Var[\vec{X}]\vec{x}\geq 0$ for all $\vec{x}$.
-	
-		i.i.d. independent and identically distributed.
-	
-	$X_1,\dots,X_n$: i.i.d. if \begin{enumerate}[(1)]
-		\item Mutually independent $p(x_i,x_j)=p(x_i)p(x_j)$ for all $i,j$ with $i\neq j$.
-		\item Identically Distributed.
-	\end{enumerate}
-	
-	Def. (Conditionally Independent) $X,Y$ are conditionally independent given $Z$ if \[
-	p(x,y\mid z)=p(x\mid z)p(y\mid z).
-	\]
-	
-	Gaussian Distribution. \[
-	p_{\mu^2,\sigma}(x)=\frac{1}{\sqrt{2\pi\sigma}}\exp\sbr{-\frac{(x-\mu)^2}{2\sigma^2}}
-	\]
-	
-	Let $\vec{X}\in\R^D$, $\mvec{\mu}\in\R^D$ and $\mvec{\Sigma}\in M_{D}(\R)$. Note that $\abs{\sigma}=\sqrt{\sigma^2}$ and $\sqrt{\mvec{\Sigma}}=\abs{\mvec{\Sigma}}^{1/2}$. Then \[
-	p_{\mvec{\mu},\mvec{\Sigma}}(\vec{X})=(2\pi)^{-D/2}\abs{\mvec{\Sigma}}^{-1/2}\exp\sbr{-\frac{1}{2}(\vec{x}-\mvec{\mu})^T\mvec{\Sigma}^{-1}(\vec{x}-\mvec{\mu})}.
-	\]
-	\end{itemize}
-	
-	\newpage
-	\section{Introduction}
-	This series of lecture notes covers advanced concepts in applied mathematics with a focus on Machine Learning. We delve into the study of probability and statistics as tools to understand and model uncertainty and observations.
+	This chapter covers the study of probability and statistics as tools to understand and model uncertainty and observations.
 	
 	\section{Probability vs Statistics}
 	In this section, we explore the differences between probability and statistics and their applications in Machine Learning.
@@ -2510,7 +2313,7 @@
 		
 		The "hard" approach involves maximizing the probability of $Y$ given the observation $X=2$, while the "easy" approach involves directly computing the probability of observing $X=2$ given a particular value of $Y$.
 	\end{example}
-
+	
 	\section{Properties of Random Variables}
 	A random variable \( X \) is a variable whose value is subject to variations due to chance. We denote by \( X \sim p(x) = \Pr[X = x] \) the probability mass function (pmf) of the random variable \( X \).
 	
@@ -2667,31 +2470,244 @@
 	
 	This means that knowing the value of \( Z \) renders \( X \) and \( Y \) independent of each other.
 	
-	\subsection{Gaussian Distribution}
+	\newpage
+	\section{Gaussian Distribution}
 	
-	The Gaussian or normal distribution is one of the most important probability distributions in statistics.
-	
-	\begin{definition}[Gaussian Distribution]
+	\begin{note}[Gaussian Distribution]
 		A random variable \( X \) with mean \( \mu \) and variance \( \sigma^2 \) has the Gaussian distribution given by:
 		\[
 		p_{\mu, \sigma^2}(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left[-\frac{(x - \mu)^2}{2\sigma^2}\right].
 		\]
-	\end{definition}
-	
-	\subsection{Multivariate Gaussian Distribution}
-	
-	In the multidimensional case, the Gaussian distribution is extended to account for vectors and matrices.
-	
-	\begin{definition}[Multivariate Gaussian Distribution]
-		Let \( \vec{X} \in \mathbb{R}^D \), \( \mvec{\mu} \in \mathbb{R}^D \), and \( \mvec{\Sigma} \in M_{D}(\mathbb{R}) \) be the mean vector and covariance matrix, respectively. The multivariate Gaussian distribution of \( \vec{X} \) is then defined as:
-		\[
-		p_{\mvec{\mu}, \mvec{\Sigma}}(\vec{X}) = (2\pi)^{-\frac{D}{2}}|\mvec{\Sigma}|^{-\frac{1}{2}}\exp\left[-\frac{1}{2}(\vec{x} - \mvec{\mu})^\top\mvec{\Sigma}^{-1}(\vec{x} - \mvec{\mu})\right].
+	\end{note}
+
+	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf Multivariate Gaussian Distribution}]
+		\begin{definition}
+			Let \( \vec{X} \in \mathbb{R}^D \), and let \( \mvec{\mu} \in \mathbb{R}^D \) and \( \mvec{\Sigma} \in M_{D}(\mathbb{R}) \) be the mean vector and covariance matrix, respectively. The multivariate Gaussian distribution of \( \vec{X} \) is then defined as:
+			\[
+			p_{\mvec{\mu}, \mvec{\Sigma}}(\vec{X}) = (2\pi)^{-\frac{D}{2}}|\mvec{\Sigma}|^{-\frac{1}{2}}\exp\left[-\frac{1}{2}(\vec{x} - \mvec{\mu})^\top\mvec{\Sigma}^{-1}(\vec{x} - \mvec{\mu})\right].
+			\] We write $p(\vec{x})=\mathcal{N}_{\mvec{\mu},\mvec{\Sigma}}(\vec{x})$ or $X\sim\mathcal{N}(\mvec{\mu},\mvec{\Sigma})$.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		Note that \( |\sigma| = \sqrt{\sigma^2} \) for the scalar case, and \( \sqrt{\mvec{\Sigma}} = |\mvec{\Sigma}|^{1/2} \) denotes the matrix square root of the determinant of \( \mvec{\Sigma} \).
+	\end{remark}
+	\begin{remark}[Marginals and Conditionals of Gaussians are Gaussians]
+		Let $X$ and $Y$ be two multivariate random variables, that may have. We write the Gaussian distribution in terms of the concatenated states $\begin{bmatrix}
+			\vec{x}^T&\vec{y}^T
+		\end{bmatrix}$, \[
+		p(\vec{x},\vec{y})=\mathcal{N}(\mvec{\mu},\mvec{\Sigma})=\mathcal{N}\of{\begin{bmatrix}
+				\mvec{\mu}_x\\ \mvec{\mu}_y
+			\end{bmatrix},\begin{bmatrix}
+				\mvec{\Sigma}_{xx} & \mvec{\Sigma}_{xy}\\ \mvec{\Sigma}_{yx} & \mvec{\Sigma}_{yy}
+		\end{bmatrix}}.
+		\] where \[
+		\begin{cases}
+			\mvec{\Sigma}_{xx}=\Cov[\vec{x},\vec{x}] &:\text{the marginal covariance matrix of $\vec{x}$},\\
+			\mvec{\Sigma}_{yy}=\Cov[\vec{y},\vec{y}] &:\text{the marginal covariance matrix of $\vec{y}$},\\
+			\mvec{\Sigma}_{xy}=\Cov[\vec{x},\vec{y}] &:\text{the cross-covariance matrix between $\vec{x}$ and $\vec{y}$}.
+		\end{cases}
 		\]
-	\end{definition}
+	\end{remark}
+	\begin{remark}
+		The conditional distribution $p(\vec{x}\mid\vec{y})$ is also Gaussian and given by \begin{align*}
+			p(\vec{x}\mid\vec{y}) &= \mathcal{N}(\mvec{\mu}_{x\mid y},\mvec{\Sigma}_{x\mid y})\quad\text{with}\quad
+			\begin{cases}
+				\mvec{\mu}_{x\mid y}=\mvec{\mu}_x+\mvec{\Sigma}_{xy}\mvec{\Sigma}_{yy}^{-1}(\vec{y}-\mvec{\mu}_y)\\
+				\mvec{\Sigma}_{x\mid y}=\mvec{\Sigma}_{xx}-\mvec{\Sigma}_{xy}\mvec{\Sigma}_{yy}^{-1}\mvec{\Sigma}_{yx}.
+			\end{cases}
+		\end{align*}
+	\end{remark}
+	\vspace{12pt}
+	\begin{example}
+		Consider the bivariate Gaussian distribution \[
+		p(x_1,x_2)=\mathcal{N}\of{\begin{bmatrix}
+				0\\ 2
+		\end{bmatrix},\begin{bmatrix}
+		0.3 & -1\\ -1 & 5
+	\end{bmatrix}}.
+		\] Then \begin{align*}
+			\mu_{x_1\mid x_2=1}&=0+(-1)\cdot\frac{1}{5}\cdot(-1-2)=0.6\\
+			\sigma_{x_1\mid x_2=1}^2&=0.3-(-1)\cdot\frac{1}{5}\cdot(-1)=0.1.
+		\end{align*} Therefore, the conditional Gaussian is given by $p(x_1\mid x_2=-1)=\mathcal{N}(0.6,0.1)$.
+	\end{example} 
+%	Probability $\approx$ Study of Uncertainty
+%	\\
+%	Probability vs Statistics
+%	\begin{itemize}
+%		\item Probability: Model of Process ( Axiomatic). A random variable explains the underlying uncertainty.
+%		\item Statistics: ``Observations''. Try to figure out the underlying process which explains the observations
+%	\end{itemize}
+%	Machine Learning is close to statistics. Data(Observation) $\to$ Functions(Process)
+%	\\
+%	Keywords
+%	\begin{itemize}
+%		\item Random Variable $X$
+%		\item Probability Distribution $\mathcal{D}$
+%		\begin{figure}[h!]\centering
+%			\begin{tabular}{c|cccc}
+%				$X$ & $x_1$ & $x_2$ & $\cdots$ & $x_n$\\
+%				\hline
+%				$\Pr[X=x_i]$ & $p_1$ & $p_2$ & $\cdots$ & $p_n$
+%			\end{tabular}
+%		\end{figure}
+%		\item Sample Space
+%		\item Event
+%		\item Joint Distribution
+%		\item Marginal Distribution\begin{center}
+%			\begin{tabular}{c|cc|c}
+%				$X\backslash Y$ & $0$ & $1$ & $\Pr[X]$\\
+%				\hline
+%				$0$ & $1/4$ & $1/2$ & $3/4$\\
+%				$1$ & $1/8$ & $1/8$ & $1/4$\\
+%				\hline
+%				$\Pr[Y]$ & $3/8$ & $5/8$ &
+%			\end{tabular}
+%		\end{center}
+%		\item $X,Y$ are independent if $p(x,y)=p(x)p(y)$.
+%		\item Conditional Probability: \[
+%		p(x\mid y):=\Pr[X=x\mid Y=y].
+%		\] Since $p(x\mid y)=\frac{p(x,y)}{p(y)}$, $\Pr[x\mid Y=0]=\begin{cases}
+%			\Pr[X=0\mid Y=0]=\frac{1/4}{3/8}=\frac{2}{3}\\
+%			\Pr[X=1\mid Y=0]=\frac{1/8}{3/8}=\frac{1}{3}
+%		\end{cases}$
+%	\end{itemize}
+%	\ \\
+%	Bayes' Theorem () \[
+%	p(x\mid y)=\frac{p(y\mid x)\cdot p(x)}{p(y)}
+%	\]
+%	\begin{proof}
+%		$p(x\mid y)=\frac{p(x,y)}{p(y)}\implies p(y\mid x)p(x)=p(x,y)=p(x\mid y)p(y)\implies p(x\mid y)p(y)=p(y\mid x)p(x)$
+%	\end{proof}
+%
+%	\[
+%	p(y\mid x)=\begin{cases}
+%		\text{(1) Probability $y$ given $x$}\\
+%		\text{(2) likelihood of $x$ given $y$}
+%	\end{cases}
+%	\]
+%	
+%	\begin{example}
+%		dice with \$ sign(s). \# of \$ signs is unknown and fixed.
+%		Let $X$: \# of \$ signs observed in $n$ trials. $X\in\set{1,2,\cdots,n}$.
+%		\begin{center}
+%			\begin{tabular}{c|cccc}
+%				$X$ & $0$ & $1$ & $k$ & $n$\\
+%				$\Pr[X]$ & \multicolumn{4}{c}{$\binom{b}{k}p^k(1-p)^{n-k}$}
+%			\end{tabular}
+%		\end{center} Let $p$: probability of a single event. $X\sim\mathcal{B}(n,p)$. Binomial Distribution
+%		\[
+%		\Pr[X=k]=\binom{n}{k}p^k(1-p)^{n-k}\quad\text{for}\quad k=0,1,\cdots, n.	
+%		\]
+%		Q: Assume that we do not know the number of \$ signs ($Y$). We observe two \$ signs out of 10 trials. What would be a good guess? \begin{center}
+%			\begin{tabular}{c|c}
+%				Hard & Easy\\
+%				\hline
+%				$\max_y\Pr[Y=y\mid X=2]$ & $\Pr[X=2\mid Y=y]$
+%			\end{tabular}
+%		\end{center}
+%		$\Pr[X=2\mid Y=y]$. $Y=y$ is \# of \$. It is likelihood of $Y$ given $X=2$.
+%	\end{example}
+%	
+%	Random variable $X\sim p(x)=\Pr[X=x]$. pmf(probability mass function)
+%	\begin{itemize}
+%		\item Expected Value $\E[g(x)]=\sum_xp(x)g(x)$
+%		\item Mean $\E[X]=\sum_xp(x)x$
+%		\item Variance $\E[X^2]-\set{\E[X]}^2$
+%	\end{itemize}
+%	
+%	$X,Y$ are random variables. \[
+%	\Cov\sbr{x,y}=\E_{X,Y}\sbr{(X-\E_X[X])(Y-\E[Y])}=\E_{X,Y}[XY]-\E_X[X]\E_Y[Y].
+%	\]
+%	$\Cov[X,X]=\E[X^2]-\set{\E[X]}^2$
+%	\[
+%	\corr(X,Y)=\frac{\Cov(XY)}{\sqrt{\Var[X]}\sqrt{\Var[Y]}}\in\sbr{-1,1}
+%	\]\[
+%	\Cov(X,Y)=\begin{cases}
+%		1 &: X=Y\\
+%		-1&: X=-Y\\
+%		0 &: \text{$X,Y$ are independent}
+%	\end{cases}
+%	\]
+%	\begin{example}
+%		\ \begin{center}
+%			\begin{tabular}{c|ccc|c}
+%				$Y\backslash X$ & -1 & 0 & 1 & $\Pr[Y]$\\
+%				\hline
+%				$0$ & 0 & 1/3 & 0 & 1/3\\
+%				$1$ & 1/3 & 0 & 1/3 & 2/3\\
+%				\hline
+%				$\Pr[X]$ & 1/3 & 1/3 & 1/3 &
+%			\end{tabular}
+%		\end{center}\[
+%	\begin{cases}
+%		\E[X]=\sum_xp(x)x=(-1)\cdot\frac{1}{3}+0\cdot\frac{1}{3}+1\cdot\frac{1}{3}=0\\
+%		\E[Y]=\sum_yp(y)y=0\cdot\frac{1}{3}+0\cdot\frac{2}{3}=\frac{2}{3}.
+%	\end{cases}
+%	\] \[
+%	\Cov(X,Y)=\E[XY]-\E[X]\E[Y]=\sum_{x,y}p(x,y)xy-0=0.
+%	\]
+%	\end{example}
+%
+%	Multi-dimensional Case
+%	
+%	Let $\vec{X}=\begin{bmatrix}
+%		X_1\\ \vdots\\ X_D
+%	\end{bmatrix}\in\R^D$ be a random variable.
+%	\begin{itemize}
+%		\item Expected Value $\E[\vec{X}]=\begin{bmatrix}
+%			\E[X_1]\\ \vdots\\ \E[X_D]
+%		\end{bmatrix}\in\R^D$
+%	\item Let $\vec{X}\in\R^D$ and $\vec{Y}\in\R^E$ are random variables. Then \begin{align*}
+%		\Cov(\vec{X},\vec{Y})&=\E\sbr{(\vec{X}-\E[\vec{X}])(\vec{Y}-\E[\vec{Y}])^T}\\
+%		&=\E[\vec{X}\vec{Y}^T]-\E[\vec{X}]\E[\vec{Y}]^T
+%	\end{align*}
+%	\item Variance \begin{align*}
+%		\Var[\vec{X}]&=\Cov[\vec{X},\vec{X}]\\
+%		&=\E[\vec{X}\vec{X}^T]-\E[\vec{X}]\E[\vec{X}]^T\\
+%		&=\begin{bmatrix}
+%			\Cov[X_1,X_1] & \cdots & \Cov[X_1,X_D]\\
+%			\vdots & \ddots & \vdots\\
+%			\Cov[X_D,X_1] & \cdots & \Cov[X_D,X_D]\\
+%		\end{bmatrix}
+%	\end{align*}
+%	$\Cov[X_i,X_j]=\E[X_iX_j]-\E[X_i]\E_[X_j]=\Cov[X_j,X_i]$. $\Var[\vec{X}]$ is symmetric and positive semi-define matrix, \ie, $\vec{x}\Var[\vec{X}]\vec{x}\geq 0$ for all $\vec{x}$.
+%	
+%		i.i.d. independent and identically distributed.
+%	
+%	$X_1,\dots,X_n$: i.i.d. if \begin{enumerate}[(1)]
+%		\item Mutually independent $p(x_i,x_j)=p(x_i)p(x_j)$ for all $i,j$ with $i\neq j$.
+%		\item Identically Distributed.
+%	\end{enumerate}
+%	
+%	Def. (Conditionally Independent) $X,Y$ are conditionally independent given $Z$ if \[
+%	p(x,y\mid z)=p(x\mid z)p(y\mid z).
+%	\]
+%	
+%	Gaussian Distribution. \[
+%	p_{\mu^2,\sigma}(x)=\frac{1}{\sqrt{2\pi\sigma}}\exp\sbr{-\frac{(x-\mu)^2}{2\sigma^2}}
+%	\]
+%	
+%	Let $\vec{X}\in\R^D$, $\mvec{\mu}\in\R^D$ and $\mvec{\Sigma}\in M_{D}(\R)$. Note that $\abs{\sigma}=\sqrt{\sigma^2}$ and $\sqrt{\mvec{\Sigma}}=\abs{\mvec{\Sigma}}^{1/2}$. Then \[
+%	p_{\mvec{\mu},\mvec{\Sigma}}(\vec{X})=(2\pi)^{-D/2}\abs{\mvec{\Sigma}}^{-1/2}\exp\sbr{-\frac{1}{2}(\vec{x}-\mvec{\mu})^T\mvec{\Sigma}^{-1}(\vec{x}-\mvec{\mu})}.
+%	\]
+%	\end{itemize}
 	
-	Note that \( |\sigma| = \sqrt{\sigma^2} \) for the scalar case, and \( \sqrt{\mvec{\Sigma}} = |\mvec{\Sigma}|^{1/2} \) denotes the matrix square root of the determinant of \( \mvec{\Sigma} \).
+	\newpage
+	\chapter{Continuous Optimization}
 	
+	\textbf{Minimum}
 	
+	If $y=f(x)$ has the minimum $y*$ at $x=x*$ (\ie, $y*=f(x*)$), \[
+	\begin{cases}
+		y^*:=\min_x f(x)\\
+		x^*:=\text{arg}\min_x f(x)
+	\end{cases}
+	\]
+	\section{Optimization Using Gradient Descent}
+	We consider the problem of solving for the minimum of a real-valued
+	function \[
+	\min_{\vec{x}}f(\vec{x}),
+	\] where $f:\R^D\to\R$ is an objective function that captures the machine learning problem at hand.
 	\begin{tcolorbox}[colframe=defcolor,title={\color{white}\bf }]
 		\begin{definition}
 			
