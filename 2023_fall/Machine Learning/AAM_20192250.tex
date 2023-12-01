@@ -2719,6 +2719,153 @@
 		\end{theorem}
 	\end{tcolorbox}
 
+	\newpage
+	\chapter{Linear Regression}
+	This section introduces linear regression, a statistical method used to model the relationship between a dependent variable and one or more independent variables. The goal is to find a linear function that best fits a set of data points, minimizing the difference between the observed values and those predicted by the model.
+	
+	Key concepts covered include:
+	
+	\begin{itemize}
+		\item \textbf{Regression Analysis:} The process of fitting a curve to the data points.
+		\item \textbf{Noise and Variability:} Accounting for random variation and measurement errors in the data.
+		\item \textbf{Model Selection:} Choosing the right complexity for the model to avoid overfitting or underfitting.
+		\item \textbf{Optimization:} Techniques for finding the parameters that minimize the loss function.
+		\item \textbf{Uncertainty Modeling:} Assessing the confidence in the model's predictions.
+	\end{itemize}
+	
+	Regression is crucial in many fields, such as finance, engineering, and medicine, due to its ability to predict and explain complex phenomena.
+	
+	\section{Problem Formulation}
+	
+	\section{Parameter Estimation}
+	
+	Consider the linear regression setting (\ref{eq:regression}) and assume we are given a training set \( \mathcal{D} = \{ (x_1, y_1), \dots, (x_N, y_N) \} \) consisting of \( N \) inputs \( x_n \in \mathbb{R}^D \) and corresponding observations/targets \( y_n \in \mathbb{R} \), \( n = 1, \dots, N \). The corresponding graphical model is given in Figure 9.3. Note that \( y_i \) and \( y_j \) are conditionally independent given their respective inputs \( x_i \), \( x_j \), so that the likelihood factorizes according to
+	
+	\begin{equation}
+		p(\mathcal{Y} | \mathcal{X}, \theta) = p(y_1, \dots, y_N | x_1, \dots, x_N, \theta) = \prod_{n=1}^{N} p(y_n | x_n, \theta) = \prod_{n=1}^{N} \mathcal{N}(y_n | x_n^\top \theta, \sigma^2), \tag{9.5a}
+	\end{equation}
+	
+	where we defined \( \mathcal{X} = \{ x_1, \dots, x_N \} \) and \( \mathcal{Y} = \{ y_1, \dots, y_N \} \) as the sets of training inputs and corresponding targets respectively. The likelihood and the factors \( p(y_n | x_n, \theta) \) are Gaussian due to the noise distribution; see (9.3).
+	
+	In the following, we will discuss how to find optimal parameters \( \theta^* \) in \( \mathbb{R}^D \) for the linear regression model (9.4). Once the parameters \( \theta^* \) are found, we can predict function values by using this parameter estimate in (9.4) so that at an arbitrary test input \( x_* \), the distribution of the corresponding target \( y_* \) is
+	
+	\begin{equation}
+		p(y_* | x_*, \theta^*) = \mathcal{N}(y_* | x_*^\top \theta^*, \sigma^2). \tag{9.6}
+	\end{equation}
+	
+	In the following, we will have a look at parameter estimation by maximizing the likelihood, a topic that we already covered to some degree in Section 8.3.
+	\section{Maximum Likelihood Estimation}
+	
+	A widely used approach to finding the desired parameters $\theta_{ML}$ is \textit{maximum likelihood estimation}, where we find parameters $\theta_{ML}$ that maximize the likelihood $p(\mathcal{Y} | \mathcal{X}, \theta)$. Intuitively, maximizing the likelihood means maximizing the predictive distribution of the training data given the model parameters. We obtain the maximum likelihood parameters as
+	\begin{equation}
+		\theta_{ML} \in \arg \max_{\theta} p(\mathcal{Y} | \mathcal{X}, \theta).
+	\end{equation}
+	
+	\textbf{Remark.} The likelihood $p(y | x, \theta)$ is not a probability distribution in $\theta$: it is simply a function of the parameters $\theta$ but does not integrate to 1 (i.e., it is unnormalized), and may not even be integrable with respect to $\theta$. However, the likelihood in (1) is a normalized probability distribution in $y$.
+	
+	\subsection{Log-Transformation of the Likelihood}
+	To find the desired parameters $\theta_{ML}$ that maximize the likelihood, we typically perform gradient ascent (or gradient descent on the negative likelihood). In the case of linear regression we consider here, however, a closed-form solution exists, which makes iterative gradient descent unnecessary. In practice, instead of maximizing the likelihood directly, we apply the log-transformation to the likelihood function and minimize the negative log-likelihood.
+	\begin{equation}
+		\mathcal{L}(\theta) := -\log p(\mathcal{Y} | \mathcal{X}, \theta) = -\log \prod_{n=1}^{N} \mathcal{N}(y_n | x_n^\top \theta, \sigma^2),
+	\end{equation}
+	where we exploited that the likelihood factorizes over the number of data points due to our independence assumption on the training set.
+	
+	\textbf{Remark (Log-Transformation).} Since the likelihood is a product of $N$ Gaussian distributions, the log-transformation is especially useful as it does not suffer from numerical underflow, and the differentiation rules turn our problem simpler. The log-transform will turn the product into a sum of log-probabilities such that the corresponding gradient is a sum of individual gradients, instead of a repeated application of the product rule.
+	
+	\subsection{Computing the Negative Log-Likelihood}
+	The negative log-likelihood function is also called \textit{error function}. The squared error is often used as a measure of distance. Recall from Section 3.1 that $\lVert x \rVert_2 = x^\top x$ if we choose the dot product as the inner product. Ignoring the possibility of duplicate data points, $\mathcal{L}(\theta)$ is given by
+	\begin{equation}
+		\mathcal{L}(\theta) := \frac{1}{2\sigma^2} \sum_{n=1}^{N} (y_n - x_n^\top \theta)^2.
+	\end{equation}
+	
+	The maximum likelihood estimator $\theta_{ML}$ solves $\nabla_{\theta} \mathcal{L}(\theta) = 0$. Setting the gradient to 0 is a necessary and sufficient condition, and we obtain a global minimum since the Hessian $\nabla^2_{\theta}(\theta) = \frac{1}{\sigma^2} X^\top X$ is positive definite.
+	
+	\subsection{Maximum Likelihood Estimation}
+	A widely used approach to finding the desired parameters $\boldsymbol{\theta}_{ML}$ is \textit{maximum likelihood estimation}, where we find parameters $\boldsymbol{\theta}_{ML}$ that maximize the likelihood $p(\mathcal{Y} | \mathcal{X}, \boldsymbol{\theta})$. Intuitively, maximizing the likelihood means maximizing the predictive distribution of the training data given the model parameters. We obtain the maximum likelihood parameters as
+	\begin{equation}
+		\boldsymbol{\theta}_{ML} = \arg \max_{\boldsymbol{\theta}} p(\mathcal{Y} | \mathcal{X}, \boldsymbol{\theta}).
+	\end{equation}
+	
+	\textbf{Remark.} The likelihood $p(y | x, \boldsymbol{\theta})$ is not a probability distribution in $\boldsymbol{\theta}$: it is simply a function of the parameters $\boldsymbol{\theta}$ but does not integrate to 1 (i.e., it is unnormalized), and may not even be integrable with respect to $\boldsymbol{\theta}$. However, the likelihood in (9.7) is a normalized probability distribution in $y$.
+	
+	To find the desired parameters $\boldsymbol{\theta}_{ML}$ that maximize the likelihood, we typically perform gradient ascent (or gradient descent on the negative likelihood). In the case of linear regression we consider here, however, a closed-form solution exists, which makes iterative gradient descent unnecessary. In practice, instead of maximizing the likelihood directly, we apply the log-transformation to the likelihood function and minimize the negative log-likelihood.
+	
+	\textbf{Remark (Log-Transformation).} Since the likelihood (9.5b) is a product of $N$ Gaussian distributions, the log-transformation is especially useful as it (a) does not suffer from numerical underflow, and (b) the differentiation rules will turn our simpler. More specifically, numerical underflow will be a problem when we multiply $N$ probabilities, where $N$ is the number of data points, since we cannot represent very small numbers, such as $10^{-256}$. Furthermore, the log-transform will turn the product into a sum of log-probabilities such that the corresponding gradient is a sum of individual gradients, instead of a repeated application of the product rule (5.46) to compute the gradient of a product of $N$ terms.
+	
+	To find the optimal parameters $\boldsymbol{\theta}_{ML}$ of our linear regression problem, we minimize the negative log-likelihood
+	\begin{equation}
+		-\log p(\mathcal{Y} | \mathcal{X}, \boldsymbol{\theta}) = -\log \prod_{n=1}^{N} p(y_n | x_n, \boldsymbol{\theta}),
+	\end{equation}
+	where we exploited that the likelihood (9.5b) factorizes over the number of data points due to our independence assumption on the training set. In the linear regression model (9.4), the likelihood is Gaussian (due to the Gaussian additive noise term), such that we arrive at
+	\begin{equation}
+		\log p(y_n | x_n, \boldsymbol{\theta}) = -\frac{1}{2\sigma^2} (y_n - x_n^T \boldsymbol{\theta})^2 + \text{const},
+	\end{equation}
+	where the constant includes all terms independent of $\boldsymbol{\theta}$. Using (9.9) in the negative log-likelihood (9.8), we obtain (ignoring the constant terms)
+	\begin{equation}
+		\mathcal{L}(\boldsymbol{\theta}) = \frac{1}{2\sigma^2} \sum_{n=1}^{N} (y_n - x_n^T \boldsymbol{\theta})^2,
+	\end{equation}
+	where we define the design matrix $\mathbf{X} = [x_1, \dots, x_N]^T \in \mathbb{R}^{N \times D}$ as the collection of training inputs and $\mathbf{y} = [y_1, \dots, y_N]^T \in \mathbb{R}^N$ as a vector that collects all training targets. Note that the $n$-th row in the design matrix $\mathbf{X}$ corresponds to the training input $x_n$. In (9.10b), we used the fact that the sum of squared errors between the observations $y_n$, and the corresponding model prediction $x_n^T \boldsymbol{\theta}$ equals the squared distance between $\mathbf{y}$ and $\mathbf{X} \boldsymbol{\theta}$. With (9.10b), we now have a concrete form of the negative log-likelihood function we need to optimize. We immediately see that (9.10b) is quadratic in $\boldsymbol{\theta}$. This means that we can find a unique global solution for $\boldsymbol{\theta}_{ML}$ for minimizing the negative log-likelihood $\mathcal{L}$. We can find the global optimum by computing the gradient of $\mathcal{L}$, setting it to 0 and solving for $\boldsymbol{\theta}$.
+	
+	
+	\section{Introduction}
+	Linear regression is a statistical method for modeling the relationship between a dependent variable and one or more independent variables. The formula for a simple linear regression (with one independent variable) is:
+	\begin{equation}
+		y = \beta_0 + \beta_1x + \epsilon
+	\end{equation}
+	where $y$ is the dependent variable, $x$ is the independent variable, $\beta_0$ is the intercept, $\beta_1$ is the slope, and $\epsilon$ is the error term.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				title={Linear Regression Example},
+				xlabel={$x$ (Independent Variable)},
+				ylabel={$y$ (Dependent Variable)},
+				xmin=0, xmax=10,
+				ymin=0, ymax=10,
+				grid=both,
+				scatter/classes={
+					a={mark=o,draw=black}
+				}
+				]
+				
+				% Add your data points here
+				\addplot[scatter,only marks,scatter src=explicit symbolic] 
+				table[meta=label] {
+					x   y   label
+					1   2.1 a
+					2   3.2 a
+					3   4.3 a
+					4   5.1 a
+					5   6.2 a
+					6   7.3 a
+					7   7.8 a
+					8   8.5 a
+					9   9.0 a
+				};
+				
+				% Add the regression line here
+				% Assuming a simple linear model for demonstration: y = mx + c
+				\addplot[no marks, thick, red] expression {0.9*x + 1.2};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	\section{Methodology}
+	The parameters $\beta_0$ and $\beta_1$ are estimated using the least squares approach, which minimizes the sum of squared residuals.
+	
+	\section{Example}
+	Consider a dataset where we want to predict a person's weight based on their height. Here, weight would be our dependent variable ($y$), and height would be our independent variable ($x$).
+	
+	\section{Results}
+	After fitting the linear regression model, we can use the estimated parameters to make predictions. For instance, if the estimated parameters are $\beta_0 = 50$ and $\beta_1 = 0.75$, then for a person who is 170 cm tall, their predicted weight would be:
+	\begin{equation}
+		\text{Weight} = 50 + 0.75 \times 170
+	\end{equation}
+	
+	\section{Conclusion}
+	Linear regression is a fundamental tool in statistical analysis and helps in understanding the linear relationship between variables.
+	
+
 	\begin{thebibliography}{9}
 		\bibitem{textbook}
 		M. P. Deisenroth, A. A. Faisal, and C. S. Ong, \textit{Mathematics for Machine Learning}. 1st ed. Cambridge, U.K.: Cambridge University Press, 2020.
