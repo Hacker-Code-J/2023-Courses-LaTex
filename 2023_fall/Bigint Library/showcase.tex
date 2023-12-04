@@ -322,16 +322,33 @@
 \begin{frame}{IV.4 라이브러리 성능}
 	\alert{\bf 곱셈(TextBook vs Improved TextBook vs Karatsba)}\\
 	\begin{center}
-		\includegraphics[width=\linewidth,height=.525\textheight]{mul_3072.png}
+		\includegraphics[width=\linewidth,height=.525\textheight]{mul_3072_2.png}
 	\end{center}
 	\begin{center}
 		\begin{tabularx}{\textwidth}{c||XX}
 			\hline
-			방식 & 3072-bit (ms) & 상대 속도(s)\\
+			방식 & 3072-bit (ms) & 시간 비교\\
 			\midrule
-			\textcolor{blue}{\bf TextBook} & 3339 & 2.356 \\
-			\textcolor{red}{\bf Improved TextBook} & 1417 & 1\\
-			\textcolor{green}{\bf Karatsuba} & 296 & 0.209\\
+			\textcolor{blue}{\bf TextBook} & 3.21 & 2.326 \\
+			\textcolor{red}{\bf Improved TextBook} & 1.38 & 1\\
+			\textcolor{green}{\bf Karatsuba} & 0.27 & 0.196\\
+			\hline
+		\end{tabularx}
+	\end{center}
+\end{frame}
+\begin{frame}{IV.4 라이브러리 성능}
+	\alert{\bf 제곱(Textook vs Improved TextBook vs Karatsba)}\\
+	\begin{center}
+		\includegraphics[width=\linewidth,height=.525\textheight]{mul_3072_2.png}
+	\end{center}
+	\begin{center}
+		\begin{tabularx}{\textwidth}{c||XX}
+			\hline
+			방식 & 3072-bit (ms) & 시간 비교\\
+			\midrule
+			\textcolor{blue}{\bf TextBook} & 3.21 & 2.326 \\
+			\textcolor{red}{\bf Improved TextBook} & 1.38 & 1\\
+			\textcolor{green}{\bf Karatsuba} & 0.27 & 0.196\\
 			\hline
 		\end{tabularx}
 	\end{center}

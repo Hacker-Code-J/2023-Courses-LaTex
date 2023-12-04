@@ -1842,7 +1842,115 @@
 	\section{Interchange of Limits}
 	\section{Series of Functions}
 	\section{Power Series}
-	
+	\newpage
+	\section{Exercises}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			For \( x \in [0, 1] \),
+			\[ f_n(x) = \frac{1}{n^2x^2 + 1}. \]
+			Then show that \( \{f_n\} \) converges pointwise on [0, 1] but not converges uniformly.
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			For \( x \in [0, 1] \),
+			\[ f_n(x) = nx(1 - x)^n. \]
+			Then show that \( \{f_n\} \) converges pointwise on [0, 1] but not converges uniformly.
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			For \( x \in \mathbb{R} \), let
+			\[ f_n(x) = \frac{nx}{1 + n^2x^2}. \]
+			Then show that for \( a > 0 \), \( \{f_n\} \) converges uniformly on \([a, \infty)\) but does not converge uniformly on \([0, \infty)\).
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			Let \( I = (-\infty, \infty) \). Then for \( f_n(x) = n^3e^{-n}(1 - 2\sin^2 nx) \), the series
+			\[ \sum_{n=1}^{\infty} f_n(x) \]
+			converges uniformly.
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			Let \( I = [0, 1] \). Then, if \( f_n(x) = x^n \), \( n \in \mathbb{N} \) show that the series
+			\[ \sum_{n=1}^{\infty} f_n(x) \]
+			is a pointwise convergent but not a uniformly convergent series.
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			Evaluate the radius of convergence of following power series
+			\begin{enumerate}
+				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{x^n}{2^n}\),
+				\item \(\displaystyle\sum_{n=1}^{\infty} \ln \left( \frac{n+1}{n} \right) x^n\),
+				\item \(\displaystyle\sum_{n=0}^{\infty} n^2(x - 4)^n\).\item \(\displaystyle\sum_{n=1}^{\infty} \frac{(x-2)^n}{n^23^n}\),
+				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{x^n}{n!}\),
+				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{(n!)^2}{(2n)!}x^n\).
+			\end{enumerate}
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			Evaluate the radius of convergence of following power series
+			\begin{enumerate}
+				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{x^n}{3^n + 5^n}\),
+				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{n^3x^n}{n!}\).
+			\end{enumerate}
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			Let the radius of convergence of following power series
+			\[
+			\sum_{n=0}^{\infty} a_nx^n
+			\]
+			is \( R \) then evaluate the radius of convergence of
+			\[
+			\sum_{n=0}^{\infty} a_nx^{-n}.
+			\]
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
+	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
+		\begin{exercise}
+			Suppose that the radius of convergence of the power series
+			\[
+			\sum_{n=0}^{\infty} a_nx^n
+			\]
+			is \( R \). What is the radius of convergence of the following power series?
+			\[
+			\sum_{n=0}^{\infty} a_nx^{2n}.
+			\]
+		\end{exercise}
+	\end{tcolorbox}
+	\begin{proof}[\sol]
+		
+	\end{proof}
 	\newpage
 	\chapter{Introduction to Fourier Series and Transform}
 	\section{Periodic Functions and Trigonometric Series}
@@ -2180,15 +2288,17 @@
 	\section{Introduction to Complex Fourier Series}
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Complex Fourier Series}]
 		\begin{theorem}
-			For a function of period \(2\pi\), the Fourier series
+			For a function of period \(2L\)
 			\[
-			f(x) = a_0 + \sum_{n=1}^{\infty} (a_n \cos nx + b_n \sin nx)
+			f(x) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos \frac{n\pi x}{L} + b_n \sin \frac{n\pi x}{L} \right),
 			\]
-			can be written in complex form
+			the complex Fourier series is given by
 			\[
-			f(x) = \sum_{n=-\infty}^{\infty} c_n e^{inx}, \quad \text{where} \quad c_n = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{-inx} \, dx
+			f(x) = \sum_{n=-\infty}^{\infty} c_n \exp \left( i\frac{n\pi x}{L} \right),\quad
+			\text{where}\quad
+			c_n = \frac{1}{2L} \int_{-L}^{L} f(x) \exp \left( -i\frac{n\pi x}{L} \right) dx
 			\]
-			for \( n = 0, \pm1, \pm2, \ldots \).
+			for \( n = 0, \pm1, \pm2, \cdots \).
 		\end{theorem}
 	\end{tcolorbox}
 	\begin{proof}
@@ -2218,26 +2328,12 @@
 		d_n = \frac{1}{2} (a_n + ib_n) = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x) \left( \cos nx + i \sin nx \right) dx = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x)e^{inx} dx.
 		\] Note that \( d_n = c_{-n} \) for all \( n \).
 	\end{proof}
+	\vspace{12pt}
 	\begin{remark}
 		The \( c_n \) are called the \textbf{complex Fourier coefficients} of \( f(x) \).
 	\end{remark}
-	\vspace{12pt}
-	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf }]
-		\begin{theorem}
-			
-			For a function of period \(2L\)
-			\[
-			f(x) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos \frac{n\pi x}{L} + b_n \sin \frac{n\pi x}{L} \right),
-			\]
-			the complex Fourier series is given by
-			\[
-			f(x) = \sum_{n=-\infty}^{\infty} c_n \exp \left( i\frac{n\pi x}{L} \right),\quad
-			\text{where}\quad
-			c_n = \frac{1}{2L} \int_{-L}^{L} f(x) \exp \left( -i\frac{n\pi x}{L} \right) dx
-			\]
-			for \( n = 0, \pm1, \pm2, \cdots \).
-		\end{theorem}
-	\end{tcolorbox}
+	
+	\newpage
 	
 	\section{Fourier Integrals}
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Integral}]
@@ -2308,8 +2404,7 @@
 			\]
 		\end{proof}
 	\end{example}
-	
-	\newpage
+	\vspace{12pt}
 	\begin{remark}
 		The average of the left- and right-hand limits of \( f(x) \) at \( x = 1 \) is equal to \( 1/2 \).
 		Furthermore, we obtain
@@ -2333,30 +2428,47 @@
 			as \( x \to \infty \).
 	\end{remark}
 	
-
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Sine and Cosine Integrals}]
+		\begin{theorem}
+			\begin{enumerate}[(1)]
+				\item If \( f(x) \) is an even function, then \( B(\omega) = 0 \) and
+				\[
+				A(\omega) = \frac{2}{\pi} \int_{0}^{\infty} f(v) \cos \omega v \, dv.
+				\]
+				The Fourier integral then reduces to the \textbf{Fourier cosine integral}
+				\[
+				f(x) = \int_{0}^{\infty} A(\omega) \cos \omega x \, d\omega.
+				\]
+				
+				\item If \( f(x) \) is an odd function, then \( A(\omega) = 0 \) and
+				\[
+				B(\omega) = \frac{2}{\pi} \int_{0}^{\infty} f(v) \sin \omega v \, dv.
+				\]
+				The Fourier integral then reduces to the \textbf{Fourier sine integral}
+				\[
+				f(x) = \int_{0}^{\infty} B(\omega) \sin \omega x \, d\omega.
+				\]
+			\end{enumerate}
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		content...
+	\end{proof}
 \newpage
-	\textbf{Theorem (Fourier Sine and Cosine Integrals)}
+	\textbf{Theorem ()}
 	
-	\begin{itemize}
-		\item If \( f(x) \) is an even function, then \( B(\omega) = 0 \) and
-		\[
-		A(\omega) = \frac{2}{\pi} \int_{0}^{\infty} f(v) \cos \omega v \, dv.
-		\]
-		The Fourier integral then reduces to the \textbf{Fourier cosine integral}
-		\[
-		f(x) = \int_{0}^{\infty} A(\omega) \cos \omega x \, d\omega.
-		\]
-		
-		\item If \( f(x) \) is an odd function, then \( A(\omega) = 0 \) and
-		\[
-		B(\omega) = \frac{2}{\pi} \int_{0}^{\infty} f(v) \sin \omega v \, dv.
-		\]
-		The Fourier integral then reduces to the \textbf{Fourier sine integral}
-		\[
-		f(x) = \int_{0}^{\infty} B(\omega) \sin \omega x \, d\omega.
-		\]
-	\end{itemize}
 	
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{theorem}
+			content...
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{definition}
+			content...
+		\end{definition}
+	\end{tcolorbox}
 	\textbf{Observation}
 	
 	\begin{itemize}
