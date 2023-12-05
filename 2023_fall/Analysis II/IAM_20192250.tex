@@ -2454,8 +2454,8 @@
 			\end{itemize}
 		\end{definition}
 	\end{tcolorbox}
-	\vspace{12pt}
-	\begin{example}[Fourier cosine and sine transforms]
+	\vspace{7pt}
+	\begin{example}
 		Find Fourier cosine and sine transforms of the function
 		\[
 		f(x) :=
@@ -2467,22 +2467,17 @@
 		\begin{proof}[\sol]
 			Fourier cosine and sine transforms of \( f(x) \) are
 			\[
-			\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \cos \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k \sin a\omega}{\omega} \right),
-			\]
-			\[
-			\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \sin \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k(1 - \cos a\omega)}{\omega} \right).
+			\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \cos \omega x \, dx = k\sqrt{\frac{2}{\pi}} \left( \frac{\sin a\omega}{\omega} \right),\
+			\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \sin \omega x \, dx = k\sqrt{\frac{2}{\pi}} \left( \frac{1 - \cos a\omega}{\omega} \right).
 			\]
 		\end{proof}
 	\end{example}
 	
-	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Linearity of Fourier Cosine and Sine Transforms}]
 		\begin{theorem}
 			The Fourier cosine and sine transforms are \textbf{linear operators} i.e., for \(a, b \in \mathbb{R}\),
 			\[
-			\mathcal{F}_c(af + bg) = a\mathcal{F}_c(f) + b\mathcal{F}_c(g)
-			\]
-			\[
+			\mathcal{F}_c(af + bg) = a\mathcal{F}_c(f) + b\mathcal{F}_c(g),\quad
 			\mathcal{F}_s(af + bg) = a\mathcal{F}_s(f) + b\mathcal{F}_s(g).
 			\]
 		\end{theorem}
@@ -2494,7 +2489,8 @@
 			&=a\mathcal{F}_c(f)+b\mathcal{F}_c(g).
 		\end{align*} Similarly, $\mathcal{F}_s(af + bg) = a\mathcal{F}_s(f) + b\mathcal{F}_s(g)$.
 	\end{proof}
-	\vspace{12pt}
+	
+	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Cosine and Sine Transforms of Derivatives}]
 		\begin{theorem}
 			Let \( f(x) \) be continuous and absolutely integrable on the \( x \)-axis, let \( f'(x) \) be piecewise continuous on each finite interval, and let \( f(x) \to 0 \) as \( x \to \infty \). Then
@@ -2510,7 +2506,110 @@
 			\]
 		\end{theorem}
 	\end{tcolorbox}
+	\begin{proof}
+		Note that \begin{align*}
+			\mathcal{F}_c(f')&=\sqrt{\frac{2}{\pi}}\int_0^\infty f'(x)\cos\omega x\ dx\\
+			&=\sqrt{\frac{2}{\pi}}\sbr{f(x)\cos\omega x}_0^\infty - \sqrt{\frac{2}{\pi}}\int_0^\infty(-\omega\sin\omega x)\ dx\\
+			&=-\sqrt{\frac{2}{\pi}}f(0)+\omega\sqrt{\frac{2}{\pi}}\int_0^\infty f(x)\sin\omega x\ dx\\
+			&=-\sqrt{\frac{2}{\pi}}f(0)+\omega\mathcal{F}_s(f).
+		\end{align*} and that \begin{align*}
+		\mathcal{F}_s(f')&=\sqrt{\frac{2}{\pi}}\int_0^\infty f'(x)\sin\omega x\ dx\\
+		&=-\sqrt{\frac{2}{\pi}}\int_0^\infty f(x)\omega\cos\omega x\ dx\\
+		&=-\omega\sqrt{\frac{2}{\pi}}\int_0^\infty f(x)\cos\omega x\ dx\\
+		&=-\omega\mathcal{F}_c(f).
+	\end{align*} Then \begin{align*}
+	\mathcal{F}_c(f'')&=\omega\mathcal{F}_s(f')-\sqrt{\frac{2}{\pi}}f'(0)
+	=-\omega^2\mathcal{F}_c(f)-\sqrt{\frac{2}{\pi}}f'(0),\\
+	\mathcal{F}_s(f'')&=-\omega\mathcal{F}_c(f')
+	=-\omega\of{\omega\mathcal{F}_s(f)-\sqrt{\frac{2}{\pi}}f(0)}=-\omega^2\mathcal{F}_s(f)+\omega\sqrt{\frac{2}{\pi}}f(0).
+\end{align*}
+	\end{proof}
+	\vspace{12pt}
 	
+	\newpage
+	\begin{example}
+		Find the Fourier cosine transform of \( f(x) = e^{-ax} \), where \( a > 0 \).
+		\begin{proof}[\sol]
+			Let $f(x)=e^{-ax}$. Since \( f''(x) = a^2e^{-ax}=a^2 f(x) \),
+			\[
+			a^2 \mathcal{F}_c(f) = \mathcal{F}_c (a^2f) = \mathcal{F}_c(f'')
+			= -\omega^2 \mathcal{F}_c(f) - \sqrt{\frac{2}{\pi}} f'(0) = -\omega^2 \mathcal{F}_c(f) + a\sqrt{\frac{2}{\pi}}.
+			\]
+			Therefore
+			\[
+			(a^2 + \omega^2) \mathcal{F}_c (f) = a\sqrt{\frac{2}{\pi}}
+			\implies
+			\mathcal{F}_c (f)= \sqrt{\frac{2}{\pi}} \left( \frac{a}{a^2 + \omega^2} \right).
+			\]
+		\end{proof}
+	\end{example}
+	
+	\begin{note}[\textcolor{red}{\bf Fourier Transform}]
+		The Fourier integral is
+		\[ f(x) = \int_{0}^{\infty} \left[ A(\omega) \cos \omega x + B(\omega) \sin \omega x \right] d\omega,\quad\text{where}\quad\begin{cases}
+			\displaystyle A(\omega) = \frac{1}{\pi} \int_{-\infty}^{\infty} f(v) \cos \omega v \, dv,\\
+			\displaystyle B(\omega) = \frac{1}{\pi} \int_{-\infty}^{\infty} f(v) \sin \omega v \, dv.
+		\end{cases} \]
+		Then, we have
+		\begin{align*}
+			f(x) &= \frac{1}{\pi} \int_{0}^{\infty} \left[ \int_{-\infty}^{\infty} f(v) (\cos \omega v \cos \omega x + \sin \omega v \sin \omega x) dv \right] d\omega\\
+			&= \frac{1}{\pi} \int_{0}^{\infty} \left[ \int_{-\infty}^{\infty} f(v) \cos(\omega x - \omega v) dv \right] d\omega\\
+			&= \frac{1}{\pi} \int_{0}^{\infty} F(w) d\omega\quad\text{with}\quad F(\omega) := \int_{-\infty}^{\infty} f(v) \cos(\omega x - \omega v) dv.
+		\end{align*}
+		Since \(\cos(\omega x - \omega v)\) is an even function of \(\omega\), \(F(\omega)\) is an even function. Thus
+		$\displaystyle f(x) = \frac{1}{2\pi}\int_{-\infty}^\infty F(w) d\omega.$
+		Let
+		\[ G(\omega) := \int_{-\infty}^{\infty} f(v) \sin(\omega x - \omega v) dv. \]
+		Since \(\sin(\omega x - \omega v)\) is an odd function of \(\omega\), \(G(\omega)\) is an odd function. Thus
+		$\displaystyle\frac{1}{2\pi} \int_{-\infty}^{\infty} G(\omega) d\omega=0.$
+		Therefore, \begin{align*}
+			f(x)=\frac{1}{2\pi} \int_{-\infty}^{\infty} F(w) d\omega + i\cdot\frac{1}{2\pi} \int_{-\infty}^{\infty} G(w) d\omega
+			=&\ \frac{1}{2\pi} \int_{-\infty}^{\infty} \left[ \int_{-\infty}^{\infty} f(v) \cos(\omega x - \omega v) dv \right] d\omega\\
+			&\ +\frac{i}{2\pi} \int_{-\infty}^{\infty} \left[ \int_{-\infty}^{\infty} f(v) \sin(\omega x - \omega v) dv \right] d\omega\\
+			=&\ \frac{1}{2\pi} \int_{-\infty}^{\infty} \left[ \int_{-\infty}^{\infty} f(v) e^{i (\omega x - \omega v)} dv \right] d\omega,
+		\end{align*}
+		and so
+		\begin{align*}
+			f(x) &= \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \left[ \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(v) e^{-i \omega v} dv \right] e^{i \omega x} d\omega\\
+			&=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \hat{f}(w) e^{i \omega x} d\omega\quad\text{with}\quad\hat{f}(w)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(x) e^{-i \omega v} dx.
+		\end{align*}
+	\end{note}
+	\newpage
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Fourier and Inverse Fourier Transforms}]
+		\begin{definition}
+			\ \begin{itemize}
+				\item \textbf{Fourier transform} of \(f\):
+				\[ \mathcal{F}(f) = \hat{f}(\omega) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(x)e^{-i\omega x} \, dx. \]
+				\item \textbf{Inverse Fourier transform} of \(\hat{f}(\omega)\):
+				\[ \mathcal{F}^{-1}(f) = \hat{f}^{-1}(\omega) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \hat{f}(\omega)e^{i\omega x} \, d\omega \]
+			\end{itemize}
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Existence of the Fourier Transform}]
+		\begin{theorem}
+			Sufficient for the existence of the Fourier transform are the following two conditions, as we mention without proof.
+			\begin{enumerate}[(1)]
+				\item \( f(x) \) is piecewise continuous on every finite interval.
+				\item \( f(x) \) is absolutely integrable on the \( x \)-axis.
+			\end{enumerate}
+		\end{theorem}
+	\end{tcolorbox}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Linearity of the Fourier Transform}]
+		\begin{theorem}
+			The Fourier transform is a linear operation; that is, for any functions \( f(x) \) and \( g(x) \)
+			whose Fourier transforms exist and any constants \( a \) and \( b \),
+			\[ \mathcal{F}(af + bg) = a\mathcal{F}(f) + b\mathcal{F}(g). \]
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let $a,b\in\R$. Then \begin{align*}
+			\mathcal{F}(af+bg)&=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} (af+bg)(x)e^{-i\omega x}\ dx\\
+			&=\frac{a}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(x)e^{-i\omega x}\ dx+\frac{b}{\sqrt{2\pi}} \int_{-\infty}^{\infty} g(x)e^{-i\omega x}\ dx\\
+			&=a\mathcal{F}(f) + b\mathcal{F}(g).
+		\end{align*}
+	\end{proof}
 	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
