@@ -63,41 +63,6 @@
 	urlcolor=titleblue,
 }
 
-%Listing
-\usepackage{listings} %Code
-\renewcommand{\lstlistingname}{Code}%
-
-\definecolor{sagegreen}{rgb}{0.0,0.6,0.4}
-\definecolor{sagepurple}{rgb}{0.6,0.0,0.4}
-\definecolor{sageblue}{rgb}{0.0,0.4,0.6}
-\definecolor{sageorange}{rgb}{1.0,0.4,0.0}
-\definecolor{sagegray}{rgb}{0.4,0.4,0.4}
-
-\lstdefinestyle{sage}{
-	language=Python,
-	backgroundcolor=\color{white},
-	basicstyle=\small\ttfamily\color{black}, 
-	basicstyle=\footnotesize\ttfamily\color{black},
-	keywordstyle=\color{blue!60!black},
-	commentstyle=\color{green!60!black},
-	stringstyle=\color{purple!60!black},
-	showstringspaces=false,
-	breaklines=true,
-	tabsize=4,
-	morekeywords={True, False, None},
-	frame=leftline, % Remove the border
-	framesep=3pt,
-	frameround=tttt,
-	framexleftmargin=3pt,
-	numbers=left,
-	numberstyle=\small\color{gray},
-	xleftmargin=15pt, % Increase the left margin
-	xrightmargin=5pt,
-	captionpos=b,
-	belowskip=0pt,
-	aboveskip=4pt
-}
-
 %Ceiling and Floor Function
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -130,6 +95,7 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes.multipart}
 \usepackage{pgfplots}
+\usepackage{mathrsfs}
 
 %Tcolorbox
 \usepackage[most]{tcolorbox}
@@ -2453,12 +2419,99 @@
 		\end{theorem}
 	\end{tcolorbox}
 	\begin{proof}
-		content...
+		\begin{enumerate}[(1)]
+			\item If \( f(x) \) is an even function, then
+			\begin{align*}
+				f(x) &= \int_{0}^{\infty} \left( \frac{2}{\pi} \int_{0}^{\infty} f(v) \cos \omega v \, dv \right) \cos \omega x \, d\omega\\
+				&= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_c(\omega) \cos \omega x \, d\omega\quad\text{with}\quad \hat{f}_c(\omega)=\sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \cos \omega x \, dx.
+			\end{align*}
+			\item If \( f(x) \) is an odd function, then
+			\begin{align*}
+				f(x) &= \int_{0}^{\infty} \left( \frac{2}{\pi} \int_{0}^{\infty} f(v) \sin \omega v \, dv \right) \sin \omega x \, d\omega\\
+				&= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_s(\omega) \sin \omega x \, d\omega\quad\text{with}\quad\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \sin \omega x \, dx.
+			\end{align*}
+		\end{enumerate}
 	\end{proof}
-\newpage
-	\textbf{Theorem ()}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Definition (Fourier Cosine and Sine Transforms)}]
+		\begin{definition}
+			\ \begin{itemize}
+				\item \textbf{Fourier cosine transform} for an even function:
+				\[
+				\mathcal{F}_c(f)=\hat{f}_c(\omega)=\sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \cos \omega x \, dx.
+				\]
+				\item \textbf{Inverse Fourier cosine transform} of \( \hat{f}_c(\omega) \):
+				\[
+				\mathcal{F}_c^{-1}(f)=\hat{f}_c^{-1}(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_c(\omega) \cos \omega x \, d\omega.
+				\]
+				\item \textbf{Fourier sine transform} for an odd function:
+				\[
+				\mathcal{F}_s(f)=\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \sin \omega x \, dx.
+				\]
+				\item \textbf{Inverse Fourier sine transform} of \( \hat{f}_s(\omega) \):
+				\[
+				\mathcal{F}_s^{-1}(f)=\hat{f}_s^{-1}(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_s(\omega) \sin \omega x \, d\omega.
+				\]
+			\end{itemize}
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{12pt}
+	\begin{example}[Fourier cosine and sine transforms]
+		Find Fourier cosine and sine transforms of the function
+		\[
+		f(x) :=
+		\begin{cases}
+			k &: 0 < x < a, \\
+			0 &:x > a
+		\end{cases}
+		\]
+		\begin{proof}[\sol]
+			Fourier cosine and sine transforms of \( f(x) \) are
+			\[
+			\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \cos \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k \sin a\omega}{\omega} \right),
+			\]
+			\[
+			\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \sin \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k(1 - \cos a\omega)}{\omega} \right).
+			\]
+		\end{proof}
+	\end{example}
 	
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Linearity of Fourier Cosine and Sine Transforms}]
+		\begin{theorem}
+			The Fourier cosine and sine transforms are \textbf{linear operators} i.e., for \(a, b \in \mathbb{R}\),
+			\[
+			\mathcal{F}_c(af + bg) = a\mathcal{F}_c(f) + b\mathcal{F}_c(g)
+			\]
+			\[
+			\mathcal{F}_s(af + bg) = a\mathcal{F}_s(f) + b\mathcal{F}_s(g).
+			\]
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Let $a,b\in\R$. Then \begin{align*}
+			\mathcal{F}_c(af+bg)&=\sqrt{\frac{2}{\pi}}\of{af(x)+bg(x)}\cos\omega x\ dx\\
+			&=a\of{\sqrt{\frac{2}{\pi}}\int_0^\infty f(x)\cos\omega x\ dx}+b\of{\sqrt{\frac{2}{\pi}}\int_0^\infty g(x)\cos\omega x\ dx}\\
+			&=a\mathcal{F}_c(f)+b\mathcal{F}_c(g).
+		\end{align*} Similarly, $\mathcal{F}_s(af + bg) = a\mathcal{F}_s(f) + b\mathcal{F}_s(g)$.
+	\end{proof}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Cosine and Sine Transforms of Derivatives}]
+		\begin{theorem}
+			Let \( f(x) \) be continuous and absolutely integrable on the \( x \)-axis, let \( f'(x) \) be piecewise continuous on each finite interval, and let \( f(x) \to 0 \) as \( x \to \infty \). Then
+			\[
+			\mathcal{F}_c \{ f'(x) \} = \omega\mathcal{F}_s \{ f(x) \} - \sqrt{\frac{2}{\pi}} f(0) \quad \text{and} \quad \mathcal{F}_s \{ f'(x) \} = -\omega\mathcal{F}_c \{ f(x) \}.
+			\]
+			Furthermore,
+			\[
+			\mathcal{F}_c \{ f''(x) \} = -\omega^2 \mathcal{F}_c \{ f(x) \} - \sqrt{\frac{2}{\pi}} f'(0)
+			\]
+			\[
+			\mathcal{F}_s \{ f''(x) \} = -\omega^2 \mathcal{F}_s \{ f(x) \} + \omega \sqrt{\frac{2}{\pi}} f(0).
+			\]
+		\end{theorem}
+	\end{tcolorbox}
 	
+	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
 			content...
@@ -2471,61 +2524,13 @@
 	\end{tcolorbox}
 	\textbf{Observation}
 	
-	\begin{itemize}
-		\item If \( f(x) \) is an even function, then
-		\[
-		f(x) = \int_{0}^{\infty} \left( \frac{2}{\pi} \int_{0}^{\infty} f(v) \cos \omega v \, dv \right) \cos \omega x \, d\omega
-		= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_c(\omega) \cos \omega x \, d\omega.
-		\]
-		
-		\item If \( f(x) \) is an odd function, then
-		\[
-		f(x) = \int_{0}^{\infty} \left( \frac{2}{\pi} \int_{0}^{\infty} f(v) \sin \omega v \, dv \right) \sin \omega x \, d\omega
-		= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_s(\omega) \sin \omega x \, d\omega.
-		\]
-	\end{itemize}
+	
 	
 	\textbf{Definition (Fourier Cosine and Sine Transforms)}
 	
-	\begin{itemize}
-		\item Fourier cosine transform for an even function:
-		\[
-		\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \cos \omega x \, dx.
-		\]
-		\item Inverse Fourier cosine transform of \( \hat{f}_c(\omega) \):
-		\[
-		\hat{f}_c^{-1}(f) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_c(\omega) \cos \omega x \, dx.
-		\]
-		\item Fourier sine transform for an odd function:
-		\[
-		\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} f(x) \sin \omega x \, dx.
-		\]
-		\item Inverse Fourier sine transform of \( \hat{f}_s(\omega) \):
-		\[
-		\hat{f}_s^{-1}(f) = \sqrt{\frac{2}{\pi}} \int_{0}^{\infty} \hat{f}_s(\omega) \sin \omega x \, dx.
-		\]
-	\end{itemize}
 	
-	\textbf{Example (Fourier cosine and sine transforms)}
 	
-	Find Fourier cosine and sine transforms of the function
-	\[
-	f(x) :=
-	\begin{cases}
-		k & \text{if } 0 < x < a, \\
-		0 & \text{if } x > a
-	\end{cases}
-	\]
 	
-	\textbf{Answer.}
-	
-	Fourier cosine and sine transforms of \( f(x) \) are
-	\[
-	\hat{f}_c(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \cos \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k \sin a\omega}{\omega} \right),
-	\]
-	\[
-	\hat{f}_s(\omega) = \sqrt{\frac{2}{\pi}} \int_{0}^{a} k \sin \omega x \, dx = \sqrt{\frac{2}{\pi}} \left( \frac{k(1 - \cos a\omega)}{\omega} \right).
-	\]
 	
 	\newpage
 	
