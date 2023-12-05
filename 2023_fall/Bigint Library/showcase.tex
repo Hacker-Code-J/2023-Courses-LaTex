@@ -329,9 +329,9 @@
 			\hline
 			방식 & 3072-bit (ms) & 시간 비교\\
 			\midrule
-			\textcolor{blue}{\bf TextBook} & 3.21 & 2.326 \\
+			\textcolor{blue}{\bf TextBook} & 3.21 & 2.326 (\textcolor{cyan}{56.52\% $\downarrow$})\\
 			\textcolor{red}{\bf Improved TextBook} & 1.38 & 1\\
-			\textcolor{green}{\bf Karatsuba} & 0.27 & 0.196\\
+			\textcolor{green}{\bf Karatsuba} & 0.27 & 0.196 (\textcolor{magenta}{80.4\% $\uparrow$})\\
 			\hline
 		\end{tabularx}
 	\end{center}
@@ -347,7 +347,7 @@
 			방식 & 3072-bit (ms) & 시간 비교\\
 			\midrule
 			\textcolor{blue}{\bf Binary} & 0.18 & 1 \\
-			\textcolor{red}{\bf General} & 0.03 & 0.167\\
+			\textcolor{red}{\bf General} & 0.03 & 0.167 (\textcolor{magenta}{83.4\% $\uparrow$})\\
 			\hline
 		\end{tabularx}
 	\end{center}
@@ -363,7 +363,7 @@
 			방식 & 6144-bit \% 3072-bit (ms) & 시간 비교\\
 			\midrule
 			\textcolor{blue}{\bf Binary} & 40.42 & 1 \\
-			\textcolor{red}{\bf Barrett} & 2.86 & 0.071\\
+			\textcolor{red}{\bf Barrett} & 2.86 & 0.071 (\textcolor{magenta}{92.9\% $\uparrow$})\\
 			\hline
 		\end{tabularx}
 	\end{center}
