@@ -337,18 +337,33 @@
 	\end{center}
 \end{frame}
 \begin{frame}{IV.4 라이브러리 성능}
-	\alert{\bf 제곱(Textook vs Improved TextBook vs Karatsba)}\\
+	\alert{\bf 나눗셈(Binary vs General)}\\
 	\begin{center}
-		\includegraphics[width=\linewidth,height=.525\textheight]{mul_3072_2.png}
+		\includegraphics[width=\linewidth,height=.525\textheight]{div_3072.png}
 	\end{center}
 	\begin{center}
 		\begin{tabularx}{\textwidth}{c||XX}
 			\hline
 			방식 & 3072-bit (ms) & 시간 비교\\
 			\midrule
-			\textcolor{blue}{\bf TextBook} & 3.21 & 2.326 \\
-			\textcolor{red}{\bf Improved TextBook} & 1.38 & 1\\
-			\textcolor{green}{\bf Karatsuba} & 0.27 & 0.196\\
+			\textcolor{blue}{\bf Binary} & 0.18 & 1 \\
+			\textcolor{red}{\bf General} & 0.03 & 0.167\\
+			\hline
+		\end{tabularx}
+	\end{center}
+\end{frame}
+\begin{frame}{IV.4 라이브러리 성능}
+	\alert{\bf 나머지(Binary vs Barrett)}\\
+	\begin{center}
+		\includegraphics[width=\linewidth,height=.525\textheight]{red_3072.png}
+	\end{center}
+	\begin{center}
+		\begin{tabularx}{\textwidth}{c||XX}
+			\hline
+			방식 & 6144-bit \% 3072-bit (ms) & 시간 비교\\
+			\midrule
+			\textcolor{blue}{\bf Binary} & 40.42 & 1 \\
+			\textcolor{red}{\bf Barrett} & 2.86 & 0.071\\
 			\hline
 		\end{tabularx}
 	\end{center}
