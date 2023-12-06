@@ -2661,59 +2661,216 @@
 			&=\sqrt{2\pi}\mathcal{F}(f)\mathcal{F}(g);
 		\end{align*}
 	\end{proof}
-	
+
 	\newpage
-	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
-		\begin{theorem}
-			content...
-		\end{theorem}
-	\end{tcolorbox}
-	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+	\chapter{Introduction to PDEs}
+	\section{Basic Concepts}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Partial Differential Equation}]
 		\begin{definition}
-			content...
+			A partial differential equation (PDE) is an equation involving one or more partial derivatives of an (unknown) function, call it \( u \), that depends on two or more variables, often time \( t \) and one or several variables in space.
 		\end{definition}
 	\end{tcolorbox}
-	\textbf{Observation}
-	
-	
-	
-	\textbf{Definition (Fourier Cosine and Sine Transforms)}
-	
-	
-	
-	
-	
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Order of PDE}]
+		\begin{definition}
+			The order of the highest derivative is called the order of the PDE. As for ODEs, second-order PDEs will be the most important ones in applications.
+		\end{definition}
+	\end{tcolorbox}
+	\section{Vibrating String, One-Dimensional Wave Equation}
+	\begin{figure}[h!]\centering
+		\begin{tikzpicture}[scale=2.5, >=Stealth]
+			% Axes
+			\draw [<->,thick] (0,2) node (yaxis) [above] {$u$}
+			|- (5,0) node (xaxis) [right] {$x$};
+			
+			% String curve
+			\draw[thick] (0,0) to[bend left=70] (4.5,0);
+			
+			% Points P and Q
+			\coordinate (P) at (1,1);
+			\coordinate (Q) at (1.5,1.15);
+			\draw[fill=blue] (P) circle (1pt) node[above left] {$P$};
+			\draw[fill=blue] (Q) circle (1pt) node[above] {$Q$};
+			
+			% Tensions
+			\draw[->, thick, blue] (P) -- +(-152.5:1cm) node[below left] {$T_1$};
+			\draw[->, thick, blue] (Q) -- +(15:1cm) node[below right] {$T_2$};
+			
+			% Dashed lines
+%			\draw[dashed] (P) -- ($(xaxis)!(P)!(yaxis)$);
+%			\draw[dashed] (Q) -- ($(xaxis)!(Q)!(yaxis)$);
+			
+			% Angles
+%			\pic [draw, <-, "$\alpha$", angle eccentricity=1.5, angle radius=1cm] {angle = xaxis--P--Q};
+%			\pic [draw, <-, "$\beta$", angle eccentricity=1.5, angle radius=1cm] {angle = P--Q--xaxis};
+%			
+			% Points on x-axis
+			\draw (1,0) -- (1,-0.1) node[below] {$x$};
+			\draw (1.5,0) -- (1.5,-0.1) node[below] {$x + \Delta x$};
+			\draw (4.5,0) -- (4.5,-0.1) node[below] {$L$};
+		\end{tikzpicture}
+	\end{figure}
+
 	\newpage
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf One-Dimensional Wave Equation}]
+		\begin{definition}
+			One-dimensional wave equation is given by
+			\[
+			\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}.
+			\]
+			Here \( c^2 = \frac{T}{\rho} \), where \( T \) denotes the tension and \( \rho \) is the mass of the undeflected string per unit length.
+		\end{definition}
+	\end{tcolorbox}
+	\begin{remark}
+		Note that \begin{enumerate}[(1)]
+			\item No motion in the horizontal direction. $\displaystyle T_1 \cos \alpha = T_2 \cos \beta = T = \text{constant}. $
+			\item The force in the vertical direction is given by $T_2\sin\beta-T_1\sin\alpha$. By Newton's second law $\textbf{F}=m\textbf{a}$, we have $\displaystyle T_2 \sin \beta - T_1 \sin \alpha = \rho \Delta x \frac{\partial^2 u}{\partial t^2}. $
+		\end{enumerate} Then \[
+	\frac{T_2 \sin \beta}{T_2 \cos \beta} - \frac{T_1 \sin \alpha}{T_1 \cos \alpha} = \tan \beta - \tan \alpha = \frac{\rho \Delta x }{T}\frac{\partial^2 u}{\partial t^2}.
+	\] Since $\displaystyle\tan \alpha =\frac{\partial u}{\partial x}\bigg|_x$ and $\tan \beta=\frac{\partial u}{\partial x}\bigg|_{x+\Delta x}$, we have \begin{align*}
+		 \frac{\partial u}{\partial x}\bigg|_{x+\Delta x}-\frac{\partial u}{\partial x}\bigg|_x&=\frac{\rho \Delta x }{T}\frac{\partial^2 u}{\partial t^2},\\
+		 \frac{u_x(x+\Delta x)-u_x(x)}{\Delta x}&=\frac{\rho}{T}u_{tt},\\
+		 \lim\limits_{\Delta x\to 0}\frac{u_x(x+\Delta x)-u_x(x)}{\Delta x}&=\frac{\rho}{T}u_{tt},\\
+		 u_{xx}&=\frac{\rho}{T}u_{tt}.
+	\end{align*} By letting $c^2:=T/\rho$, we have the one-dimensional wave equation \[
+	\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}.
+	\]
+	\end{remark}
+	\vspace{12pt}
+	\begin{note}
+		The two-dimensional wave equation is $u_{tt}=c^2(u_{xx}+u_{yy})$.
+	\end{note}
+
+	\section{Separation of Variables, Use of Fourier Series}
+	\begin{note}[Solving Wave Equation]
+		Find \textbf{solutions} \( u(x, t) \), which satisfies the wave equation
+		\[
+		\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+		\]
+		with \textbf{boundary conditions}
+		\[
+		u(0, t) = 0 \quad \text{and} \quad u(L, t) = 0 \quad \text{for all} \quad t
+		\]
+		and \textbf{initial conditions}
+		\[
+		u(x, 0) = f(x) \quad \text{and} \quad \left. \frac{\partial u}{\partial t} \right|_{t=0} = g(x).
+		\]
+	\end{note}
+	\begin{note}[\bf Method of Separating Variables]
+		Let $$u(x, t) = F(x)G(t)\neq 0.$$
+		We denote $F'(x)=\od{F}{x}$ and $\dot{G}(t)=\od{G}{t}$. Then \[
+		\frac{\partial^2 u}{\partial t^2} = F \ddot{G} \quad \text{and} \quad \frac{\partial^2 u}{\partial x^2} = F'' G.
+		\] We then have \[
+		F \ddot{G} = c^2 F'' G\implies
+		\frac{\ddot{G}}{c^2 G} = \frac{F''}{F}=k.
+		\] for constant $k$. This yields immediately two ODEs, namely
+		\[
+		F'' - kF = 0 \quad \text{and} \quad \ddot{G} - c^2 kG = 0.
+		\] \begin{enumerate}[(1)]
+			\item Assume that $k=0$, \ie, $F''=0$ and so $F(x)=ax+b$ for $a,b\in\R$. By the boundary conditions, we have \begin{enumerate}[(i)]
+				\item $u(0, t) = F(0)G(t) = 0\implies b=0$ and
+				\item $u(L, t) = F(L)G(t) = 0\implies a=0$.
+			\end{enumerate} $\therefore F(x)=0$. It is contradiction.
+		\item For positive \( k = \mu^2>0 \) the general solution is
+		\[
+		F(x) = Ae^{\mu x} + Be^{-\mu x}.
+		\] Since $u(0,t)=F(0)G(t)=(A+B)G(t)=0$, we have $B=-A$. The boundary conditions give \begin{enumerate}[(i)]
+			\item $u(0,t)=F(0)G(t)=(A+B)G(t)=0\implies B=-A$ and
+			\item $u(L, t) = A(e^{\mu L}-e^{-\mu L})G(t)=0\implies A=0$.
+		\end{enumerate} $\therefore F(x)=0$. It is contradiction.
+		\end{enumerate}
+		Hence we choose negative \( k \), say, \( k = -p^2<0 \). Then \( F \) satisfies
+		\[
+		F'' + p^2 F = 0.
+		\] Its general solution is
+		\[
+		F(x) = A \cos px + B \sin px.
+		\] By the boundary conditions, we have \begin{enumerate}[(i)]
+			\item $u(0, t) = F(0)G(t) = 0\implies A=0$ and
+			\item $u(L, t) = F(L)G(t) = 0\implies F(L)= B \sin pL = 0\overset{B\neq 0}{\implies} \sin pL = 0$.
+		\end{enumerate} Hence
+		\[
+		pL = n\pi \quad \text{so that} \quad p = \frac{n\pi}{L}
+		\] We thus obtain infinitely many solutions \( F(x) = F_n(x) \), where
+		\[
+		F_n(x) = B\sin \frac{n\pi x}{L}, \quad n = 1,2,\cdots.
+		\]
+		Let $\lambda_n = \frac{cn\pi}{L}$. Since $\ddot{G} + \lambda_n^2 G = 0$, a general solution is
+		\[
+		G_n(t) = C \cos \lambda_n t + D \sin \lambda_n t.
+		\] Hence, solutions of the wave equation with given boundary and initial conditions are
+		\[
+		u_n(x, t) = F_n(x)G_n(t)=(B_n \cos \lambda_n t + B_n^* \sin \lambda_n t) \sin \frac{n\pi x}{L}, \quad B_n=BC, B_n^*=CD, n = 1,2,\cdots.
+		\]
+	\end{note}
+	\vspace{12pt}
+	\begin{note}[\textcolor{magenta}{\bf Solution of Wave Equation}]
+		In order to obtain a solution that satisfies the initial conditions, we consider the infinite series
+		\begin{equation*}
+			u(x, t) = \sum_{n=1}^{\infty} u_n(x, t) = \sum_{n=1}^{\infty} (B_n \cos \lambda_n t + B_n^* \sin \lambda_n t) \sin \frac{n\pi x}{L}.
+		\end{equation*}
+		From initial conditions, we obtain
+		\[
+		u(x, 0) = \sum_{n=1}^{\infty} B_n \sin \frac{n\pi x}{L} = f(x).
+		\] Hence, based on the Fourier sine series of \( f(x) \),
+		\[
+		B_n = \frac{2}{L} \int_0^{L} f(x) \sin \frac{n\pi x}{L} \, dx, \quad n = 1,2,\dots.
+		\] Then \[
+		\left. \frac{\partial u}{\partial t} \right|_{t=0} = \left[ \sum_{n=1}^{\infty} ( -B_n \lambda_n \sin \lambda_n t + B_n^* \lambda_n \cos \lambda_n t) \sin \frac{n\pi x}{L} \right]_{t=0} = \sum_{n=1}^{\infty} B_n^* \lambda_n \sin \frac{n\pi x}{L} = g(x).
+		\]
+		Therefore
+		\[
+		B_n^* \lambda_n = \frac{2}{L} \int_0^{L} g(x) \sin \frac{n\pi x}{L} \, dx\implies B_n^* = \frac{2}{c n \pi} \int_0^{L} g(x) \sin \frac{n\pi x}{L} \, dx
+		\]
+		for \( n = 1,2,\dots \). In summary,
+		\vspace{4pt}
+		\begin{tcolorbox}
+			Solutions of the wave equation
+			\[
+			\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+			\]
+			with boundary conditions
+			\[
+			u(0,t) = 0 \quad \text{and} \quad u(L,t) = 0 \quad \text{for all} \quad t
+			\]
+			and initial conditions
+			\[
+			u(x, 0) = f(x) \quad \text{and} \quad \left. \frac{\partial u}{\partial t} \right|_{t=0} = g(x).
+			\]
+			are given by
+			\[
+			u(x, t) = \sum_{n=1}^{\infty} (B_n \cos \lambda_n t + B_n^* \sin \lambda_n t) \sin \frac{n\pi x}{L}, \quad n = 1,2,\dots,
+			\]
+			where
+			\[
+			\lambda_n = \frac{c n \pi}{L}, \quad B_n = \frac{2}{L} \int_0^{L} f(x) \sin \frac{n\pi x}{L} \, dx, \quad \text{and} \quad B_n^* = \frac{2}{c n \pi} \int_0^{L} g(x) \sin \frac{n\pi x}{L} \, dx.
+			\]
+		\end{tcolorbox}
+	\end{note}
+
 	
+	\section{D’Alembert’s Solution of the Wave Equation}
 	\textbf{Observation (D'Alembert's Solution)}
 	
 	\begin{itemize}
 		\item Introduce the new independent variables
-		\[
-		v = x + ct \quad \text{and} \quad z = x - ct.
-		\]
-		\item Then, applying chain rule
-		\[
-		u_x = u_v v_x + u_z z_x = u_v + u_z.
-		\]
+		$v = x + ct$ and $z = x - ct.$
+		\item Then, applying chain rule $
+		u_x = u_v v_x + u_z z_x = u_v + u_z.$
 		\item Assume that all the partial derivatives involved are continuous, so that
 		\[
 		u_{xv} = u_{vx} \quad \text{and correspondingly} \quad u_{xx} = (u_v + u_z)_x = u_{vv} + 2u_{vz} + u_{zz}.
 		\]
-		\item Similarly,
-		\[
-		u_{tt} = c^2 (u_{vv} - 2u_{vz} + u_{zz}).
-		\]
-	\end{itemize}
-	
+		\item Similarly,$
+		u_{tt} = c^2 (u_{vv} - 2u_{vz} + u_{zz}).$
 	By inserting these two results in the wave equation, we get
-	\[
+	$
 	u_{vx} = \frac{\partial^2 u}{\partial z \partial v} = 0.
-	\]
+	$
 	By integrating above identity with respect to \( z \), we find
-	\[
+	$
 	\frac{\partial u}{\partial v} = h(v),
-	\]
+	$
 	where \( h(v) \) is an arbitrary function of \( v \). Integrating this with respect to \( v \) gives
 	\[
 	u = \int h(v) dv + \psi(z),
@@ -2723,14 +2880,10 @@
 	u(x, t) = \phi(v) + \psi(z) = \phi(x + ct) + \psi(x - ct).
 	\]
 	This is known as d'Alembert's solution of the wave equation.
-	
-	\textbf{Observation (D'Alembert's Solution with Initial Conditions)}
-	
-	\begin{itemize}
 		\item Consider the two initial conditions
-		\[
-		u(x, 0) = f(x) \quad \text{and} \quad u_t(x, 0) = g(x).
-		\]
+		$
+		u(x, 0) = f(x)$ and $u_t(x, 0) = g(x).
+		$
 		\item Then, we have
 		\[
 		u(x, 0) = \phi(x) + \psi(x) = f(x) \quad \text{and} \quad u_t(x, 0) = \phi'(x) - \psi'(x) = g(x).
@@ -2763,6 +2916,34 @@
 	\[
 	u(x, t) = \frac{1}{2} (f(x + ct) + f(x - ct)) + \frac{1}{2c} \int_{x-ct}^{x+ct} g(s) ds.
 	\]
+	
+	\newpage
+	\section{One-Dimensional Heat Equation: Solution by Fourier Series}
+	
+	\newpage
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{theorem}
+			content...
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+		\begin{definition}
+			content...
+		\end{definition}
+	\end{tcolorbox}
+	\textbf{Observation}
+	
+	
+	
+	\textbf{Definition (Fourier Cosine and Sine Transforms)}
+	
+	
+	
+	
+	
+	\newpage
+	
+	
 	\newpage
 	
 	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Laplace Equation}]
