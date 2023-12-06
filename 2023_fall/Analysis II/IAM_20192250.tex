@@ -2610,6 +2610,58 @@
 			&=a\mathcal{F}(f) + b\mathcal{F}(g).
 		\end{align*}
 	\end{proof}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Transform of the Derivative of $f(x)$}]
+		\begin{theorem}
+			Let \( f(x) \) be continuous on the \( x \)-axis and \( f(x) \to 0 \) as \( |x| \to \infty \). Furthermore, let \( f'(x) \) be absolutely integrable on the \( x \)-axis. Then
+			\[
+			\mathcal{F} \{ f'(x) \} = i\omega\mathcal{F} \{ f(x) \}
+			\]
+			and
+			\[
+			\mathcal{F} \{ f''(x) \} = i\omega\mathcal{F} \{ f'(x) \} = -\omega^2 \mathcal{F} \{ f(x) \}.
+			\]
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		Since \begin{align*}
+			\mathcal{F}(f')&=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f'(x)e^{-i\omega x}\ dx\\
+			&=\frac{1}{\sqrt{2\pi}}\crossout[red]{0}{\sbr{f(x)e^{-i\omega x}}_{-\infty}^{\infty}}-\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}f(x)(-i\omega e^{-i\omega x})\ dx\\
+			&=i\omega\of{\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}f(x)e^{-i\omega x}\ dx}\\
+			&=i\omega\mathcal{F}(f),
+		\end{align*}
+		we have \begin{align*}
+			\mathcal{F}(f'')=i\omega\mathcal{F}(f')=i\omega(i\omega\mathcal{F}(f))=-\omega^2\mathcal{F}(f).
+		\end{align*}
+	\end{proof}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Convolution}]
+		\begin{definition}
+			The \textbf{convolution} \( f * g \) of functions \( f \) and \( g \) is defined by
+			\[
+			(f * g)(x) := \int_{-\infty}^{\infty} f(t)g(x - t) dt = \int_{-\infty}^{\infty} f(x - t)g(t) dt.
+			\]
+		\end{definition}
+	\end{tcolorbox}
+	\vspace{12pt}
+	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Convolution Theorem}]
+		\begin{theorem}
+			Suppose that \( f(x) \) and \( g(x) \) are piecewise continuous, bounded, and absolutely integrable on the \( x \)-axis. Then
+			\[
+			\mathcal{F}(f * g) = \sqrt{2\pi}\mathcal{F}\{f\}\mathcal{F}\{g\}.
+			\]
+		\end{theorem}
+	\end{tcolorbox}
+	\begin{proof}
+		\begin{align*}
+			\mathcal{F}(f*g)&=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}(f*g)(x)e^{-i\omega x}\ dx\\
+			&=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}\sbr{\int_{-\infty}^{\infty} f(t)g(x - t)\ dt}e^{-i\omega x}\ dx\\
+			&=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}\sbr{\int_{-\infty}^{\infty} f(t)g(s)\ dt}e^{-i\omega (s+t)}\ ds\quad\text{with}\quad s:=x-t\\
+			&=\frac{\sqrt{2\pi}}{\sqrt{2\pi}}\int_{-\infty}^{\infty}f(t)e^{-i\omega t}\ dt\cdot\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}g(s)e^{-i\omega s}\ ds\\
+			&=\sqrt{2\pi}\mathcal{F}(f)\mathcal{F}(g);
+		\end{align*}
+	\end{proof}
+	
 	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
