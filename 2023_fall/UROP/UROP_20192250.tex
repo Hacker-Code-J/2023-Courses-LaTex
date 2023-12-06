@@ -226,7 +226,7 @@
 	% Title page
 	\begin{titlepage}
 		\begin{center}
-			{\Huge\textsf{\textbf{Provable Security in Cryptography}}\par}
+			{\Huge\textsf{\textbf{VisualCrypt: Essence of Provable Security}}\par}
 %			{\Huge\textsf{\textbf{: Beyond Determinism}}\par}
 			\vspace{0.5in}
 			{\Large Ji Yong-Hyeon, Kim Dong-Hyeon\par}
@@ -2176,6 +2176,37 @@ plt.show()
 	\end{lstlisting}
 \end{example}
 
+	\newpage
+	\begin{tikzpicture}[font=\sffamily, thick, node distance=0.5cm, every text node part/.style={align=center}]
+		% Web Page Layout
+		\node[draw, minimum width=12cm, minimum height=8cm, rounded corners] (webpage) {};
+		
+		% Title
+		\node[above=0.5cm of webpage] (title) {\Large Pseudo Random Function (PRF) - Web Visualization};
+		
+		% Key and Data Input
+		\node[draw, below=1cm of title, minimum width=4cm, minimum height=0.7cm] (keyinput) {Key Input};
+		\node[draw, right=of keyinput, minimum width=4cm, minimum height=0.7cm] (datainput) {Data Input};
+		
+		% PRF Process
+		\node[draw, below=of keyinput.south, minimum width=9cm, minimum height=3cm, yshift=-1cm] (prfprocess) {PRF Processing\\ (Algorithm Visualization)};
+		\draw[-Latex] (keyinput) -- (prfprocess);
+		\draw[-Latex] (datainput) -- (prfprocess);
+		
+		% Output
+		\node[draw, below=of prfprocess, minimum width=4cm, minimum height=0.7cm] (output) {Output};
+		
+		% Annotations
+		\node[right=0.5cm of webpage.east, text width=5cm] (annotations) {
+			\textbf{Key Input:} User-defined secret key.\\
+			\textbf{Data Input:} Data to be processed.\\
+			\textbf{PRF Processing:} Deterministic yet unpredictable algorithm output.\\
+			\textbf{Output:} Pseudo-random result based on inputs.
+		};
+		
+		% Border for annotations
+%		\node[draw, fit=(annotations), inner sep=0.2cm] {};
+	\end{tikzpicture}
 	\newpage
 	\begin{thebibliography}{9}
 		\bibitem{textbook}

@@ -1818,7 +1818,13 @@
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		Note that $f_n(x)$ is continuous for $n\in\N$ and $x\in\intcc{0,1}$. Then
+		\[
+		\lim\limits_{n\to\infty} f_n(x)= \begin{cases}
+			1 &: x=0\\
+			0 &: x\in\intoc{0,1}
+		\end{cases}
+		\] and so $\set{f_n}$ converges pointwisely on $[0,1]$. However, since $f$ is not continuous on $[0,1]$, $\set{f_n}$ does not converges uniformly to $f$ on $[0,1]$.
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
@@ -1828,7 +1834,19 @@
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		Note that \[
+		x\in\set{0,1}\implies\lim\limits_{n\to\infty} f_n(x)=0.
+		\] Suppose that $x\in\intoo{0,1}$. Since $0<1-x<1$, \[
+		\lim\limits_{n\to\infty}nx(1-x)^n=0.
+		\] $\therefore\exists\lim\limits_{n\to\infty} f_n(x)=0$ on $\intcc{0,1}$. Consider $$
+		\od{}{x}\of{f_n(x)-f(x)}=n(1-x)^n-n^2x(1-x)^{n-1}=n(1-x)^{n-1}(1-x-nx)=0.
+		$$ That is, $f_n(x)$ has local extremum at $x\in\set{1,\frac{1}{n+1}}$. Then \begin{align*}
+			\lim\limits_{n\to\infty}\sup\set{\abs{f_n(x)-f(x)}:x\in\intcc{0,1}}
+			&=\lim\limits_{n\to\infty}\sup\set{\abs{f_n(1)},\abs{\frac{1}{n+1}}}\\
+			&=\lim\limits_{n\to\infty}\sup\set{0,\frac{n}{n+1}\of{1-\frac{1}{n+1}}^n}\\
+			&=\lim\limits_{n\to\infty}\frac{n}{n+1}\of{1-\frac{1}{n+1}}^n\\
+			&=\frac{1}{e}>0.
+		\end{align*} Hence $\set{f_n}$ is not uniformly convergent to $f$.
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
@@ -1838,27 +1856,51 @@
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		If $x=0$ then $f_n(x)=0$. Let $x\neq 0$. Let $x\neq 0$ and $\varepsilon>0$. Then $\displaystyle\exists N>\frac{1}{\abs{x}\varepsilon}$ s.t. if $n\geq N$, \[
+		\abs{f_n(x)-0}=\abs{\frac{nx}{1+n^2x^2}}\leq\abs{\frac{nx}{n^2x^2}}=\abs{\frac{1}{nx}}\leq\frac{1}{N\abs{x}}<\varepsilon.
+		\] Thus $\exists\lim\limits_{n\to\infty}f_n(x)=0$.
+		\begin{enumerate}[(1)]
+			\item Let $a>0$ and $x\in\intco{a,\infty}$. Let $\varepsilon>0$. Then $\displaystyle\exists N>\frac{1}{\varepsilon a}$ s.t. if $n\geq N$, \[
+			\abs{f_n(x)-f(x)}=\abs{\frac{nx}{1+n^2x^2}-0}\leq\frac{1}{nx}\leq\frac{1}{na}\leq\frac{1}{Na}<\varepsilon.
+			\] $\therefore\set{f_n}$ converges uniformly to $f$ on $\intco{a,\infty}$.
+			\item Let $x\in\intco{0,\infty}$. Consider $$
+			\od{}{x}\of{f_n(x)-f(x)}=\frac{n(1+n^2x^2)-nx\cdot2n^2x}{(1+n^2x^2)^2}=\frac{n-n^3x^2}{(1+n^2x^2)^2}=0.
+			$$ $\therefore x^2=1/n^2\implies x=1/n$. Then \begin{align*}
+				\lim\limits_{n\to\infty}\sup\set{\abs{f_n(x)-f(x)}:x\in\intcc{0,\infty}}
+				&=\lim\limits_{n\to\infty}\sup\set{\abs{f_n(0)},\abs{f_n\of{\frac{1}{n}}}}\\
+				&=\lim\limits_{n\to\infty}\sup\set{0,\frac{1}{2}}\\
+				&=\frac{1}{2}>0.
+			\end{align*} Hence $\set{f_n}$ does not converges uniformly to $f$ on $\intco{0,\infty}$.
+		\end{enumerate}
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
-			Let \( I = (-\infty, \infty) \). Then for \( f_n(x) = n^3e^{-n}(1 - 2\sin^2 nx) \), the series
+			Let \( I = (-\infty, \infty) \). Then for \( f_n(x) = n^3e^{-n^4}(1 - 2\sin^2 nx) \), the series
 			\[ \sum_{n=1}^{\infty} f_n(x) \]
 			converges uniformly.
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		For $x\in\R$, we have \[
+		\abs{f_n(x)}=\abs{\frac{n^3}{e^{n^4}}(1-2\sin^2nx)}\leq\frac{n^3}{e^{n^4}}\leq\frac{3n^3}{e^{n^4}}\quad\text{and}\quad \int_1^\infty\frac{3n^3}{e^{n^4}}\ dx=\frac{3}{4e}.
+		\] By Weierstrass $M$-test, $\exists\sum_{n=1}^\infty f_n(x)$ for $x\in\R$.
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
-			Let \( I = [0, 1] \). Then, if \( f_n(x) = x^n \), \( n \in \mathbb{N} \) show that the series
+			Let \( I = \intco{0,1} \). Then, if \( f_n(x) = x^n \), \( n \in \mathbb{N} \) show that the series
 			\[ \sum_{n=1}^{\infty} f_n(x) \]
 			is a pointwise convergent but not a uniformly convergent series.
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		Let $x\in\intco{0,1}$. Then \[
+		\abs{x}<1\implies\sum_{i=1}^\infty f_n(x)=\sum_{n=1}^\infty x^n=\frac{x}{1-x}.
+		\] That is, the series converges pointwisely. Let \[
+		x_n:=1-\frac{1}{n}\in\intco{0,1}
+		\] for $n\in\N$. Note that $\lim\limits_{n\to\infty}x_n=1$ and that $x_n\neq 1$ for $n\in\N$. Then
+		\begin{align*}
+			\lim\limits_{n\to\infty}f_n(x_n)=\lim\limits_{n\to\infty}\of{1-\frac{1}{n}}^n=\frac{1}{e}\neq\infty=f(\lim\limits_{n\to\infty}x_n)=\lim\limits_{n\to\infty}f(x_n)=\lim\limits_{n\to\infty}\frac{\frac{n-1}{n}}{\frac{1}{n}}=\infty.
+		\end{align*} $\therefore\sum_{n=1}^\infty f_n(x)$ does not converges uniformly to $f(x)=\frac{x}{1-x}, x\in\intco{0,1}$.
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
@@ -1866,14 +1908,95 @@
 			\begin{enumerate}
 				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{x^n}{2^n}\),
 				\item \(\displaystyle\sum_{n=1}^{\infty} \ln \left( \frac{n+1}{n} \right) x^n\),
-				\item \(\displaystyle\sum_{n=0}^{\infty} n^2(x - 4)^n\).\item \(\displaystyle\sum_{n=1}^{\infty} \frac{(x-2)^n}{n^23^n}\),
+				\item \(\displaystyle\sum_{n=0}^{\infty} n2^n(x - 4)^n\).
+				\item \(\displaystyle\sum_{n=1}^{\infty} \frac{(x-2)^n}{n^23^n}\),
 				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{x^n}{n!}\),
-				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{(n!)^2}{(2n)!}x^n\).
+				\item \(\displaystyle\sum_{n=0}^{\infty} \frac{(n!)^2x^n}{(2n)!}\).
 			\end{enumerate}
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		\begin{enumerate}[1.]
+			\item For our series, \( a_n = \frac{x^n}{2^n} \). The limit \( L \) is calculated as follows:
+			
+			\[ L = \lim_{n \to \infty} \left| \frac{x^{n+1}/2^{n+1}}{x^n/2^n} \right|  = \lim_{n \to \infty} \left| \frac{x^{n+1}}{2^{n+1}} \cdot \frac{2^n}{x^n} \right|  = \lim_{n \to \infty} \left| \frac{x}{2} \right| = \left| \frac{x}{2} \right| \]
+			
+			For convergence, we set \( L < 1 \):
+			
+			\[ \left| \frac{x}{2} \right| < 1 \implies \left| x \right| < 2 \]
+			
+			Hence, the radius of convergence of the series is 2.
+			\item To find the radius of convergence of the power series \(\sum_{n=1}^{\infty} \ln\left(\frac{n+1}{n}\right) x^n\), we apply the ratio test. The general term of the series is \(a_n = \ln\left(\frac{n+1}{n}\right) x^n\). The ratio test involves the limit
+			
+			\[ L = \lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| \]
+			
+			For our series, this becomes
+			
+			\[ L = \lim_{n \to \infty} \left| \frac{\ln\left(\frac{n+2}{n+1}\right) x^{n+1}}{\ln\left(\frac{n+1}{n}\right) x^n} \right|= \lim_{n \to \infty} \left| \frac{\ln\left(\frac{n+2}{n+1}\right)}{\ln\left(\frac{n+1}{n}\right)} \cdot x \right| \]
+			
+			Simplifying the limit:
+			
+			1. The logarithmic ratio:
+			\[ \lim_{n \to \infty} \frac{\ln\left(\frac{n+2}{n+1}\right)}{\ln\left(\frac{n+1}{n}\right)} = \lim_{n \to \infty} \frac{\ln(n+2) - \ln(n+1)}{\ln(n+1) - \ln(n)} \]
+			
+			As \(n \to \infty\), this ratio approaches 1.
+			
+			2. Therefore, the limit \(L\) simplifies to:
+			\[ L = \lim_{n \to \infty} \left| x \right| \]
+			
+			For convergence, \( L < 1 \) gives:
+			
+			\[ \left| x \right| < 1 \]
+			
+			Thus, the radius of convergence of the series is 1.
+			\item Let $
+			f_n(x):=n2^n(x-4)^n.
+			$ Then \begin{align*}
+				\lim\limits_{n\to\infty}\abs{\frac{f_{n+1}(x)}{f_n(x)}}<1&\implies
+				\lim\limits_{n\to\infty}\abs{\frac{(n+1)2^{n+1}(x-4)^{n+1}}{n2^n(x-4)^n}}=
+				\lim\limits_{n\to\infty}\of{\frac{n+1}{n}}2\abs{x-4}=2\abs{x-4}<1\\
+				&\implies\abs{x-4}<\frac{1}{2}.
+			\end{align*} Thus $R=1/2$.
+			\\ \ \\
+			(Another Solution) Let $a_n=n2^n$. Then $R=\lim\limits_{n\to\infty}\abs{\frac{a_n}{a_{n+1}}}=1/2$.
+			\item To evaluate the radius of convergence of the power series \(\sum_{n=1}^{\infty} \frac{(x-2)^n}{n^2 3^n}\), we use the root test. The root test involves the limit
+			
+			\[ L = \lim_{n \to \infty} \left( \left| \frac{(x-2)^n}{n^2 3^n} \right| \right)^{\frac{1}{n}}. \]
+			
+			Calculating this limit, we get
+			
+			\[ L = \lim_{n \to \infty} \left| \frac{(x-2)^n}{n^2 3^n} \right|^{\frac{1}{n}}  = \lim_{n \to \infty} \left| \frac{(x-2)}{3} \right| \left( \frac{1}{n^2} \right)^{\frac{1}{n}}. \]
+			
+			As \(n\) approaches infinity, \(\left( \frac{1}{n^2} \right)^{\frac{1}{n}}\) approaches 1. Thus, the limit simplifies to
+			
+			\[ L = \left| \frac{x-2}{3} \right|. \]
+			
+			For convergence, \( L < 1 \) yields
+			
+			\[ \left| \frac{x-2}{3} \right| < 1. \]
+			
+			Solving this inequality:
+			
+			\[ -1 < \frac{x-2}{3} < 1\implies  -1 < x < 5. \]
+			
+			Therefore, the radius of convergence of the series is the distance between the center (2) and the endpoints of the interval, which is 3.
+			\item To evaluate the radius of convergence of the power series \(\sum_{n=0}^{\infty} \frac{x^n}{n!}\), we use the ratio test. The general term of the series is \(a_n = \frac{x^n}{n!}\). The ratio test involves the limit
+			$L = \lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| $
+			
+			For our series, this limit is
+			
+			\[ L = \lim_{n \to \infty} \left| \frac{\frac{x^{n+1}}{(n+1)!}}{\frac{x^n}{n!}} \right|  = \lim_{n \to \infty} \left| \frac{x^{n+1} \cdot n!}{x^n \cdot (n+1)!} \right| = \lim_{n \to \infty} \left| \frac{x \cdot x^n \cdot n!}{x^n \cdot n! \cdot (n+1)} \right|  = \lim_{n \to \infty} \left| \frac{x}{n+1} \right| \]
+			
+			As \(n\) approaches infinity, \(\frac{x}{n+1}\) approaches 0 for any finite value of \(x\). Therefore, the limit \(L\) is 0 for all \(x\).
+			
+			Since \(L < 1\) for all \(x\), the radius of convergence is infinite. This means that the series \(\sum_{n=0}^{\infty} \frac{x^n}{n!}\) converges for all real numbers \(x\).
+			
+			\item Let $f_n(x)=\frac{(n!)^2x^n}{(2n)!}$. Then \begin{align*}
+				\lim\limits_{n\to\infty}\abs{\frac{f_{n+1}(x)}{f_n(x)}}&=\lim\limits_{n\to\infty}\abs{\frac{\set{(n+1)!}^2x^{n+1}}{(2n+2)!}\cdot\frac{(2n)!}{(n!)^2x^n}}
+				=\lim\limits_{n\to\infty}\abs{\frac{(n+1)^2}{(2n+2)(2n+1)}x}
+				=\frac{1}{4}\abs{x}.
+			\end{align*} Thus, $\frac{1}{4}\abs{x}<1\implies\abs{x}<4=R$.
+		\end{enumerate}
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
@@ -1885,7 +2008,14 @@
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		\begin{enumerate}[1.]
+			\item Let $\displaystyle f_n(x)=\frac{x^n}{3^n+5^n}$ then \begin{align*}
+				\lim\limits_{n\to\infty}\abs{\frac{f_{n+1}(x)}{f_n(x)}}&=\lim\limits_{n\to\infty}\abs{\frac{x^{n+1}}{3^{n+1}+5^{n+1}}\cdot\frac{3^n+5^n}{x^n}}=\frac{1}{5}\abs{x}<1\implies\abs{x}<5=R.
+			\end{align*}
+			\item Let $\displaystyle f_n(x)=\frac{n^3x^n}{n!}$ then \begin{align*}
+				\lim\limits_{n\to\infty}\abs{\frac{f_{n+1}(x)}{f_n(x)}}&=\lim\limits_{n\to\infty}\abs{\frac{(n+1)^3x^{n+1}}{(n+1)!}\cdot\frac{n!}{n^3x^{n}}}=\lim\limits_{n\to\infty}\abs{\frac{(n+1)^3}{(n+1)n^3}x}=0<1\implies R=\infty.
+			\end{align*}
+		\end{enumerate}
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
@@ -1900,7 +2030,11 @@
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		Let $f_n(x):=a_nx^{-n}=a_n/x^n$. Then \begin{align*}
+			\lim\limits_{n\to\infty}\abs{\frac{f_{n+1}(x)}{f_n(x)}}=\lim\limits_{n\to\infty}\abs{\frac{a_{n+1}}{x^{n+1}}\cdot\frac{x^n}{a_n}}=\lim\limits_{n\to\infty}\abs{\frac{a_{n+1}}{a_n}\cdot\frac{1}{x}}<1\implies\abs{x}>\lim\limits_{n\to\infty}\abs{\frac{a_{n+1}}{a_n}}.
+		\end{align*} Since the radius of convergence of $\sum_{n=0}^\infty a_nx^n$ is $R$, \[
+	R=\lim\limits_{n\to\infty}\abs{\frac{a_n}{a_{n+1}}}.
+	\] Hence the radius of convergence of $\sum_{n=0}^\infty\frac{a_n}{x^n}$ is $1/R$.
 	\end{proof}
 	\begin{tcolorbox}[colframe=execolor, title={\color{white}\bf}]
 		\begin{exercise}
@@ -1915,7 +2049,12 @@
 		\end{exercise}
 	\end{tcolorbox}
 	\begin{proof}[\sol]
-		
+		Since the radius of convergence of $\sum_{n=0}^\infty a_nx^n$ is $R$, \[
+		R=\lim\limits_{n\to\infty}\abs{\frac{a_n}{a_{n+1}}}.
+		\] Let $f_n(x):=a_nx^{2n}$. Then \begin{align*}
+			\lim\limits_{n\to\infty}\abs{\frac{f_{n+1}(x)}{f_n(x)}}=\lim\limits_{n\to\infty}\abs{\frac{a_{n+1}x^{2n+2}}{a_nx^{2n}}}=\lim\limits_{n\to\infty}\abs{\frac{a_{n+1}}{a_n}}\abs{x^2}<1\implies\abs{x}^2<\lim\limits_{n\to\infty}\abs{\frac{a_n}{a_{n+1}}}=R\implies \abs{x}<\sqrt{R}.
+		\end{align*} 
+		Hence the radius of convergence of $\sum_{n=0}^\infty{a_nx^{2n}}$ is $\sqrt{R}$.
 	\end{proof}
 	\newpage
 	\chapter{Introduction to Fourier Series and Transform}
@@ -2919,30 +3058,116 @@
 	
 	\newpage
 	\section{One-Dimensional Heat Equation: Solution by Fourier Series}
-	
-	\newpage
-	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
-		\begin{theorem}
-			content...
-		\end{theorem}
-	\end{tcolorbox}
-	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
+	\begin{tcolorbox}[colframe=defcolor, title={\color{white}\bf Heat Equation}]
 		\begin{definition}
-			content...
+			Let \( u(\textbf{x}, t) \) be the temperature at the time \( t \). Then, the \textbf{heat equation} is given by
+			\[
+			\frac{\partial u}{\partial t} = c^2 \Delta u(\textbf{x}, t) = c^2 (u_{xx} + u_{yy} + u_{zz}),
+			\]
+			where \( c^2 \) is the \textbf{thermal diffusivity} of the material and \( \Delta u(x, t) \) is the \textbf{Laplacian} of \( u(\textbf{x}, t) \).
 		\end{definition}
 	\end{tcolorbox}
-	\textbf{Observation}
-	
-	
-	
-	\textbf{Definition (Fourier Cosine and Sine Transforms)}
-	
-	
-	
-	
-	
-	\newpage
-	
+	\begin{remark}
+		Let \(\Omega\) be a region in the body and let \(\partial \Omega\) be its (smooth) boundary surface.
+		The rate of flow is proportional to the gradient of the temperature
+		\[
+		\textbf{v} = -K\nabla u(\textbf{x}, t),
+		\] where \( u(\textbf{x}, t) \) is temperature, \( t \) is time, and \( K \) (constant) is called the thermal conductivity of the body. The amount of heat leaving \(\Omega\) per unit of time is
+		\[
+		\int_{\partial \Omega} (\textbf{v} \cdot \textbf{N}) dS,
+		\]
+		where \( \textbf{v} \cdot \textbf{N} \) is the component of \( v \) in the direction of the outer unit normal vector \( \textbf{N} \) of \(\partial \Omega\). Applying divergence theorem
+		\[
+		\int_{\partial \Omega} (\textbf{v} \cdot \textbf{N}) dS = - \int_{\Omega} \nabla \cdot (K\nabla u(\textbf{x}, t)) dx = -K \int_{\Omega} \nabla^2 u(\textbf{x}, t) dx,
+		\]
+		where \( \nabla^2 u(\textbf{x}, t) = \Delta u(\textbf{x}, t) = u_{xx} + u_{yy} + u_{zz} \) is the Laplacian of \( u \). Total amount of heat \( H \) in \(\Omega\) is
+		\[
+		H = \int_{\Omega} \sigma \rho u(\textbf{x}, t) dx,
+		\]
+		where the constant \( \sigma \) is the specific heat of the material of the body and \( \rho \) is the density (mass per unit volume) of the material. The time rate of decrease of \( H \) is
+		\[
+		-\frac{\partial H}{\partial t} = - \int_{\Omega} \sigma \rho \frac{\partial u}{\partial t} dx
+		\]
+		and this must be equal to the above amount of heat leaving \(\Omega\). Therefore,
+		\[
+		- \int_{\Omega} \sigma \rho \frac{\partial u}{\partial t} \, dx = -K \int_{\Omega} \Delta u(\textbf{x}, t) \, dx\implies
+		\int_{\Omega} \left( \sigma \rho \frac{\partial u}{\partial t} - K \Delta u(\textbf{x}, t) \right) dx = 0.
+		\] Since this holds for any region \(\Omega\) in the body, the integrand (if continuous) must be zero everywhere; that is,
+		\[
+		\frac{\partial u}{\partial t} = c^2 \Delta u, \quad c^2 = \frac{K}{\sigma \rho}
+		\]
+		where \(c^2\) is called the thermal diffusivity of the material. This PDE is called the heat equation.
+	\end{remark}
+	\begin{note}[Solving One-Dimensional Heat Equation]
+		Find \textbf{solutions} \( u(x, t) \), which satisfies the wave equation
+		\[
+		\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+		\]
+		with (Dirichlet) \textbf{boundary conditions}
+		$
+		u(0, t) = 0 $ and $u(L, t) = 0$ for all $t
+		$
+		and \textbf{initial conditions}
+		\[
+		u(x, 0) = f(x) \quad \text{and} \quad f(L)=0.
+		\]
+	\end{note}
+	\vspace{8pt}
+	\begin{note}[\bf Method of Separating Variables]
+		Let $u(x, t) = F(x)G(t)\neq 0.$ Then \[
+		\frac{\partial u}{\partial t} = F \dot{G} \quad \text{and} \quad \frac{\partial^2 u}{\partial x^2} = F'' G.
+		\] We then have \[
+		F \dot{G} = c^2 F'' G\implies
+		\frac{\dot{G}}{c^2 G} = \frac{F''}{F}=k.
+		\] for negative constant $k=-p^2<0$. Then $
+		F'' + p^2 F = 0$ and $\dot{G}+c^2p^2G=0.$ A general solution is
+		\[
+		F(x) = A \cos px + B \sin px.
+		\] By the boundary conditions, we have \begin{enumerate}[(i)]
+			\item $u(0, t) = F(0)G(t) = 0\implies A=0$ and
+			\item $u(L, t) = F(L)G(t) = 0\implies F(L)= B \sin pL = 0\overset{B\neq 0}{\implies} \sin pL = 0$.
+		\end{enumerate} Hence
+		\[
+		pL = n\pi \quad \text{so that} \quad p = \frac{n\pi}{L}
+		\] We thus obtain infinitely many solutions \( F(x) = F_n(x) \), where
+		\[
+		F_n(x) = B\sin \frac{n\pi x}{L}, \quad n = 1,2,\cdots.
+		\]
+		Let $\lambda_n = \frac{cn\pi}{L}$. Since $\dot{G} + \lambda_n^2 G = 0$, a general solution is
+		\[
+		G_n(t) = C_ne^{-\lambda_n^2t}.
+		\] Hence, solutions of the wave equation with given boundary and initial conditions are
+		\[
+		u_n(x, t) = F_n(x)G_n(t)=B_n \sin \frac{n\pi x}{L}e^{-\lambda_n^2 t}, \quad B_n=BC_n, n = 1,2,\cdots.
+		\]
+	\end{note}
+	\vspace{8pt}
+	\begin{tcolorbox}
+		Solution of the one-dimensional heat equation
+		\[
+		\frac{\partial u}{\partial t} = c^2 \frac{\partial^2 u}{\partial x^2}
+		\]
+		with boundary conditions
+		\[
+		u(0, t) = 0 \quad \text{and} \quad u(L, t) = 0 \quad \text{for all } t
+		\]
+		and initial condition
+		\[
+		u(x, 0) = f(x)
+		\]
+		is
+		\[
+		u(x, t) = \sum_{n=1}^{\infty} u_n(x, t),
+		\]
+		where
+		\[
+		u_n(x, t) = F_n(x) G_n(t) = B_n \sin \frac{n\pi x}{L} e^{-\lambda_n^2 t}, \quad n = 1,2,\dots.
+		\]
+		Here,
+		\[
+		\lambda_n = \frac{c n \pi}{L}, \quad B_n = \frac{2}{L} \int_{0}^{L} f(x) \sin \frac{n\pi x}{L} \, dx.
+		\]
+	\end{tcolorbox}
 	
 	\newpage
 	
@@ -2954,8 +3179,12 @@
 			\]
 		\end{definition}
 	\end{tcolorbox}
-	\begin{remark}[Boundary conditions]
-		A heat problem then consists of this equation to be considered in some region \( \Omega \) of the \( xy \)-plane and a given boundary condition on the boundary curve of \( \Omega \). This is called a boundary value problem.
+	\begin{note}[Solving Laplace Equation]
+		Find a solution \( u(x, y) \), which satisfies the Laplace equation
+		\[
+		\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0
+		\]
+		with Dirichlet problem in a rectangle \( \Omega \), assuming that the temperature \( u(x, y) \) equals a given function \( f(x) \) on the upper side and 0 on the other three sides of the rectangle.
 		\begin{figure}[h!]\centering
 			\begin{tikzpicture}
 				% Rectangle
@@ -2964,10 +3193,10 @@
 				
 				% Labels
 				\node at (2,1) {$\Omega$};
-				\node at (2,2.3) {$u = f(x)$};
-				\node at (2,-0.3) {$u = 0$};
-				\node at (-0.3,1) {$u = 0$};
-				\node at (4.3,1) {$u = 0$};
+				\node at (2,2.3) {$u(x,b) = f(x)$};
+				\node at (2,-.3) {$u(x,0) = 0$};
+				\node at (-1.2,1) {$u(0,y) = 0$};
+				\node at (5.2,1) {$u(a,y) = 0$};
 				
 				% Axes
 				\draw[->] (-0.5,0) -- (4.5,0) node[right] {$x$};
@@ -2979,75 +3208,39 @@
 				\draw (-0.1,2) -- (0.1,2);
 				\node at (-0.3,2) {$b$};
 			\end{tikzpicture}
-		\end{figure} 
-		
-		One calls it:
-		\begin{enumerate}
-			\item Dirichlet problem if \( u \) is prescribed on \( \partial\Omega \),
-			\item Neumann problem if the normal derivative \( \nabla u \cdot N = \frac{\partial u}{\partial N} \) is prescribed on \( \partial\Omega \),
-			\item Mixed problem if \( u \) is prescribed on a portion of \( \partial\Omega \) and \( \nabla u \cdot N \) on the rest of \( \partial\Omega \).
-		\end{enumerate}
-	\end{remark}
-	
-	\textbf{Observation (Solving Laplace Equation)}
-	Find a solution \( u(x, y) \), which satisfies the Laplace equation
-	\[
-	\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0
-	\]
-	with Dirichlet problem in a rectangle \( \Omega \), assuming that the temperature \( u(x, y) \) equals a given function \( f(x) \) on the upper side and 0 on the other three sides of the rectangle.
-	
-	\textbf{Observation (Method of Separating Variables)}
-	\begin{itemize}
-		\item Let \( u(x, y) = F(x)G(y) \).
-		\item Then, we have
-		\[
+		\end{figure}\\
+		Let \( u(x, y) = F(x)G(y) \). Then, we have \[
 		\frac{1}{F} \frac{d^2 F}{dx^2} = -\frac{1}{G} \frac{d^2 G}{dy^2} = -k.
-		\]
-		\item From this and the left and right boundary conditions,
+		\] From this and the left and right boundary conditions,
 		\[
 		\frac{d^2 F}{dx^2} + kF = 0, \quad F(0) = F(a) = 0.
+		\] This gives \( k = \left( \frac{n\pi}{a} \right)^2 \) and corresponding nonzero solutions \( F(x) = F_n(x) = \sin \frac{n\pi x}{a} \), \( n = 1,2,\ldots \). The differential equation for \( G \) then becomes
+		\[
+		\frac{d^2 G}{dy^2} - \left( \frac{n\pi}{a} \right)^2 G = 0
 		\]
-		\item This gives \( k = \left( \frac{n\pi}{a} \right)^2 \) and corresponding nonzero solutions \( F(x) = F_n(x) = \sin \frac{n\pi x}{a} \), \( n = 1,2,\ldots \).
-	\end{itemize}
-	
-	The differential equation for \( G \) then becomes
-	\[
-	\frac{d^2 G}{dy^2} - \left( \frac{n\pi}{a} \right)^2 G = 0
-	\]
-	and solutions are
-	\[
-	G(y) = G_n(y) = A_n e^{\frac{n\pi y}{a}} + B_n e^{-\frac{n\pi y}{a}}.
-	\]
-	The boundary condition \( u = 0 \) on the lower side of \( \Omega \) implies that \( G_n(0) = A_n + B_n = 0 \) or \( B_n = -A_n \). This gives
-	\[
-	G_n(y) = A_n e^{\frac{n\pi y}{a}} - A_n e^{-\frac{n\pi y}{a}} = 2A_n \sinh \frac{n\pi y}{a}.
-	\]
-	By letting \( 2A_n = A_n^* \), we obtain the eigenfunctions
-	\[
-	u_n(x, y) = F_n(x)G_n(y) = A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a}.
-	\]
-	These satisfy the boundary condition \( u = 0 \) on the left, right, and lower sides.
-	
-	
-	\textbf{Observation (Method of Separating Variables)}
-	
-	\begin{itemize}
-		\item Let
+		and solutions are
+		\[
+		G(y) = G_n(y) = A_n e^{\frac{n\pi y}{a}} + B_n e^{-\frac{n\pi y}{a}}.
+		\]
+		The boundary condition \( u = 0 \) on the lower side of \( \Omega \) implies that \( G_n(0) = A_n + B_n = 0 \) or \( B_n = -A_n \). This gives
+		\[
+		G_n(y) = A_n e^{\frac{n\pi y}{a}} - A_n e^{-\frac{n\pi y}{a}} = 2A_n \sinh \frac{n\pi y}{a}.
+		\]
+		By letting \( 2A_n = A_n^* \), we obtain the eigenfunctions
+		\[
+		u_n(x, y) = F_n(x)G_n(y) = A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a}.
+		\]
+		These satisfy the boundary condition \( u = 0 \) on the left, right, and lower sides.
+		Let
 		\[
 		u(x, y) = \sum_{n=1}^{\infty} u_n(x, y) = \sum_{n=1}^{\infty} A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a}.
-		\]
-		
-		\item From the boundary condition on the upper side \( u(x, b) = f(x) \), we have
+		\] From the boundary condition on the upper side \( u(x, b) = f(x) \), we have
 		\[
 		u(x, b) = f(x) = \sum_{n=1}^{\infty} \left( A_n^* \sin \frac{n\pi x}{a} \right) \sinh \frac{n\pi b}{a}.
-		\]
-		
-		\item This shows that
+		\] This shows that
 		\[
 		A_n^* \sinh \frac{n\pi b}{a} = \frac{2}{a} \int_{0}^{a} f(x) \sin \frac{n\pi x}{a} \, dx.
-		\]
-		
-		\item Therefore, the solution is
+		\] Therefore, the solution is
 		\[
 		u(x, y) = \sum_{n=1}^{\infty} A_n^* \sin \frac{n\pi x}{a} \sinh \frac{n\pi y}{a},
 		\]
@@ -3055,8 +3248,7 @@
 		\[
 		A_n^* = \frac{2}{a \sinh \left( \frac{n\pi b}{a} \right)} \int_{0}^{a} f(x) \sin \frac{n\pi x}{a} \, dx.
 		\]
-	\end{itemize}
-	
+	\end{note}
 	\newpage
 	\begin{tcolorbox}[colframe=thmcolor, title={\color{white}\bf Fourier Cosine and Since Series}]
 		\begin{theorem}
