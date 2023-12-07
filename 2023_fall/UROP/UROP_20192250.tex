@@ -124,6 +124,7 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes, shapes.multipart}
 \usetikzlibrary{positioning,shapes.geometric}
+\usetikzlibrary{fit,backgrounds}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
 \usepackage{caption}
@@ -231,36 +232,36 @@
 			\vspace{0.5in}
 			{\Large Ji Yong-Hyeon, Kim Dong-Hyeon\par}
 			\vspace{1in}
-			%\includegraphics[scale=2.5]{urop.jpg}\par
-			\begin{figure}[h!]\centering
-				\begin{tikzpicture}[node distance=3cm]
-					
-					% Define block styles
-					\tikzstyle{decision} = [diamond, draw, fill=pink!30, 
-					text width=4.5em, text badly centered, inner sep=0pt]
-					\tikzstyle{block} = [rectangle, draw, fill=cyan!30, 
-					text width=5em, text centered, rounded corners, minimum height=4em]
-					\tikzstyle{line} = [draw, -latex', color=gray!70]
-					
-					% Nodes
-					\node [block] (init) {Start};
-					\node [decision, right of=init] (decide) {Choose b $\in$ \{0,1\}};
-					\node [block, above right of=decide, node distance=3cm] (game0) {$\mathcal{E}_0$};
-					\node [block, below right of=decide, node distance=3cm] (game1) {$\mathcal{E}_1$};
-					\node [block, right of=decide, node distance=4cm] (output) {Output to adversary};
-					\node [decision, right of=output] (adversary) {Adversary's guess b'};
-					\node [block, right of=adversary] (end) {Win if $b = b'$};
-					
-					% Paths
-					\path [line] (init) -- (decide);
-					\path [line] (decide) |- (game0);
-					\path [line] (decide) |- (game1);
-					\path [line] (game0) -| (output);
-					\path [line] (game1) -| (output);
-					\path [line] (output) -- (adversary);
-					\path [line] (adversary) -- (end);
-				\end{tikzpicture}
-			\end{figure}
+			\includegraphics[scale=.3]{title2.png}\par
+%			\begin{figure}[h!]\centering
+%				\begin{tikzpicture}[node distance=3cm]
+%					
+%					% Define block styles
+%					\tikzstyle{decision} = [diamond, draw, fill=pink!30, 
+%					text width=4.5em, text badly centered, inner sep=0pt]
+%					\tikzstyle{block} = [rectangle, draw, fill=cyan!30, 
+%					text width=5em, text centered, rounded corners, minimum height=4em]
+%					\tikzstyle{line} = [draw, -latex', color=gray!70]
+%					
+%					% Nodes
+%					\node [block] (init) {Start};
+%					\node [decision, right of=init] (decide) {Choose b $\in$ \{0,1\}};
+%					\node [block, above right of=decide, node distance=3cm] (game0) {$\mathcal{E}_0$};
+%					\node [block, below right of=decide, node distance=3cm] (game1) {$\mathcal{E}_1$};
+%					\node [block, right of=decide, node distance=4cm] (output) {Output to adversary};
+%					\node [decision, right of=output] (adversary) {Adversary's guess b'};
+%					\node [block, right of=adversary] (end) {Win if $b = b'$};
+%					
+%					% Paths
+%					\path [line] (init) -- (decide);
+%					\path [line] (decide) |- (game0);
+%					\path [line] (decide) |- (game1);
+%					\path [line] (game0) -| (output);
+%					\path [line] (game1) -| (output);
+%					\path [line] (output) -- (adversary);
+%					\path [line] (adversary) -- (end);
+%				\end{tikzpicture}
+%			\end{figure}
 			\vspace{1in}\large
 			{\bf Department of Information Security, Cryptology, and Mathematics\par}
 			{College of Science and Technology\par}
@@ -270,7 +271,26 @@
 			{\large \today\par}
 		\end{center}
 	\end{titlepage}
+	% Push the copyright to the bottom of the page
+	\vfill
+	\ \\
+	\vspace{15cm}\\
+	\noindent VISUALCRYPT: ESSENCE OF PROVABLE SECURITY\\
+	DEPARTMENT OF INFORMATION SECURITY, CRYPTOLOGY, AND MATHEMATICS\\
+	THE COLLEGE OF SCIENCE AND TECHNOLOGY\\
+	KOOKMIN UNIVERSITY
 	
+	\vspace{10pt} % Add some vertical space
+	
+	\noindent No part of this publication may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the author, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law. For permission requests, write to the author at the address below.\\
+	\\
+	\noindent \texttt{hacker3740@gmail.com}
+	\\
+	\vspace{10pt} % Add some vertical space
+	
+	\noindent \textbf{Copyright \copyright\ 2023, Ji Yong-Hyeon. All rights reserved.}
+	
+	\newpage
 	% Table of contents
 	\tableofcontents
 	
@@ -280,10 +300,21 @@
 	\chapter*{List of Symbols}
 	
 	\begin{tabular}{ll}
+		\( \lambda \) & Security Parameter \\
 		\( \zero^\lambda, \one^\lambda\) & \(\underbrace{\zero\zero\cdots\zero}_{\lambda\ \text{times}}, \underbrace{\one\one\cdots\one}_{\lambda\ \text{times}}\) : \(\lambda\)-bit zero/one sequence \\
+		\( \binaryfield \) & Binary Field \\
+		\( \library \) & Library \\
+		\( \adversary \) & Adversary \\		
 		\( \adversary\linking\library \) & The result of \textbf{linking} $\adversary$ to  $\library$ \\
 		\( \randomness \) & Randomeness \\
-		\( \equiv \) & Interchangability; Identical
+		\( \uniform \) & Uniformly Chosen \\
+		\( \equiv \) & Interchangability; Identical\\
+		\( \indist \) & Indistinguishability Symbol\\
+		\( \keyspace \) & Key Space\\
+		\( \messagespace \) & Message Space\\
+		\( \ciphertextspace \) & Ciphertext Space\\
+		\( \texttt{CTXT}() \) & Ciphertext Output Function\\
+		\( \texttt{EVE}() \) & Eavesdrop Function\\
 	\end{tabular}
 	
 	\chapter{One-Time Pad \& Kerckhoff's Principle}
@@ -583,9 +614,9 @@
 		\end{definition}
 	\end{tcolorbox}
 	
-	\section{How to Demonstrate Insecurity with Attacks}
-	\section{How to Prove Security with The Hybrid Technique}
-	\section{How to Compare/Contract Security Definitions}
+%	\section{How to Demonstrate Insecurity with Attacks}
+%	\section{How to Prove Security with The Hybrid Technique},
+%	\section{How to Compare/Contract Security Definitions}
 	
 	\newpage
 	\section*{Exercises}
@@ -2177,36 +2208,37 @@ plt.show()
 \end{example}
 
 	\newpage
-	\begin{tikzpicture}[font=\sffamily, thick, node distance=0.5cm, every text node part/.style={align=center}]
-		% Web Page Layout
-		\node[draw, minimum width=12cm, minimum height=8cm, rounded corners] (webpage) {};
-		
-		% Title
-		\node[above=0.5cm of webpage] (title) {\Large Pseudo Random Function (PRF) - Web Visualization};
-		
-		% Key and Data Input
-		\node[draw, below=1cm of title, minimum width=4cm, minimum height=0.7cm] (keyinput) {Key Input};
-		\node[draw, right=of keyinput, minimum width=4cm, minimum height=0.7cm] (datainput) {Data Input};
-		
-		% PRF Process
-		\node[draw, below=of keyinput.south, minimum width=9cm, minimum height=3cm, yshift=-1cm] (prfprocess) {PRF Processing\\ (Algorithm Visualization)};
-		\draw[-Latex] (keyinput) -- (prfprocess);
-		\draw[-Latex] (datainput) -- (prfprocess);
-		
-		% Output
-		\node[draw, below=of prfprocess, minimum width=4cm, minimum height=0.7cm] (output) {Output};
-		
-		% Annotations
-		\node[right=0.5cm of webpage.east, text width=5cm] (annotations) {
-			\textbf{Key Input:} User-defined secret key.\\
-			\textbf{Data Input:} Data to be processed.\\
-			\textbf{PRF Processing:} Deterministic yet unpredictable algorithm output.\\
-			\textbf{Output:} Pseudo-random result based on inputs.
-		};
-		
-		% Border for annotations
-%		\node[draw, fit=(annotations), inner sep=0.2cm] {};
-	\end{tikzpicture}
+	\begin{center}
+		\begin{tikzpicture}[node distance=1.5cm, auto, thick]
+			% PRF Block
+			\node[draw, rectangle] (PRF) {$f_k$};
+			\node[above left=0.5cm and 0.5cm of PRF] (Key) {$k \in K$};
+			\node[below left=0.5cm and 0.5cm of PRF] (InputX) {$x \in X$};
+			\node[right=1cm of PRF] (OutputY) {$y \in Y$};
+			
+			\draw[->] (Key) -- (PRF);
+			\draw[->] (InputX) -- (PRF);
+			\draw[->] (PRF) -- (OutputY);
+			
+			\node[draw, dashed, fit=(PRF) (Key) (InputX) (OutputY), inner sep=8pt] (PRFBox) {};
+			\node[above=0.1cm of PRFBox] {Pseudo-Random Function (PRF)};
+			\node[below=0.1cm of PRFBox.south] {Output is deterministic and reproducible with the same key and input};
+		\end{tikzpicture}
+		\begin{tikzpicture}[node distance=1.5cm, auto, thick]
+			% RF Block
+			\node[draw, rectangle] (RF) {$h$};
+			\node[below=1cm of RF] (InputX2) {$x \in X$};
+			\node[right=2cm of RF] (OutputY2) {$y \in Y$};
+			
+			\draw[->] (InputX2) -- (RF);
+			\draw[->] (RF) -- (OutputY2);
+			
+			\node[draw, dashed, fit=(RF) (InputX2) (OutputY2), inner sep=8pt] (RFBox) {};
+			\node[above=0.1cm of RFBox] {Random Function (RF)};
+			\node[below=0.1cm of RFBox.south] {Output varies randomly for the same input};
+		\end{tikzpicture}
+	\end{center}
+
 	\newpage
 	\begin{thebibliography}{9}
 		\bibitem{textbook}
