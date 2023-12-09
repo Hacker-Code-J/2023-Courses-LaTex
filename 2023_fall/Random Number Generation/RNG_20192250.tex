@@ -857,12 +857,196 @@
 		\end{tabularx}
 	\end{figure}
 	\end{example}
+
 	\newpage
 	\chapter{Examples of Markov chains}
+	
 	\newpage
 	\chapter{Statistical Inferences}
+	
 	\newpage
 	\chapter{Statistical Tests for Randomness}
+	
+	\begin{itemize}
+		\item Some statistical tests are designed to measure the \textit{quality} of a generator purported to be a random bit generator.
+		\item While it is impossible to give a \textbf{mathematical proof} that a generator is indeed a random bit generator, the statistical tests help \textbf{detect certain kinds of weaknesses the generator may have}.
+		\item This is accomplished by taking a sample output sequence of the generator and subjecting it to various statistical tests.
+		\begin{itemize}
+			\item Each statistical test determines whether the sequence possesses a certain attribute that a truly random sequence would be likely to exhibit; the conclusion of each test is not definite, but rather \textit{probabilistic}.
+			\item If the sequence is \textit{deemed} (regarded) to have failed any one of the statistical tests, the generator may be rejected as being non-random; alternatively, the generator may be subjected to further testing.
+			\item On the other hand, if the sequence passes all of the statistical tests, the generator is \textit{accepted} as being random. More precisely, the term ``accepted'' should be replaced by ``not rejected'', since passing the tests merely provides \textit{probabilistic evidence} that the generator produces sequences with certain characteristics of random sequences.
+		\end{itemize}
+	\end{itemize}
+
+	
+	\section*{Golomb’s randomness postulates}
+	
+	Golomb’s randomness postulates are presented here for historical reasons – they were one of the first attempts to establish some \textit{necessary} conditions for a periodic pseudorandom sequence to look random. It is emphasized that these conditions are far from being \textit{sufficient} for such sequences to be considered random.
+	
+	\subsection*{Definitions}
+	\begin{itemize}
+		\item Let \( s = s_0, s_1, s_2, \ldots \) be an infinite sequence. The subsequence consisting of the first \( n \) terms of \( s \) is denoted by \( s^n = s_0, s_1, \ldots, s_{n-1} \). (Bit sequence: \( s_i = 0 \) or 1)
+		\item The sequence \( s = s_0, s_1, s_2, \ldots \) is said to be \textbf{N-periodic} if \( s_i = s_{i+N} \) for all \( i \geq 0 \). The sequence is periodic if it is N-periodic for some positive integer N. The \textbf{period} of a periodic sequence \( s \) is the smallest positive integer \( N \) for which \( s \) is N-periodic. If \( s \) is a periodic sequence of period \( N \), then the \textbf{cycle} of \( s \) is the subsequence \( s^N \).
+		\item Let \( s \) be a sequence. A \(\_\_\_\_\) of \( s \) is a subsequence of \( s \) consisting of consecutive 0’s or consecutive 1’s which is neither preceded nor succeeded by the same symbol. A run of 0’s is called a \(\_\_\_\_\) while a run of 1’s is called a \(\_\_\_\_\).
+	\end{itemize}
+	
+	\subsection*{Autocorrelation Function}
+	\textbf{Definition:} Let \( s = s_0, s_1, \ldots \) be a periodic sequence of period \( N \). The \textit{autocorrelation function} of \( s \) is the integer-valued function \( C(t) \) defined as
+	\[ C(t) = \begin{cases} 
+		N - \sum_{i=0}^{N-1} (2s_i - 1)(2s_{i+t} - 1) & \text{if } t \neq 0, \\
+		K & \text{if } 1 \leq t \leq N - 1. \\
+	\end{cases} \]
+	
+	The autocorrelation function \( C(t) \) measures the amount of similarity between the sequence and a shift of \( t \) by positions. If \( s \) is a random periodic sequence of period \( N \), then \( N \cdot C(t) \) can be expected to be quite small for all values of \( t \), \( 0 < t < N \).
+	
+	\subsection*{Golomb’s Randomness Postulates}
+	\textbf{Definition:} Let \( s \) be a periodic sequence of period \( N \). Golomb’s randomness postulates are the following:
+	\begin{enumerate}
+		\item[\( R_1 \)] In the cycle \( s^N \), the number of 1’s differs from the number of 0’s by at most 1.
+		\item[\( R_2 \)] In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, etc., as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
+		\item[\( R_3 \)] The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
+		\[ N \cdot C(t) = \begin{cases} 
+			\sum_{i=0}^{N-1} (2s_i - 1)(2s_{i+t} - 1) & \text{if } t \neq 0, \\
+			K & \text{if } 1 \leq t \leq N - 1. \\
+		\end{cases} \]
+	\end{enumerate}
+	
+\subsection*{Definition}
+A binary sequence which satisfies Golomb's randomness postulates is called a \textit{cyclic} or a \textit{pn-sequence}.
+
+\textit{Pseudo-noise sequences arise in practice as output sequences of maximum-length linear feedback shift registers (m-LFSR).}
+
+\subsection*{Example (pn-sequence)}
+Consider the periodic sequence \( s \) of period \( N = 15 \) with cycle
+\[ s^{15} = 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1. \]
+The following shows that the sequence \( s \) satisfies Golomb's randomness postulates.
+\begin{description}
+	\item[R1:] The number of 0's in \( s^{15} \) is 7, while the number of 1's is 8.
+	\item[R2:] \( s^{15} \) has 8 runs. There are 4 runs of length 1 (2 gaps and 2 blocks), 2 runs of length 2 (1 gap and 1 block), 1 run of length 3 (1 gap), and 1 run of length 4 (1 block).
+	\item[R3:] The autocorrelation function \( C(t) \) takes on two values: \( C(0) = 1 \) and \( C(t) = -\frac{1}{15} \) for \( 1 \leq t \leq 14 \).
+\end{description}
+Hence, \( s \) is a pn-sequence.
+
+\subsection*{LFSR (4, \( 1 + D^3 + D^4 \))}
+\begin{itemize}
+	\item Connection polynomial: \( 1 + D^3 + D^4 \)
+	\item Initial state: \( [1, 1, 1, 1] \)
+\end{itemize}
+
+% Here you can describe the LFSR diagram or include an actual figure using the graphicx package.
+
+\section*{Five basic tests}
+
+Let \( s = s_0, s_1, \ldots, s_{n-1} \) be a binary sequence of length \( n \).
+
+\subsection*{(i) Frequency test (monobit test)}
+The purpose of this test is to determine whether the number of 0’s and 1’s in \( s \) are approximately the same, as would be expected for a random sequence. Let \( n_0, n_1 \) denote the number of 0’s and 1’s in \( s \), respectively. The statistic used is
+\[ X_1 = \frac{(n_0 - n_1)^2}{n}, \]
+which approximately follows a \( \chi^2 \) distribution with 1 degree of freedom if \( n \geq 10 \).
+
+% Here you can include the graph or describe it using LaTeX packages like pgfplots/tikz for example.
+
+\subsection*{(ii) Serial test (two-bit test)}
+The purpose of this test is to determine whether the number of occurrences of 00, 01, 10, and 11 as subsequences of \( s \) are approximately the same, as would be expected for a random sequence. Let \( n_{00}, n_{01}, n_{10}, n_{11} \) denote the number of occurrences of 00, 01, 10, 11 in \( s \), respectively. Note that \( n_{00} + n_{01} + n_{10} + n_{11} = (n - 1) \) since the subsequences are allowed to overlap. The statistic used is
+\[ X_2 = \frac{4}{n-1} (n_{00}^2 + n_{01}^2 + n_{10}^2 + n_{11}^2) - \frac{2}{n} (n_0^2 + n_1^2) + 1 \]
+which approximately follows a \( \chi^2 \) distribution with 2 degrees of freedom if \( n \geq 21 \).
+
+\textbf{Example:}
+\[ s (n=40) : 11100 \ 01100 \ 01000 \ 10100 \ 11101 \ 11100 \ 10010 \ 01001. \]
+
+\subsection*{(iii) Poker test}
+Let \( m \) be a positive integer such that \( \left[ \frac{n}{m} \right] \geq 5 \cdot (2^m) \), and let \( k = \left[ \frac{n}{m} \right] \). Divide the sequence \( s \) into \( k \) non-overlapping parts each of length \( m \), and let \( n_i \) be the number of occurrences of the \( i \)-th type of sequence of length \( m \), \( 1 \leq i \leq 2^m \). The poker test determines whether the sequences of length \( m \) each appear approximately the same number of times in \( s \), as would be expected for a random sequence. The statistic used is
+\[ X_3 = \frac{2^m}{k} \left( \sum_{i=1}^{2^m} n_i^2 \right) - k \]
+which approximately follows a \( \chi^2 \) distribution with \( 2^m - 1 \) degrees of freedom. Note that the poker test is a generalization of the frequency test: setting \( m = 1 \) in the poker test yields the frequency test.
+
+\subsection*{(iv) Runs test}
+The purpose of the runs test is to determine whether the number of runs (of either zeros or ones; see Definition 5.26) of various lengths in the sequence \( s \) is as expected for a random sequence. The expected number of gaps (or blocks) of length \( i \) in a random sequence of length \( n \) is
+\[ e_i = \frac{n-i+3}{2^{i+2}} \]
+for \( 1 \leq i \leq k \). Let \( k \) be equal to the largest integer \( i \) for which \( e_i \geq 5 \). Let \( B_i, G_i \) be the number of blocks and gaps, respectively, of length \( i \) in \( s \) for each \( i, 1 \leq i \leq k \). The statistic used is
+\[ X_4 = \sum_{i=1}^{k} \frac{(B_i - e_i)^2}{e_i} + \sum_{i=1}^{k} \frac{(G_i - e_i)^2}{e_i} \]
+which approximately follows a \( \chi^2 \) distribution with \( 2k - 2 \) degrees of freedom.
+
+\subsection*{(v) Autocorrelation test}
+The purpose of this test is to check for correlations between the sequence \( s \) and (non-cyclic) shifted versions of it. Let \( d \) be a fixed integer, \( 1 \leq d \leq \frac{n}{2} \). The number of bits in \( s \) not equal to their \( d \)-shifts is \( A(d) = \sum_{i=0}^{n-d-1} s_i \oplus s_{i+d} \), where \( \oplus \) denotes the XOR operator. The statistic used is
+\[ X_5 = \frac{2(A(d) - \frac{n-d}{2})}{\sqrt{n-d}} \]
+which approximately follows an \( \mathcal{N}(0, 1) \) distribution if \( n - d \geq 10 \). Since small values of \( A(d) \) are as unexpected as large values of \( A(d) \), a two-sided test should be used.
+
+\section*{Example (basic statistical tests)}
+Consider the (non-random) sequence \( s \) of length \( n = 160 \) obtained by replicating the following sequence four times:
+\[ 11100\ 01100\ 01000\ 10100\ 11101\ 11100\ 10010\ 01001. \]
+
+\begin{enumerate}
+	\item[(i)] \textbf{Frequency test (monobit test):} \( n_0 = 84 \), \( n_1 = 76 \), and the value of the statistic \( X_1 \) is 0.4.
+	\item[(ii)] \textbf{Serial test (two-bit test):} \( n_{00} = 44 \), \( n_{01} = 40 \), \( n_{10} = 40 \), \( n_{11} = 35 \), and the value of the statistic \( X_2 \) is 0.6252.
+	\item[(iii)] \textbf{Poker test:} Here \( m = 3 \) and \( k = 53 \). The blocks 000, 001, 010, 011, 100, 101, 110, 111 appear 5, 10, 6, 4, 12, 3, 6, and 7 times, respectively, and the value of the statistic \( X_3 \) is 9.6415.
+	\item[(iv)] \textbf{Runs test:} Here \( e_1 = 20.25 \), \( e_2 = 10.0625 \), \( e_3 = 5 \), and \( k = 3 \). There are 25, 4, 5 blocks of lengths 1, 2, 3, respectively, and 8, 20, 12 gaps of lengths 1, 2, 3, respectively. The value of the statistic \( X_4 \) is 31.7813.
+	\item[(v)] \textbf{Autocorrelation test:} If \( d = 8 \), then \( A(8) = 100 \). The value of the statistic \( X_5 \) is 3.8933.
+\end{enumerate}
+
+For a significance level of \( \alpha = 0.05 \), the threshold values for \( X_1, X_2, X_3, X_4 \), and \( X_5 \) are 3.8415, 5.9915, 14.0671, 9.4877, and 1.96, respectively. \\
+Hence, the given sequence \( s \) passes the frequency, serial, and poker tests, but fails the runs and autocorrelation tests.
+
+% Include the chi-squared distribution table and figure here
+% You may need to use a package like pgfplots to create the figure or include it as an image
+
+\section*{FIPS 140-1 statistical tests for randomness}
+\begin{itemize}
+	\item FIPS (Federal Information Processing Standards) 140-1 specifies four statistical tests for randomness.
+	\item Instead of making the user select appropriate significance levels for these tests, explicit bounds are provided that the computed value of a statistic must satisfy.
+	\item A single bitstring \( s \) of length \( n \) output from a generator, is subjected to each of the following tests.
+	\item If any of the tests fail, then the generator fails the test.
+	\begin{itemize}
+		\item monobit test
+		\item poker test
+		\item runs test
+		\item long run test
+	\end{itemize}
+	\item For high security applications, FIPS 140-1 mandates that the four tests be performed each time the random bit generator is powered up.
+	\item FIPS 140-1 allows these tests to be substituted by alternative tests which provide equivalent or superior randomness checking.
+\end{itemize}
+
+\subsection*{Test details}
+\begin{enumerate}
+	\item[(i)] \textbf{monobit test:} The number of 1's in \( s \) should satisfy \( 9654 < n_1 < 10346 \).
+	\item[(ii)] \textbf{poker test:} The statistic \( X_3 \) defined by equation \( \ldots \) is computed for \( m = 4 \). The poker test is passed if \( 1.03 < X_3 < 57.4 \).
+	\item[(iii)] \textbf{runs test:} The number \( B_i \) and \( G_i \) of blocks and gaps, respectively, of length \( i \) in \( s \) are counted for each \( i \), \( 1 \leq i \leq 6 \). (For the purpose of this test, runs of length greater than 6 are considered to be of length 6.) The runs test is passed if the 12 counts \( B_i, G_i, 1 \leq i \leq 6 \), are each within the corresponding interval specified by the following table.
+	% Here you would insert a table with the intervals
+	\item[(iv)] \textbf{long run test:} The long run test is passed if there are no runs of length 34 or more.
+\end{enumerate}
+
+\section*{Randomness (랜덤함의 난수성)}
+
+A \textbf{random bit sequence} could be interpreted as:
+\begin{itemize}
+	\item The result of the flips of an \textbf{unbiased ``fair''} coin with sides that are labeled ``0'' and ``1,'' with each flip having a \textbf{probability} of exactly \( \frac{1}{2} \) of producing a ``0'' or ``1.''
+	\item Furthermore, the flips are \textbf{independent} of each other: the result of any previous coin flip does not affect future coin flips.
+	\item The unbiased ``fair'' coin is thus the \textbf{perfect random bit stream generator}, since the ``0'' and ``1'' values will be randomly distributed.
+	\item All elements of the sequence are generated \textbf{independently} of each other, and the value of the next element in the sequence \textbf{cannot be predicted}, regardless of how many elements have already been produced.
+\end{itemize}
+The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
+\begin{itemize}
+	\item Nonetheless, the hypothetical output of such an idealized generator of a true random sequence serves as a benchmark for the evaluation of random and pseudorandom number generators.
+\end{itemize}
+
+\section*{Unpredictability (알 수 없지만 예측 가능성)}
+
+\begin{itemize}
+	\item Random and pseudorandom numbers generated for cryptographic applications should be \textbf{unpredictable}.
+	\item In the case of PRNGs, if the seed is unknown, the next output number in the sequence should be \textbf{unpredictable} in spite of any knowledge of previous random numbers in the sequence. This property is known as \textbf{ASI}.
+	\item It should also not be \textbf{feasible to determine} the seed from knowledge of any generated values, i.e., no correlation between a seed and any value generated from that seed should be evident.
+	\item To ensure forward unpredictability, care must be exercised in obtaining \textbf{seeds}.
+	\item The values produced by a PRNG are \textbf{completely predictable} if the seed and generation algorithm are known.
+	\item Since in many cases the generation algorithm is publicly available, the \textbf{seed must be kept secret} and should not be derivable from the pseudorandom sequence that it produces. In addition, the seed itself must be unpredictable.
+\end{itemize}
+
+
+
+
+
+
+
+	
+	\newpage
 	Statistical tests for random number generators (RNGs) are crucial in assessing the quality of the RNGs, which purport to produce random sequences. While it is not possible to mathematically prove that a sequence is random, these tests can reveal certain weaknesses. The tests work by evaluating sample outputs from the RNG against attributes expected from truly random sequences. The outcomes of these tests are probabilistic and not definite. If a sequence fails any of the tests, it may be rejected as non-random, or subjected to further testing. Passing all the tests allows the RNG to be accepted as random, or more precisely, not rejected, as it only provides probabilistic evidence of randomness.
 	
 	\section{Statistical tests for RNGs}
@@ -1569,85 +1753,109 @@ In summary, the entropy $H(X)$ of a random variable $X$ quantifies the expected 
 		\frac{1}{2^n}=p&\implies \log_2 2^{-n} = \log_2 p\\
 		&\implies n = -\log_2p.
 	\end{align*}
-	The length of a bit-string required to encode an event with probability $p$ is approximately $-\log_2(p)$. This principle is central in information theory, reflecting that less probable events, which carry more information, require longer bit strings for encoding.\par
-	Given an arbitrary probability distribution taking on the values \(p_1, p_2, \ldots, p_r\) for a random variable \(X\), we consider the weighted average of \(-\log_2(p_i)\):
-	\[ H(X) = \sum_{i=1}^{r} p_i \cdot (-\log_2(p_i)) \]
+	The bit-string length for encoding an event with probability $p$ is approximately $-\log_2p$.
+	This principle is central in information theory, reflecting that less probable events, which carry more information, require longer bit strings for encoding.\par
 	We could imagine that an outcome occurring with probability \(p\) might be encoded by a bit-string of length approximately \(-\log_2(p)\). Given an arbitrary probability distribution, taking on the values \(p_1, p_2, \ldots, p_r\) for a random variable \(X\), we take the \textbf{weighted average of the quantities \(-\log_2(p_i)\)} to be our measure of information.
 \end{note}
 \begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Entropy of Finite Random Variable}]
 	\begin{definition}
 		Suppose \(X\) is a discrete random variable that takes on values from a finite set \(X\), say, $\abs{X}=n$. The \textbf{entropy} of the random variable \(X\) is defined to be the quantity
-		\[ H(X) = -\sum_{i=1}^{n} p_i \log_2(p_i) \]
+		\[ H(X) = -\sum_{i=1}^{n} p_i \log_2p_i \]
 	\end{definition}
 \end{tcolorbox}
-\newpage
-
-% Example of expectation illustration (need to use TikZ or similar for actual figure)
-Expectation illustration placeholder
-
-
-\textbf{Definition}  
-
-
-\textbf{REMARK} Observe that \(\log_2(y)\) is undefined if \(y = 0\). Hence, entropy is sometimes defined to be the relevant sum over all the non-zero probabilities. However, since \(\lim_{y \to 0} y \log_2(y) = 0\), there is no real difficulty with allowing \(Pr[X] = 0\) for some \(x\)'s. Also, we note that the choice of two as the base of the logarithms is arbitrary: another base would only change the value of the entropy by a constant factor.
-
-Note that if \( |X| = n \) and \( Pr[x] = 1/n \) for all \( x \in X \), then \( H(X) = \log n \). Also, it is easy to see that \( H(X) \geq 0 \) for any random variable \( X \), and \( H(X) = 0 \) if and only if \( Pr[x] = 1 \) for some \( x \in X \) and \( Pr[x] = 0 \) for all \( x \neq x_0 \).
-
-Let us look at the entropy of the various components of a cryptosystem. We can think of the key as being a random variable \( K \) that takes on values in \( K \), and hence we can compute the entropy \( H(K) \). Similarly, we can compute entropies \( H(P) \) and \( H(C) \) of random variables associated with the plaintext and ciphertext, respectively.
-
-\textbf{Example} Let \( P = \{a, b\} \) with \( Pr[a] = 1/4, Pr[b] = 3/4 \). Let \( K = \{K_1, K_2, K_3\} \) with \( Pr[K_i] = 1/2, Pr[K_{i+1}] = Pr[K_{i+2}] = 1/4 \). Let \( c = \{1,2,3,4\} \), and suppose the encryption functions are defined to be \( e_{K_1}(a) = 1, e_{K_1}(b) = 2; e_{K_2}(a) = 2, e_{K_2}(b) = 3; \) and \( e_{K_3}(a) = 3, e_{K_3}(b) = 4 \). This cryptosystem can be represented by the following \textit{encryption matrix}:
-\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
-	\begin{definition}
-		
-	\end{definition}
-\end{tcolorbox}
-% Tabular environment for the encryption matrix
-\begin{tabular}{c c c}
-	& a & b \\
-	\( K_1 \) & 1 & 2 \\
-	\( K_2 \) & 2 & 3 \\
-	\( K_3 \) & 3 & 4 \\
-\end{tabular}
-
-% Continue with further text and another example as per the image content
-% ...
-
-
-First, we have to define what we mean by the entropy (per letter) of a natural language \( L \), which we denote \( H_L \).
-\begin{itemize}
-	\item \( H_L \) should be a measure of the average information per letter in a ``meaningful'' string of plaintext.
-	\item Note that a random string of alphabetic characters would have entropy (per letter) equal to \(\log(26)\).
-	\item As a ``first-order'' approximation to \( H_L \), we could take \( H(P) \).
-	\item In the case where \( L \) is the English language, we get \( H_L \) by using the probability distribution of the 26 English letters.
-\end{itemize}
-
-\begin{center}
-	\begin{tabular}{cccccc}
-		\toprule
-		Letter & Probability & Letter & Probability & Letter & Probability \\
-		\midrule
-		A & .082 & N & .067 & T & .091 \\
-		B & .015 & O & .075 & U & .028 \\
-		C & .028 & P & .019 & V & .010 \\
-		D & .043 & Q & .001 & W & .023 \\
-		E & .127 & R & .060 & X & .001 \\
-		F & .022 & S & .063 & Y & .020 \\
-		G & .020 &   &       & Z & .001 \\
-		\bottomrule
+\begin{remark}
+	Note that if \( |X| = n \) and \( Pr[x] = 1/n \) for all \( x \in X \), then 
+	\begin{align*}
+		H(X) = -\sum_{i=1}^{n} p_i \log_2(p_i)
+		= -\sum_{i=1}^n\frac{1}{n}\log_2\frac{1}{n}
+		=-n\cdot\frac{1}{n}\log_2n^{-1}
+		=\log_2 n.
+	\end{align*}
+	Also, \( H(X) \geq 0 \) for any random variable \( X \) and \[H(X)=0\iff\begin{cases}
+			\Pr[X=x_0]=1&\text{for some $x_0\in X$}\\
+			\Pr[X=x]=0&\text{for all $x\neq x_0$}
+		\end{cases}
+	\]
+\end{remark}
+\vspace{8pt}
+\begin{example}
+	Let \( \mathcal{P} = \{a, b\} \) with \( p(a) = 1/4, p(b) = 3/4 \). Let \( \mathcal{K} = \{k_1, k_2, k_3\} \) with \( p(k_i) = 1/2, p(k_2) = p(k_3) = 1/4 \). Let \( \mathcal{C} = \{1,2,3,4\} \), and suppose the encryption functions are defined to be \( e_{k_1}(a) = 1, e_{k_1}(b) = 2; e_{k_2}(a) = 2, e_{k_2}(b) = 3; \) and \( e_{k_3}(a) = 3, e_{k_3}(b) = 4 \). This cryptosystem can be represented by the following \textbf{encryption matrix}:\begin{table}[h!]\centering
+	\begin{tabular}{c||c|c}
+		$\mathcal{K}\backslash\mathcal{P}$& $a$ & $b$ \\
+		\hline\hline
+		\( K_1 \) & 1 & 2 \\
+		\( K_2 \) & 2 & 3 \\
+		\( K_3 \) & 3 & 4 \\
 	\end{tabular}
-\end{center}
+\end{table}\\ Note that \[
+p(1)=\frac{1}{2}\cdot\frac{1}{4}=\frac{1}{8},\quad p(2)=\frac{3}{8}+\frac{1}{16}=\frac{7}{16},\quad p(3)=\frac{3}{16}+\frac{1}{16}=\frac{1}{4},\quad p(4)=\frac{3}{16}.
+\]We compute as follows: \begin{itemize}
+\item $H(\mathcal{P})=-\of{\frac{1}{4}\cdot(-2)+\frac{3}{4}\of{\log_23-(-2)}}=2-\frac{3}{4}\log_23\approx 0.81.$
+\item $H(\mathcal{K})=-\of{\frac{1}{2}\cdot(-1)+\frac{1}{4}\cdot(-2)+\frac{1}{4}\cdot(-2)}=\frac{1}{2}+\frac{1}{2}+\frac{1}{2}=1.5.$
+\item $H(\mathcal{C})=-\of{\frac{1}{8}\cdot(-3)+\cdot\frac{7}{16}\cdot\of{\log_27-(-4)}+\frac{1}{2}\cdot(-2)+\frac{3}{16}(\log_23-(-4))}\approx 1.85.$
+\end{itemize}
+\end{example}
 
-\textbf{R\'enyi entropy} \\
-The R\'enyi entropy of order \(\alpha\), where \(\alpha \geq 0\) and \(\alpha \neq 1\), is defined as
-\[ H_{\alpha}(X) = \frac{1}{1 - \alpha} \log \left( \sum_{i=1}^{n} p_i^{\alpha} \right). \]
-Here, \(X\) is a discrete random variable with possible outcomes 1, 2, \ldots, \(n\) and corresponding probabilities \( p_i = Pr[X = i] \) for \( i = 1, \ldots, n \).
+%First, we have to define what we mean by the entropy (per letter) of a natural language \( L \), which we denote \( H_L \).
+%\begin{itemize}
+%	\item \( H_L \) should be a measure of the average information per letter in a ``meaningful'' string of plaintext.
+%	\item Note that a random string of alphabetic characters would have entropy (per letter) equal to \(\log(26)\).
+%	\item As a ``first-order'' approximation to \( H_L \), we could take \( H(P) \).
+%	\item In the case where \( L \) is the English language, we get \( H_L \) by using the probability distribution of the 26 English letters.
+%\end{itemize}
+%
+%\begin{center}
+%	\begin{tabular}{cccccc}
+%		\toprule
+%		Letter & Probability & Letter & Probability & Letter & Probability \\
+%		\midrule
+%		A & .082 & N & .067 & T & .091 \\
+%		B & .015 & O & .075 & U & .028 \\
+%		C & .028 & P & .019 & V & .010 \\
+%		D & .043 & Q & .001 & W & .023 \\
+%		E & .127 & R & .060 & X & .001 \\
+%		F & .022 & S & .063 & Y & .020 \\
+%		G & .020 &   &       & Z & .001 \\
+%		\bottomrule
+%	\end{tabular}
+%\end{center}
 
-\textbf{Hartley or max-entropy:} 
-\[ H_0(X) = \log n = \log |X|. \]
+\newpage
+\section{R\'enyi Entropy}
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf R\'enyi Entropy}]
+	\begin{definition}
+		The \textbf{R\'enyi entropy} of order \(\alpha\), where \(\alpha \geq 0\) and \(\alpha \neq 1\), is defined as
+		\[ H_{\alpha}(X) = \frac{1}{1 - \alpha} \log \left( \sum_{i=1}^{n} p_i^{\alpha} \right). \]
+		Here, \(X\) is a discrete random variable with possible outcomes 1, 2, \ldots, \(n\) and corresponding probabilities \( p_i = \Pr[X = i] \) for \( i = 1, \ldots, n \).
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	\ \begin{itemize}
+		\item \textbf{Hartley or Max-entropy:} $H_0(X) = \log n = \log |X|.$
+		\item \textbf{Shannon Entropy:} $H_1(X)=\lim\limits_{\alpha\to 1}H_{\alpha}(X)=-\sum_{i=1}^np_i\log p_i$
+		\begin{proof}
+			Let $f(\alpha):=\log\of{\sum_{i=1}^{n}p_i^\alpha}$ and $g(\alpha):=1-\alpha$ Then \begin{enumerate}[(i)]
+				\item \[
+				\od{}{\alpha}f=\od{}{\alpha}\of{\log\sum_{i=1}^{n}p_i^\alpha}=\frac{\sum_{i=1}^np_i^\alpha\log p_i}{\sum_{i=1}^np_i^\alpha}.
+				\]
+				\item \[
+				\od{}{\alpha}g=\od{}{\alpha}(1-\alpha)=-1.
+				\]
+			\end{enumerate} Thus, \[
+		\lim\limits_{\alpha\to 1}H_\alpha(X)=
+		\lim\limits_{\alpha\to 1}\frac{f(\alpha)}{g(\alpha)}=
+		\lim\limits_{\alpha\to 1}\frac{f'(\alpha)}{g'(\alpha)}=
+		-1\cdot\frac{\sum_{i=1}^np_i\log p_i}{\sum_{i=1}^np_i}=-1\cdot\frac{\sum_{i=1}^np_i\log p_i}{1}=-\sum_{i=1}^np_i\log p_i.
+		\]
+		\end{proof}
+		\item \textbf{Collision entropy:}
+		$ H_2(X) = -\log \sum_{i=1}^{n} p_i^2 = -\log Pr[X = Y], \quad X,Y: \text{i.i.d.} $
+		\item \textbf{Min-entropy:} $H_{\infty}(X)=\min_i(-\log p_i)=-(\max_i\log p_i)=-\log\max_i p_i$
+	\end{itemize}
+\end{remark}
 
-\textbf{Collision entropy:}
-\[ H_2(X) = -\log \sum_{i=1}^{n} p_i^2 = -\log Pr[X = Y], \quad X,Y: \text{i.i.d.} \]
 
+\newpage
 \section*{Min-Entropy}
 
 Entropy is defined relative to one's knowledge of an experiment's output prior to observation, and reflects the \textbf{uncertainty} associated with predicting its value -- the larger the amount of entropy, the greater the uncertainty in predicting the value of an observation.
