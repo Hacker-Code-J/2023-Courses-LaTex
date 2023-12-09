@@ -92,6 +92,7 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes.multipart}
+\usetikzlibrary{shapes.geometric, decorations.text}
 \usepackage{pgfplots}
 \usetikzlibrary{patterns}
 \pgfplotsset{compat=newest}
@@ -126,12 +127,14 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\F}{\mathbb{F}}
 
 \newcommand{\dispsty}{\displaystyle}
 \newcommand{\sol}{\textcolor{magenta}{\bf Solution}}
 \newcommand{\eg}{\textnormal{e.g.}}
 \newcommand{\ie}{\textnormal{i.e.}}
+\newcommand{\of}[1]{\left(#1\right)}
 
 \newcommand{\Var}{\text{Var}}
 \newcommand{\sd}{\text{sd}}
@@ -1418,7 +1421,7 @@ The postulates form the basis of several statistical tests, such as the runs tes
 
 In conclusion, Golomb’s randomness postulates are not only historically significant but also remain highly relevant in the modern analysis of cryptographic systems. They
 
-\chapter{Statistical Tests for Randomness}
+%\chapter{Statistical Tests for Randomness}
 
 \section{Introduction}
 Statistical tests for randomness play a pivotal role in validating the quality and integrity of random number generators (RNGs). These tests serve as a benchmark against which RNGs are measured to ensure that their output sequences exhibit properties characteristic of true randomness. Despite the intrinsic limitations in proving randomness, these tests can effectively identify non-randomness in sequences, which is vital for applications in cryptography, simulations, and various stochastic modeling scenarios.
@@ -1439,6 +1442,430 @@ These postulates form the basis for more sophisticated tests, and while they are
 
 Implementing these postulates in practical statistical tests has advanced the analysis of pseudorandom number generators (PRNGs), providing a methodology to assess their suitability for various applications. The evaluation of PRNGs against these postulates often involves chi-squared tests, spectral tests, and other statistical methodologies to detect non-random behavior in generated sequences.
 
+\newpage
+\chapter{Evaluation of Entropy}
+
+\section{Introduction to Entropy}
+
+We introduce the concept of \textbf{entropy} is \textcolor{red}{a measure of the uncertainty of a random variable}.
+\\
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]\begin{definition}
+	The entropy \( H(X) \) of a discrete random variable \( X \) is defined by
+	\[
+	H:\R^{\Omega}\to\R_{\geq 0}:H(X) = -\sum_{x \in X} p(x) \log_2 p(x).
+	\]
+	We also write \( H(p) \) for the above quantity. The log is to the base 2 and entropy is expressed in bits.
+\end{definition}
+\end{tcolorbox}
+
+\begin{example}
+	For example, the entropy of a fair coin toss is 1 bit: note that \[
+	X:\Omega\to\R:\begin{cases}
+		X(``\text{heads}'')=0\\
+		X(``\text{tails}'')=1\\
+	\end{cases},\quad\begin{cases}
+	\Pr[X=0]=p(0)=\frac{1}{2}\\
+	\Pr[X=1]=p(1)=\frac{1}{2}.
+\end{cases}
+	\] Since \[
+	p(0)\log_2 p(0)=\frac{1}{2}\log_2\frac{1}{2}=-\frac{1}{2}\quad\text{and}\quad p(1)\log_2 p(1)=\frac{1}{2}\log_2\frac{1}{2}=-\frac{1}{2},
+	\] we have \[
+	H(X)=-\sum_{x \in \set{0,1}} p(x) \log_2 p(x)=1.
+	\] We will use the convention that \[
+	p(x)=0\implies 0 \log 0 := 0,
+	\] which is easily justified by continuity since \[
+	\lim\limits_{x\to 0}x \log x=0.
+	\] Adding terms of zero probability does not change the entropy.
+\end{example}
+\newpage
+\begin{remark}
+	The expected value of a function $g(x)$ of a random variable $X=x$ is given by \[
+	\E[g(x)]=\sum_{x\in X}p(x)g(x).
+	\] Let $g(x):=\log_2\frac{1}{p(x)}$ then \[
+	\E\sbr{\log_2\frac{1}{p(x)}}=\sum_{x\in X}p(x)\log_2\frac{1}{p(x)}=-\sum_{x\in X}p(x)\log_2\frac{1}{p(x)}.
+	\] Therefore, entropy can be seen as the expected value of the information content of each outcome of a random variable. It quantifies the average amount of information (or uncertainty) inherent in the random variable's possible outcomes.
+\end{remark}
+\vspace{24pt}
+\begin{example}[Entropy of a Binary Random Variable]
+	\ \\
+	\begin{multicols}{2}
+		\begin{flushleft}
+			\begin{tikzpicture}[scale=.8]
+				\begin{axis}[
+					title={},
+					xlabel={$p$ (Probability)},
+					ylabel={$H(p)$ (Entropy)},
+					xmin=0, xmax=1,
+					ymin=0, ymax=1,
+					grid=both,
+					minor tick num=1,
+					samples=200,
+					no marks
+					]
+					\addplot[blue, thick, domain=0.001:0.999] {-x * ln(x) / ln(2) - (1-x) * ln(1-x) / ln(2)};
+					\addlegendentry{$H(p) = \log_2p^{-p} + \log_2(1 - p)^{p-1}$}
+				\end{axis}
+			\end{tikzpicture}
+		\end{flushleft}
+		\columnbreak
+		Let
+		\[
+		X = 
+		\begin{cases}
+			1 & \text{with probability } p, \\
+			0 & \text{with probability } 1 - p.
+		\end{cases}
+		\]
+		Then
+		\[
+		H(X) = -\of{\log_2 p^{p} + \log_2 (1 - p)^{1-p}}\overset{\text{def}}{=} H(p).
+		\]
+	\end{multicols}
+\end{example}
+\begin{example}
+	Let
+	\[
+	X = 
+	\begin{cases}
+		a & \text{with probability } \frac{1}{2}, \\
+		b & \text{with probability } \frac{1}{4}, \\
+		c & \text{with probability } \frac{1}{8}, \\
+		d & \text{with probability } \frac{1}{8}.
+	\end{cases}
+	\]
+	The entropy of \( X \) is
+	\[
+	H(X) = -\of{\frac{1}{2}\cdot(-1)+\frac{1}{4}\cdot(-2)+\frac{1}{8}\cdot(-3)+\frac{1}{8}\cdot(-3)} = \frac{4+4+3+3}{8} = \frac{14}{8}=\frac{7}{4}=1.75 \text{ bits}.
+	\]
+\end{example}
+
+\newpage
+\section{Entropy in Cryptography}
+We want to look at what happens \textcolor{blue}{\bf as more and more plaintexts are encrypted using the same key}, and how likely a cryptanalyst will be able to carry out a successful \textcolor{red}{\bf ciphertext-only attack}, given sufficient time.\par
+The basic tool in studying this question is the idea of \textbf{entropy}, a concept from information theory introduced by Shannon in 1948. \textbf{Entropy} can be thought of as a mathematical measure of \textcolor{red}{\textit{information}} or \textcolor{red}{\textit{uncertainty}}, and is computed as a function of a probability distribution.\par
+Suppose we have a discrete random variable \( X \) which takes values from a finite set according to a specified probability distribution. What is the \textit{information} gained by the outcome of an experiment which takes place according to this probability distribution? Equivalently, if the experiment has not (yet) taken place, what is the \textit{uncertainty} about the outcome?
+This quantity is called the \textbf{entropy of \( X \)} and is denoted by \( H(X) \).\par
+If $H(X)$ is high, it means there's a lot of uncertainty about the outcome of the experiment (or a lot of information to be gained by performing it). If $H(X)$ is low, it means most outcomes are quite predictable, with little new information to be gained.\par
+In summary, the entropy $H(X)$ of a random variable $X$ quantifies the expected amount of information gained—or equivalently, the uncertainty—about the outcome of an experiment modeled by $X$ before the experiment is performed. 
+\vspace{24pt}
+\begin{example}
+	Suppose our random variable \(X\) represents the toss of a coin. As mentioned earlier, the associated probability distribution is \( Pr[\text{heads}] = Pr[\text{tails}] = 1/2 \). It would seem reasonable to say that the \textbf{information}, or \textbf{entropy}, of a coin toss is one bit since we could encode heads by 1 and tails by 0, for example. In a similar fashion, the entropy of \(n\) independent coin tosses is \(n\), since the \(n\) coin tosses can be encoded by a bitstring of length \(n\).
 	
+	As a slightly more complicated example, suppose we have a random variable \(X\) that takes on three possible values \(x_1, x_2, x_3\) with probabilities \(1/2, 1/4, 1/4\) respectively. Suppose we encode the three possible outcomes as follows: \(x_1\) is encoded as 0, \(x_2\) is encoded as 10, and \(x_3\) is encoded as 11. Then the \textbf{(weighted) average number of bits in this encoding of \(X\)} is
+\end{example}
+
+\newpage
+
+% Example of expectation illustration (need to use TikZ or similar for actual figure)
+Expectation illustration placeholder
+
+The above examples suggest that an event which occurs with probability \(2^{-n}\) could perhaps be encoded as a bitstring of length \(n\). More generally, we could plausibly imagine that an outcome occurring with probability \(p\) might be encoded by a bitstring of length approximately \(-\log_2(p)\). Given an arbitrary probability distribution, taking on the values \(p_1, p_2, \ldots, p_r\) for a random variable \(X\), we take the \textbf{weighted average of the quantities \(-\log_2(p_i)\)} to be our measure of information. This motivates the following formal definition.
+
+\textbf{Definition} Suppose \(X\) is a discrete random variable that takes on values from a finite set \(X\). Then, the \textbf{entropy} of the random variable \(X\) is defined to be the quantity
+
+\[ H(X) = -\sum_{i=1}^{n} p_i \log_2(p_i) \]
+
+\textbf{REMARK} Observe that \(\log_2(y)\) is undefined if \(y = 0\). Hence, entropy is sometimes defined to be the relevant sum over all the non-zero probabilities. However, since \(\lim_{y \to 0} y \log_2(y) = 0\), there is no real difficulty with allowing \(Pr[X] = 0\) for some \(x\)'s. Also, we note that the choice of two as the base of the logarithms is arbitrary: another base would only change the value of the entropy by a constant factor.
+
+Note that if \( |X| = n \) and \( Pr[x] = 1/n \) for all \( x \in X \), then \( H(X) = \log n \). Also, it is easy to see that \( H(X) \geq 0 \) for any random variable \( X \), and \( H(X) = 0 \) if and only if \( Pr[x] = 1 \) for some \( x \in X \) and \( Pr[x] = 0 \) for all \( x \neq x_0 \).
+
+Let us look at the entropy of the various components of a cryptosystem. We can think of the key as being a random variable \( K \) that takes on values in \( K \), and hence we can compute the entropy \( H(K) \). Similarly, we can compute entropies \( H(P) \) and \( H(C) \) of random variables associated with the plaintext and ciphertext, respectively.
+
+\textbf{Example} Let \( P = \{a, b\} \) with \( Pr[a] = 1/4, Pr[b] = 3/4 \). Let \( K = \{K_1, K_2, K_3\} \) with \( Pr[K_i] = 1/2, Pr[K_{i+1}] = Pr[K_{i+2}] = 1/4 \). Let \( c = \{1,2,3,4\} \), and suppose the encryption functions are defined to be \( e_{K_1}(a) = 1, e_{K_1}(b) = 2; e_{K_2}(a) = 2, e_{K_2}(b) = 3; \) and \( e_{K_3}(a) = 3, e_{K_3}(b) = 4 \). This cryptosystem can be represented by the following \textit{encryption matrix}:
+
+% Tabular environment for the encryption matrix
+\begin{tabular}{c c c}
+	& a & b \\
+	\( K_1 \) & 1 & 2 \\
+	\( K_2 \) & 2 & 3 \\
+	\( K_3 \) & 3 & 4 \\
+\end{tabular}
+
+% Continue with further text and another example as per the image content
+% ...
+
+
+First, we have to define what we mean by the entropy (per letter) of a natural language \( L \), which we denote \( H_L \).
+\begin{itemize}
+	\item \( H_L \) should be a measure of the average information per letter in a ``meaningful'' string of plaintext.
+	\item Note that a random string of alphabetic characters would have entropy (per letter) equal to \(\log(26)\).
+	\item As a ``first-order'' approximation to \( H_L \), we could take \( H(P) \).
+	\item In the case where \( L \) is the English language, we get \( H_L \) by using the probability distribution of the 26 English letters.
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{cccccc}
+		\toprule
+		Letter & Probability & Letter & Probability & Letter & Probability \\
+		\midrule
+		A & .082 & N & .067 & T & .091 \\
+		B & .015 & O & .075 & U & .028 \\
+		C & .028 & P & .019 & V & .010 \\
+		D & .043 & Q & .001 & W & .023 \\
+		E & .127 & R & .060 & X & .001 \\
+		F & .022 & S & .063 & Y & .020 \\
+		G & .020 &   &       & Z & .001 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\textbf{R\'enyi entropy} \\
+The R\'enyi entropy of order \(\alpha\), where \(\alpha \geq 0\) and \(\alpha \neq 1\), is defined as
+\[ H_{\alpha}(X) = \frac{1}{1 - \alpha} \log \left( \sum_{i=1}^{n} p_i^{\alpha} \right). \]
+Here, \(X\) is a discrete random variable with possible outcomes 1, 2, \ldots, \(n\) and corresponding probabilities \( p_i = Pr[X = i] \) for \( i = 1, \ldots, n \).
+
+\textbf{Hartley or max-entropy:} 
+\[ H_0(X) = \log n = \log |X|. \]
+
+\textbf{Collision entropy:}
+\[ H_2(X) = -\log \sum_{i=1}^{n} p_i^2 = -\log Pr[X = Y], \quad X,Y: \text{i.i.d.} \]
+
+\section*{Min-Entropy}
+
+Entropy is defined relative to one's knowledge of an experiment's output prior to observation, and reflects the \textbf{uncertainty} associated with predicting its value -- the larger the amount of entropy, the greater the uncertainty in predicting the value of an observation.
+
+There are many possible measures for entropy; NIST uses a very \textit{conservative measure} known as \textbf{min-entropy}, which measures the effectiveness of the strategy of guessing the most likely output of the entropy source.
+
+The min-entropy of an independent discrete random variable \(X\) that takes values from the set \(\{x_1, x_2, \ldots, x_k\}\) with probability \(Pr[X=x_i] = p_i\) for \(i=1,\ldots,k\) is defined as
+\[ H_{\infty}(X) = \min(-\log_2 p_i) = -\log_2 \max p_i. \]
+
+If \(X\) has min-entropy \(H\), then the probability of observing any particular value for \(X\) is no greater than \(2^{-H}\). The maximum possible value for the min-entropy of a random variable with \(k\) distinct values is \(\log_2 k\), which is attained when the random variable has a uniform probability distribution, i.e., \(p_1 = p_2 = \ldots = p_k = 1/k\).
+
+\subsection*{Probabilistic Analysis for the Relationship Between Min-Entropy and Guessing Attack}
+
+Min-entropy is closely related to the \textit{optimum guessing attack cost}.
+
+\[ \mathbb{E}[S_{\delta}] = W_k(P) \]
+
+\textbf{Abstract.} Recently NIST has published the second draft document of recommendation for the entropy sources used for random bit generation. In this document NIST has provided a practical and detailed description about the fact that the min-entropy is closely related to the optimum guessing attack cost. However the argument lacks the mathematical rigor. In this paper we provide an elaborate probabilistic analysis for the relationship between the min-entropy and cost of optimum guessing attack. Moreover we also provide some simulation results in order to investigate the practicality of optimum guessing attack.
+
+\textbf{Keywords:} Entropy source $\cdot$ Min-Entropy $\cdot$ Optimum guessing attack
+
+\section*{Appendix D\textendash Min-Entropy and Optimum Guessing Attack Cost}
+
+Suppose that an adversary wants to determine at least one of several secret values, where each secret value is independently chosen from a set of \(M\) possibilities, with probability distribution \(P = \{p_1, p_2, \ldots, p_M\}\). Assume that these probabilities are sorted so that \(p_1 \geq p_2 \geq \ldots \geq p_M\). Consider a guessing strategy: and assume successfully guessing as many secret values as possible... The adversary's goal would be to minimize the expected number of guesses per successful recovery. Such a strategy would consist of guessing a maximum of \(k\) possibilities for a given secret value, moving on to a new secret value when either a guess is correct, or \(k\) incorrect guesses for the current value have been made. In general, the optimum value of \(k\) can be anywhere in the range \(1 \leq k \leq M\), depending on the probability distribution \(P\). Note that when \(k = M\), the \(M^{\text{th}}\) guess is considered valid (though trivial) guess. Regardless of the value of \(k\) chosen, it is clear that the guesser selected for a given secret value should be the \(k\) most likely possible values, in decreasing order of probability.
+
+The expected number of guesses \(W_k(P)\) is given by:
+\[
+W_k(P) = p_1 + 2p_2 + \ldots + (k - 1)p_{k-1} + k \left( 1 - \sum_{i=1}^{k-1} p_i \right)
+\]
+
+\section*{Entropy Source Model}
+
+% Here you can describe the entropy source model as shown in the figure. To include an actual figure, you can use the graphicx package with \includegraphics command.
+
+\section*{Entropy Source Validation}
+\begin{itemize}
+	\item Data Collection
+	\item Determining the track: IID track vs. non--IID track
+	\item Initial Entropy Estimate
+	\item Restart Tests
+	\item Entropy Estimation for Entropy Sources Using a Conditioning Component
+	\item Additional Noise Sources
+\end{itemize}
+
+\subsection*{Health Tests}
+\begin{itemize}
+	\item Repetition Count Test
+	\item Adaptive Proportion Test
+\end{itemize}
+
+\section*{Testing the IID Assumption}
+\subsection*{Permutation Testing}
+
+\textbf{Input:} \( S = (s_1, \ldots, s_n) \)
+
+\textbf{Output:} Decision on the IID assumption
+
+\begin{enumerate}[1]
+	\item For each test \( i \)
+	\begin{enumerate}[a]
+		\item Assign the counters \( C_{0,i} \) and \( C_{1,i} \) to zero.
+		\item Calculate the test statistic \( T_i \) on \( S \).
+	\end{enumerate}
+	\item For \( j = 1 \) to 10,000
+	\begin{enumerate}[1]
+		\item Permute \( S \) using the Fisher-Yates shuffle algorithm.
+		\item For each test \( i \)
+		\begin{enumerate}[a]
+			\item Calculate the test statistic \( T \) on the permuted data.
+			\item If \( (T > T_i) \), increment \( C_{0,i} \). If \( (T = T_i) \), increment \( C_{1,i} \).
+		\end{enumerate}
+	\end{enumerate}
+	\item If \( (C_{0,i} + C_{1,i})/10,000 > 0.9995 \) for any \( i \), reject the IID assumption; else, assume that the noise source outputs are IID.
+\end{enumerate}
+
+\section*{Testing the IID Assumption}
+
+\subsection*{Permutation Testing}
+\begin{enumerate}
+	\item Excursion Test Statistic
+	\item Number of Directional Runs
+	\item Length of Directional Runs
+	\item Number of Increases and Decreases
+	\item Number of Runs Based on the Median
+	\item Length of Runs Based on Median
+	\item Average Collision Test Statistic
+	\item Maximum Collision Test Statistic
+	\item Periodicity Test Statistic
+	\item Covariance Test Statistic
+	\item Compression Test Statistic
+\end{enumerate}
+
+\subsection*{Additional Chi-square Statistical Tests}
+\begin{enumerate}
+	\item Testing Independence for Non-Binary Data
+	\item Testing Goodness-of-fit for Non-Binary Data
+	\item Testing Independence for Binary Data
+	\item Testing Goodness-of-fit for Binary Data
+	\item Length of the Longest Repeated Substring Test
+\end{enumerate}
+
+\section*{Estimating Min-Entropy}
+
+\subsection*{IID Track: Entropy Estimation for IID Data}
+\begin{itemize}
+	\item most common value estimate
+\end{itemize}
+
+\subsection*{Non-IID Track: Entropy Estimation for Non-IID Data}
+\begin{itemize}
+	\item The Most Common Value Estimate
+	\item The Collision Estimate
+	\item The Markov Estimate
+	\item The Compression Estimate
+	\item The \textit{t}-Tuple Estimate
+	\item The Longest Repeated Substring (LRS) Estimate
+	\item The Multi Most Common in Window Prediction Estimate
+	\item The Lag Prediction Estimate
+	\item The MultiMMC Prediction Estimate
+	\item The LZ78Y Prediction Estimate
+\end{itemize}
+
+
+\section*{The Most Common Value Estimate}
+
+This method first finds the proportion \(\hat{p}\) of the most common value in the input dataset, and then constructs a confidence interval for this proportion. The upper bound of the confidence interval is used to estimate the min-entropy per sample of the source.
+
+Given the input \(S = (s_1, \ldots, s_L)\), where \(s_i \in \{x_1, \ldots, x_k\}\),
+\begin{enumerate}
+	\item Find the proportion of the most common value \(\hat{p}\) in the dataset, i.e.,
+	\[\hat{p} = \max \frac{\#\{s_i\}}{L}.\]
+	
+	\item Calculate an upper bound on the probability of the most common value \(p_u\) as
+	\[p_u = \min \left(1, \hat{p} + z \sqrt{\frac{\hat{p}(1-\hat{p})}{L-1}} \right),\]
+	where \(z\) corresponds to the \(Z_{(1-\alpha/2)}\) value.
+	
+	\item The estimated min-entropy is \(-\log_2(p_u)\).
+\end{enumerate}
+
+\textbf{Example:} If the dataset is \(S = (0, 1, 1, 2, 0, 1, 2, 2, 0, 1, 0, 1, 0, 2, 2, 1, 0, 2, 1)\), with \(L = 20\), the most common value is 1, with \(\hat{p} = 0.4\). \(p_u = 0.4 + 2.576 \cdot \sqrt{0.012} = 0.6895\). The min-entropy estimate is \(-\log_2(0.6895) \approx 0.5363\).
+
+\section*{The Markov Estimate}
+
+This entropy estimation method is only applied to binary inputs.
+
+Given the input \(S = (s_1, \ldots, s_L)\), where \(s_i \in \{0,1\}\),
+\begin{enumerate}
+	\item Estimate the initial probabilities for each output value, \(P_0\) and \(P_1 = 1 - P_0\).
+	\item Let \(T\) be the \(2\times2\) transition matrix of the form
+	\[\begin{bmatrix}
+		P_{00} & P_{01} \\
+		P_{10} & P_{11}
+	\end{bmatrix}\]
+	where the probabilities are calculated as
+	\[P_{00} = \frac{\#\{00 \text{ in } S\}}{\#\{0 \text{ in } S\} - 1}, \quad P_{01} = \frac{\#\{01 \text{ in } S\}}{\#\{0 \text{ in } S\}}\]
+	\[P_{10} = \frac{\#\{10 \text{ in } S\}}{\#\{1 \text{ in } S\}}, \quad P_{11} = \frac{\#\{11 \text{ in } S\}}{\#\{1 \text{ in } S\} - 1}\]
+\end{enumerate}
+
+\section*{Find the probability of the most likely sequence of outputs of length 128, as calculated below.}
+\begin{center}
+	\begin{tabular}{cc}
+		\toprule
+		Sequence & Probability \\
+		\midrule
+		00...0 & \( P_0 \times P_0^{127} \) \\
+		0101...01 & \( P_0^{64} \times P_1^{64} \) \\
+		011...1 & \( P_0 \times P_1 \times P_1^{126} \) \\
+		100...0 & \( P_1 \times P_0 \times P_0^{126} \) \\
+		1010...10 & \( P_1^{64} \times P_0^{64} \) \\
+		11...1 & \( P_1 \times P_1^{127} \) \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+\section*{Let \(p_{\max}\) be the maximum of the probabilities in the table given above. The min-entropy estimate is the negative logarithm of the probability of the most likely sequence of outputs, \(p_{\max}\):}
+\[ \text{min-entropy} = \min(-\log_2(p_{\max})/128,1) \]
+
+\section*{Example}
+For the purpose of this example\(^2\), suppose that \(L = 40\) and \(S = (1, 0, 0, \ldots, 0, 1)\), with \(L = 20\), the most common value is 1, with \(p = 0.4\). The transition matrix is calculated as
+\[
+\begin{bmatrix}
+	0 & 1 \\
+	P_{00} & P_{01} \\
+	P_{10} & P_{11} \\
+\end{bmatrix}
+\]
+where the probabilities are calculated as
+\[
+P_{00} = \frac{\#00 \text{ in } S}{\#0 \text{ in } S - 1}, \quad P_{01} = \frac{\#01 \text{ in } S}{\#0 \text{ in } S}
+\]
+\[
+P_{10} = \frac{\#10 \text{ in } S}{\#1 \text{ in } S}, \quad P_{11} = \frac{\#11 \text{ in } S}{\#1 \text{ in } S - 1}
+\]
+
+The probabilities of the possible sequences are
+\[
+\begin{aligned}
+	00...0 &\quad 3.9837 \times 10^{-3} \\
+	0101...01 &\quad 4.4381 \times 10^{-4} \\
+\end{aligned}
+\]
+\[
+\begin{aligned}
+	011...1 &\quad 1.4202 \times 10^{-4} \\
+	10...0 &\quad 6.4631 \times 10^{-3} \\
+\end{aligned}
+\]
+\[
+\begin{aligned}
+	1010...10 &\quad 4.6288 \times 10^{-9} \\
+	11...1 &\quad 1.0121 \times 10^{-4} \\
+\end{aligned}
+\]
+
+The resulting entropy estimate is
+\[ \text{min-entropy} = \min(-\log_2(4.6288 \times 10^{-9})/128, 1) = \min(0.761, 1) = 0.761. \]
+
+\newpage
+
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
+	\begin{definition}
+		
+	\end{definition}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
+	\begin{definition}
+		
+	\end{definition}
+\end{tcolorbox}
+
+\begin{tikzpicture}
+	% Domain
+	\node (domain) at (0,0) [draw,thick,minimum width=3cm,minimum height=1cm] {Probability distributions of \(X\)};
+	
+	% Range
+	\node (range) at (6,0) [draw,thick,minimum width=3cm,minimum height=1cm] {Entropy in bits};
+	
+	% Function Arrow
+	\draw[->,thick] (domain) -- (range) node[midway,above] {\(H(X)\)};
+	
+	% Labels
+	\node[above of=domain, node distance=1cm] (domainLabel) {Domain};
+	\node[above of=range, node distance=1cm] (rangeLabel) {Range};
+	
+	% Conjugate space not explicitly represented in this context
+\end{tikzpicture}
 	% End document
 \end{document}
