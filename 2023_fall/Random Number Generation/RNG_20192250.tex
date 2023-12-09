@@ -1449,8 +1449,8 @@ Implementing these postulates in practical statistical tests has advanced the an
 
 We introduce the concept of \textbf{entropy} is \textcolor{red}{a measure of the uncertainty of a random variable}.
 \\
-\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]\begin{definition}
-	The entropy \( H(X) \) of a discrete random variable \( X \) is defined by
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Entropy}]\begin{definition}
+	The \textbf{entropy} \( H(X) \) of a discrete random variable \( X \) is defined by
 	\[
 	H:\R^{\Omega}\to\R_{\geq 0}:H(X) = -\sum_{x \in X} p(x) \log_2 p(x).
 	\]
@@ -1461,11 +1461,11 @@ We introduce the concept of \textbf{entropy} is \textcolor{red}{a measure of the
 \begin{example}
 	For example, the entropy of a fair coin toss is 1 bit: note that \[
 	X:\Omega\to\R:\begin{cases}
-		X(``\text{heads}'')=0\\
-		X(``\text{tails}'')=1\\
+		X(``\text{heads}'')=1\\
+		X(``\text{tails}'')=0
 	\end{cases},\quad\begin{cases}
-	\Pr[X=0]=p(0)=\frac{1}{2}\\
-	\Pr[X=1]=p(1)=\frac{1}{2}.
+	\Pr[X=1]=p(1)=\frac{1}{2}\\
+	\Pr[X=0]=p(0)=\frac{1}{2}.
 \end{cases}
 	\] Since \[
 	p(0)\log_2 p(0)=\frac{1}{2}\log_2\frac{1}{2}=-\frac{1}{2}\quad\text{and}\quad p(1)\log_2 p(1)=\frac{1}{2}\log_2\frac{1}{2}=-\frac{1}{2},
@@ -1482,7 +1482,7 @@ We introduce the concept of \textbf{entropy} is \textcolor{red}{a measure of the
 	The expected value of a function $g(x)$ of a random variable $X=x$ is given by \[
 	\E[g(x)]=\sum_{x\in X}p(x)g(x).
 	\] Let $g(x):=\log_2\frac{1}{p(x)}$ then \[
-	\E\sbr{\log_2\frac{1}{p(x)}}=\sum_{x\in X}p(x)\log_2\frac{1}{p(x)}=-\sum_{x\in X}p(x)\log_2\frac{1}{p(x)}.
+	\E\sbr{\log_2\frac{1}{p(x)}}=\sum_{x\in X}p(x)\log_2\frac{1}{p(x)}=-\sum_{x\in X}p(x)\log_2{p(x)}.
 	\] Therefore, entropy can be seen as the expected value of the information content of each outcome of a random variable. It quantifies the average amount of information (or uncertainty) inherent in the random variable's possible outcomes.
 \end{remark}
 \vspace{24pt}
@@ -1548,22 +1548,46 @@ This quantity is called the \textbf{entropy of \( X \)} and is denoted by \( H(X
 If $H(X)$ is high, it means there's a lot of uncertainty about the outcome of the experiment (or a lot of information to be gained by performing it). If $H(X)$ is low, it means most outcomes are quite predictable, with little new information to be gained.\par
 In summary, the entropy $H(X)$ of a random variable $X$ quantifies the expected amount of information gained—or equivalently, the uncertainty—about the outcome of an experiment modeled by $X$ before the experiment is performed. 
 \vspace{24pt}
-\begin{example}
-	Suppose our random variable \(X\) represents the toss of a coin. As mentioned earlier, the associated probability distribution is \( Pr[\text{heads}] = Pr[\text{tails}] = 1/2 \). It would seem reasonable to say that the \textbf{information}, or \textbf{entropy}, of a coin toss is one bit since we could encode heads by 1 and tails by 0, for example. In a similar fashion, the entropy of \(n\) independent coin tosses is \(n\), since the \(n\) coin tosses can be encoded by a bitstring of length \(n\).
-	
-	As a slightly more complicated example, suppose we have a random variable \(X\) that takes on three possible values \(x_1, x_2, x_3\) with probabilities \(1/2, 1/4, 1/4\) respectively. Suppose we encode the three possible outcomes as follows: \(x_1\) is encoded as 0, \(x_2\) is encoded as 10, and \(x_3\) is encoded as 11. Then the \textbf{(weighted) average number of bits in this encoding of \(X\)} is
+\begin{example}[\bf The Length of a Bit-string in Probability Encoding]
+	Suppose we have a random variable \(X\) such that
+	\[
+	\Pr[X=x_1]=\frac{1}{2},\quad\Pr[X=x_2]=\frac{1}{4},\quad\Pr[X=x_3]=\frac{1}{4}.
+	\] Suppose we encode the three possible outcomes as follows: \begin{enumerate}[(i)]
+		\item \(x_1\) is encoded as \texttt{0},
+		\item \(x_2\) is encoded as \texttt{10}, and
+		\item \(x_3\) is encoded as \texttt{11}.
+	\end{enumerate} Then the \textbf{(weighted) average number of bits in this encoding of \(X\)} is \[
+	\frac{1}{2}\times\text{``1-bit (\texttt{0})''}+\frac{1}{4}\times\text{``2-bit (\texttt{10})''}+\frac{1}{4}\times\text{``2-bit (\texttt{11})''}=\frac{1}{2}\cdot 1 +\frac{1}{4}\cdot 2 + \frac{1}{4}\cdot2 = \frac{3}{2}.
+	\] 
 \end{example}
-
+\vspace{24pt}
+\begin{note}[\textcolor{red}{\bf Motivation of the Entropy}]
+	In binary encoding, an n-bit string represents $2^n$ different states or outcomes.
+	If each of these $2^n$ outcomes is equally likely, the probability of any specific outcome is $\frac{1}{2^n}$.
+	For an event with a probability $p$, we find the number of bits required $n$ by setting $\frac{1}{2^n} = p$.
+	\begin{align*}
+		\frac{1}{2^n}=p&\implies \log_2 2^{-n} = \log_2 p\\
+		&\implies n = -\log_2p.
+	\end{align*}
+	The length of a bit-string required to encode an event with probability $p$ is approximately $-\log_2(p)$. This principle is central in information theory, reflecting that less probable events, which carry more information, require longer bit strings for encoding.\par
+	Given an arbitrary probability distribution taking on the values \(p_1, p_2, \ldots, p_r\) for a random variable \(X\), we consider the weighted average of \(-\log_2(p_i)\):
+	\[ H(X) = \sum_{i=1}^{r} p_i \cdot (-\log_2(p_i)) \]
+	We could imagine that an outcome occurring with probability \(p\) might be encoded by a bit-string of length approximately \(-\log_2(p)\). Given an arbitrary probability distribution, taking on the values \(p_1, p_2, \ldots, p_r\) for a random variable \(X\), we take the \textbf{weighted average of the quantities \(-\log_2(p_i)\)} to be our measure of information.
+\end{note}
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Entropy of Finite Random Variable}]
+	\begin{definition}
+		Suppose \(X\) is a discrete random variable that takes on values from a finite set \(X\), say, $\abs{X}=n$. The \textbf{entropy} of the random variable \(X\) is defined to be the quantity
+		\[ H(X) = -\sum_{i=1}^{n} p_i \log_2(p_i) \]
+	\end{definition}
+\end{tcolorbox}
 \newpage
 
 % Example of expectation illustration (need to use TikZ or similar for actual figure)
 Expectation illustration placeholder
 
-The above examples suggest that an event which occurs with probability \(2^{-n}\) could perhaps be encoded as a bitstring of length \(n\). More generally, we could plausibly imagine that an outcome occurring with probability \(p\) might be encoded by a bitstring of length approximately \(-\log_2(p)\). Given an arbitrary probability distribution, taking on the values \(p_1, p_2, \ldots, p_r\) for a random variable \(X\), we take the \textbf{weighted average of the quantities \(-\log_2(p_i)\)} to be our measure of information. This motivates the following formal definition.
 
-\textbf{Definition} Suppose \(X\) is a discrete random variable that takes on values from a finite set \(X\). Then, the \textbf{entropy} of the random variable \(X\) is defined to be the quantity
+\textbf{Definition}  
 
-\[ H(X) = -\sum_{i=1}^{n} p_i \log_2(p_i) \]
 
 \textbf{REMARK} Observe that \(\log_2(y)\) is undefined if \(y = 0\). Hence, entropy is sometimes defined to be the relevant sum over all the non-zero probabilities. However, since \(\lim_{y \to 0} y \log_2(y) = 0\), there is no real difficulty with allowing \(Pr[X] = 0\) for some \(x\)'s. Also, we note that the choice of two as the base of the logarithms is arbitrary: another base would only change the value of the entropy by a constant factor.
 
@@ -1572,7 +1596,11 @@ Note that if \( |X| = n \) and \( Pr[x] = 1/n \) for all \( x \in X \), then \( 
 Let us look at the entropy of the various components of a cryptosystem. We can think of the key as being a random variable \( K \) that takes on values in \( K \), and hence we can compute the entropy \( H(K) \). Similarly, we can compute entropies \( H(P) \) and \( H(C) \) of random variables associated with the plaintext and ciphertext, respectively.
 
 \textbf{Example} Let \( P = \{a, b\} \) with \( Pr[a] = 1/4, Pr[b] = 3/4 \). Let \( K = \{K_1, K_2, K_3\} \) with \( Pr[K_i] = 1/2, Pr[K_{i+1}] = Pr[K_{i+2}] = 1/4 \). Let \( c = \{1,2,3,4\} \), and suppose the encryption functions are defined to be \( e_{K_1}(a) = 1, e_{K_1}(b) = 2; e_{K_2}(a) = 2, e_{K_2}(b) = 3; \) and \( e_{K_3}(a) = 3, e_{K_3}(b) = 4 \). This cryptosystem can be represented by the following \textit{encryption matrix}:
-
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
+	\begin{definition}
+		
+	\end{definition}
+\end{tcolorbox}
 % Tabular environment for the encryption matrix
 \begin{tabular}{c c c}
 	& a & b \\
