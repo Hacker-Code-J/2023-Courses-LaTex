@@ -243,11 +243,8 @@
 	
 	% Chapters
 	\mainmatter
-	
-	\part{Basic Algorithms}
-	
-	\chapter{Basic Algorithms}
-	\section{Rotation Algorithm}
+	 
+	\chapter{Rotation Algorithm}
 	\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Rotation}]
 		\textbf{Problem.}\ Rotate vector \(x[n]\) by $d$ positions.\\
 		\textbf{Constraints.}\ $O(n)$ time, $O(1)$ extra space.
@@ -258,59 +255,154 @@
 		\]
 	\end{example}
 
+	\section{A Juggling Algorithm}
+	\begin{center}
+		\begin{minipage}{.49\textwidth}
+			\begin{algorithm}[H]
+				\DontPrintSemicolon
+				\KwData{Size \( n \) and a rotation count \( d \)}
+				\KwResult{Array \( A[]\) rotated by \( d \)}
+				$g \leftarrow$ $\gcd(n,d)$\;
+				\For{$i \leftarrow 0$ \KwTo $g-1$}{
+					$temp \leftarrow A[i]$\;
+					$j \leftarrow i$\;
+					\While{True}{
+						$k \leftarrow j + d$\;
+						\If{$k \geq n$}{
+							$k \leftarrow k - n$\;
+						}
+						\If{$k == i$}{
+							break\;
+						}
+						$A[j] \leftarrow A[k]$\;
+						$j \leftarrow k$\;
+					}
+					$A[j] \leftarrow temp$\;
+				}
+				\caption{Juggling Algorithm}
+			\end{algorithm}
+		\end{minipage}\begin{minipage}{.5\textwidth}
+		\includegraphics[scale=.25]{juggling.png}
+	\end{minipage}
+	\end{center}
+%	\begin{lstlisting}[style=C, caption={Juggling Rotation Algorithm},captionpos=t]
+%// Function to find the greatest common divisor (GCD)
+%int gcd(int a, int b) {
+%	return b ? gcd(b, a%b) : a;
+%}
+%
+%// Function to rotate an array using Juggling Alg.
+%void juggling(int arr[], int n, int d) {
+%	int i, j, k, temp;
+%	
+%	// Find GCD of n and d
+%	int g = gcd(d, n);
+%	
+%	for (i = 0; i < g; i++) {
+%		// Store the first element of the current set
+%		temp = arr[i];
+%		
+%		j = i;
+%		
+%		// Shift each element of the set
+%		while (1) {
+%			k = j + d;
+%			
+%			// If k exceeds the array size, bring it within bounds
+%			if (k >= n) {
+%				k = k - n;
+%			}
+%			
+%			// If we are back to the initial position, break the loop
+%			if (k == i) {
+%				break;
+%			}
+%			
+%			// Move the element
+%			arr[j] = arr[k];
+%			
+%			// Update j for the next iteration
+%			j = k;
+%		}
+%		
+%		// Put the first element in its correct position within the set
+%		arr[j] = temp;
+%	}
+%}
+%	\end{lstlisting}
+	
 	\newpage
-	\subsection{A Juggling Algorithm}
+	\section{The Block-Swap Algorithm}
+	\begin{center}
+		\begin{minipage}{.5\textwidth}
+			\begin{algorithm}[H]
+				\DontPrintSemicolon
+				\KwData{size \( n \) and a positions \( d \)}
+				\KwResult{Array \( A[] \) rotated by \( d \)}
+				\SetKwFunction{FSwap}{Swap}
+				\SetKwProg{Fn}{Function}{:}{}
+				\Fn{\FSwap{$A[], start1, start2, blockSize$}}{
+					\For{$i \leftarrow 0$ \KwTo $blockSize-1$}{
+						$temp \leftarrow A[start1 + i]$\;
+						$A[start1 + i] \leftarrow A[start2 + i]$\;
+						$A[start2 + i] \leftarrow temp$\;
+					}
+				}
+				\If{$d == 0 \lor d == n$}{
+					\Return\;
+				}
+				$i \leftarrow d$\;
+				$p \leftarrow d$\;
+				$j \leftarrow n - d$\;
+				\While{$i \neq j$}{
+					\eIf{$i > j$}{
+						\FSwap{$A, p-i, p, j$}\;
+						$i \leftarrow i - j$\;
+					}{
+						\FSwap{$A, p-i, p+j-i, i$}\;
+						$j \leftarrow j - i$\;
+					}
+				}
+				\FSwap{$A, p-i, p, i$}\;
+				\caption{Block-Swap Alg.}
+			\end{algorithm}
+		\end{minipage}\begin{minipage}{.49\textwidth}
+			\includegraphics[width=\textwidth, height=.45\textheight]{Blockswap.png}
+		\end{minipage}
+	\end{center}
 	
-	\begin{lstlisting}[style=C, caption={Juggling Rotation Algorithm},captionpos=t]
-// Function to find the greatest common divisor (GCD)
-int gcd(int a, int b) {
-	return b ? gcd(b, a%b) : a;
-}
-
-// Function to rotate an array using Juggling Alg.
-void juggling(int arr[], int n, int d) {
-	int i, j, k, temp;
-	
-	// Find GCD of n and d
-	int g = gcd(d, n);
-	
-	for (i = 0; i < g; i++) {
-		// Store the first element of the current set
-		temp = arr[i];
-		
-		j = i;
-		
-		// Shift each element of the set
-		while (1) {
-			k = j + d;
+	\section{The Reversal Algorithm}
+	\begin{center}
+		\begin{minipage}{.5\textwidth}
+		\begin{algorithm}[H]
+			\DontPrintSemicolon
+			\KwData{size \( n \) and a rotation count \( d \)}
+			\KwResult{Array \( A[] \) rotated by \( d \)}
 			
-			// If k exceeds the array size, bring it within bounds
-			if (k >= n) {
-				k = k - n;
-			}
+			\SetKwFunction{FReverse}{Reverse}
+			\SetKwProg{Fn}{Function}{:}{}
+			\Fn{\FReverse{$A[], start, end$}}{
+				\While{$start < end$}{
+					$temp \leftarrow A[start]$\;
+					$A[start] \leftarrow A[end]$\;
+					$A[end] \leftarrow temp$\;
+					$start \leftarrow start + 1$\;
+					$end \leftarrow end - 1$\;
+				}
+			}\End
 			
-			// If we are back to the initial position, break the loop
-			if (k == i) {
-				break;
-			}
+			\Fn{RotateRotation{$A[], n, d$}}{
+				\FReverse{$A[], 0, d - 1$}\;
+				\FReverse{$A[], d, n - 1$}\;
+				\FReverse{$A[], 0, n - 1$}\;
+			}\End
 			
-			// Move the element
-			arr[j] = arr[k];
-			
-			// Update j for the next iteration
-			j = k;
-		}
-		
-		// Put the first element in its correct position within the set
-		arr[j] = temp;
-	}
-}
-	\end{lstlisting}
-	
-	
-	\subsection{The Block-Swap Algorithm}
-	
-	\subsection{The Reversal Algorithm}
+			\caption{Reversal Algorithm}
+		\end{algorithm}
+		\end{minipage}\begin{minipage}{.48\textwidth}
+			\includegraphics[scale=.175]{Reverse.png}
+		\end{minipage}
+	\end{center}
 	
 	\newpage
 	\chapter{The Efficiency of Algorithms}
@@ -936,7 +1028,6 @@ void insertion(int* arr, int num) {
 		for sufficiently large $n$.
 	\end{itemize}
 
-	\newpage
 	\section{The Bubble Sort Algorithm}
 	\begin{algorithm}[H]
 		\caption{Bubble-Sort $(A)$}
@@ -1218,35 +1309,34 @@ void bubble(int* arr, int num) {
 				\fill (4,1) circle (2pt);
 			\end{tikzpicture}
 		\end{center} We use mathematical induction on the depth of each wire in a general comparison network: \begin{enumerate}[(i)]
-		\item (Basis Step) Clearly
-		\item (Induction Step)
+		\item (Basis Step) Consider a wire at depth 0, an input wire \( a_i \) belonging to the input sequence \( a \). When \( f(a) \) is applied to the network, the input wire carries \( f(a_i) \).
+		\item (Induction Step) \textbf{Induction Step:} Consider a wire at depth \( d \), where \( d \geq 1 \). The wire is the output of a comparator at depth \( d \), and the input wires to this comparator are at a depth strictly less than \( d \). By the inductive hypothesis, if the input wires to the comparator carry values \( a_i \) and \( a_j \) when the input sequence \( a \) is applied, then they carry \( f(a_i) \) and \( f(a_j) \) when the input sequence \( f(a) \) is applied. By our earlier claim, the output wires of this comparator carry \( f(\min(a_i, a_j)) \) and \( f(\max(a_i, a_j)) \). Since they carry \( \min(a_i, a_j) \) and \( \max(a_i, a_j) \) when the input sequence is \( a \), the lemma is proved.
 	\end{enumerate}
 	\end{proof}
-	\vspace{8pt}
-	\begin{example}
-		Consider \begin{center}
-			\begin{tikzpicture}
-				\foreach \y/\startlabel/\endlabel in {0/3/6, 1/4/5, 2/2/4, 3/5/3, 4/6/2} {
-					\draw (4,\y) -- (0,\y) node[anchor=east] {\startlabel};
-					\draw (4,\y) -- (8,\y) node[anchor=west] {\endlabel};
-				}
-			\end{tikzpicture}
-		\end{center}
-		Let \[
-		f(x):=\begin{cases}
-			0 &:x\leq 3\\
-			1 &:x> 1
-		\end{cases}
-		\] Then \begin{center}
-			\begin{tikzpicture}
-				\foreach \y/\startlabel/\endlabel in {0/{$f(3)=0$}/{$1=f(6)$}, 1/{$f(4)=1$}/{$1=f(5)$}, 2/{$f(2)=0$}/{$1=f(4)$}, 3/{$f(5)=1$}/{$0=f(3)$}, 4/{$f(6)=1$}/{$0=f(2)$}} {
-					\draw (4,\y) -- (0,\y) node[anchor=east] {\startlabel};
-					\draw (4,\y) -- (8,\y) node[anchor=west] {\endlabel};
-				}
-			\end{tikzpicture}
-		\end{center}
-	\end{example}
-	\vspace{8pt}
+%	\begin{example}
+%		Consider \begin{center}
+%			\begin{tikzpicture}
+%				\foreach \y/\startlabel/\endlabel in {0/3/6, 1/4/5, 2/2/4, 3/5/3, 4/6/2} {
+%					\draw (4,\y) -- (0,\y) node[anchor=east] {\startlabel};
+%					\draw (4,\y) -- (8,\y) node[anchor=west] {\endlabel};
+%				}
+%			\end{tikzpicture}
+%		\end{center}
+%		Let \[
+%		f(x):=\begin{cases}
+%			0 &:x\leq 3\\
+%			1 &:x> 1
+%		\end{cases}
+%		\] Then \begin{center}
+%			\begin{tikzpicture}
+%				\foreach \y/\startlabel/\endlabel in {0/{$f(3)=0$}/{$1=f(6)$}, 1/{$f(4)=1$}/{$1=f(5)$}, 2/{$f(2)=0$}/{$1=f(4)$}, 3/{$f(5)=1$}/{$0=f(3)$}, 4/{$f(6)=1$}/{$0=f(2)$}} {
+%					\draw (4,\y) -- (0,\y) node[anchor=east] {\startlabel};
+%					\draw (4,\y) -- (8,\y) node[anchor=west] {\endlabel};
+%				}
+%			\end{tikzpicture}
+%		\end{center}
+%	\end{example}
+\newpage
 	\begin{tcolorbox}[colframe=thmcolor,title={\color{white}\bf Zero-One Principle}]
 		\begin{theorem}
 			If a comparison network with \(n\) inputs sorts all \(2^n\) possible sequences of \(0\)'s and \(1's\), then it sorts all sequences of arbitrary numbers correctly.
@@ -1260,7 +1350,17 @@ void bubble(int* arr, int num) {
 			0&:x\leq a_i,\\
 			1&:x> a_i.
 		\end{cases}
-		\] By Lemma,
+		\] By Lemma, if we give the input \( \langle f(a_1), f(a_2), \ldots, f(a_n) \rangle \),
+		then in the output we will have \( f(a_i) \) after \( f(a_j) \).
+		But this results in an unsorted 0-1 sequence. A contradiction.	\[
+		\begin{array}{cccc}
+			\langle a_1, a_2, \ldots, a_n \rangle & \langle f(a_1), f(a_2), \ldots, f(a_n) \rangle \\
+			(a_i < a_j) & \\
+			\downarrow & \downarrow \\
+			\langle \ldots, a_j, \ldots, a_i, \ldots \rangle & \langle \ldots, f(a_j), \ldots, f(a_i), \ldots \rangle \\
+			& =1 \quad \quad =0
+		\end{array}
+		\]
 	\end{proof}
 
 	\newpage
@@ -1349,7 +1449,7 @@ void bubble(int* arr, int num) {
 	\begin{proof}
 		content...
 	\end{proof}
-	
+\newpage
 	\begin{example}
 		\ \begin{figure}[h!]
 			\begin{tikzpicture}[scale=1]
@@ -1411,11 +1511,9 @@ void bubble(int* arr, int num) {
 			\end{tikzpicture}
 		\end{figure}
 	\end{example}
-
-	\newpage
-	\subsection{Merging Network}
+%	\subsection{Merging Network}
 	
-	\begin{example}
+	\begin{example}[Merging Network]
 		\ \begin{figure}[h!]
 			\begin{tikzpicture}[scale=1]
 				\fill[yellow] (0.75,-.25) rectangle (4.25,7.25);
@@ -1479,6 +1577,510 @@ void bubble(int* arr, int num) {
 			\end{tikzpicture}
 		\end{figure}
 	\end{example}
+	
+	\newpage
+	\chapter{Heap and Merge Sort}
+	
+	\section{Heap-sort}
+	
+	\begin{itemize}
+		\item A Heap is a nearly complete binary tree, where each node contains some value.
+		\item Heap-Property: the value of some node \( N \) is greater than or equal to the values of both children of \( N \).
+		\item Height of node \( = \) number of edges on the longest simple path from the node down to a leaf.
+		\item Height of heap \( = \) height of root \( = \Theta(\log n) \), where \( n \) is the number of nodes in the tree.
+	\end{itemize}
+	
+	\subsection{Heap as Datastructure}
+	Consider an array: \begin{center}
+		\begin{tabular}{c||cccccccccc}
+			\toprule
+			index & 1st & 2nd & 3rd & 4th & 5th & 6th & 7th & 8th & 9th & 10th\\
+			\hline
+			value& 16 & 14 & 10 & 8 & 7 & 9 & 3 & 2 & 4 & 1\\
+			\bottomrule
+		\end{tabular}
+	\end{center} 
+	Interpretation of arrays as trees: \begin{center}
+		\begin{minipage}{.25\textwidth}\centering
+			\begin{itemize}
+				\item[] PARENT(\(i\)) \\
+				\textbf{return} \( \left\lfloor \frac{i}{2} \right\rfloor \)
+				\item[] LEFT(\(i\)) \\
+				\textbf{return} \(2i\)
+				\item[] RIGHT(\(i\)) \\
+				\textbf{return} \(2i + 1\)
+			\end{itemize}
+		\end{minipage}
+		\begin{minipage}{.7\textwidth}\centering
+			\begin{tikzpicture}[every node/.style={circle,draw}, level distance=1.5cm,
+				level 1/.style={sibling distance=6cm},
+				level 2/.style={sibling distance=3cm},
+				level 3/.style={sibling distance=1.5cm}]
+				
+				\node[label=above:1st] {16}
+				child {node[label=above:2nd] {14}
+					child {node[label=above:4th] {8}
+						child {node[label=above:8th] {2}}
+						child {node[label=above:9th] {4}}
+					}
+					child {node[label=above:5th] {7}
+						child {node[label=above:10th] {1}}
+						child[missing]
+					}
+				}
+				child {node[label=above:3rd] {10}
+					child {node[label=above:6th] {9}}
+					child {node[label=above:7th] {3}}
+				};
+			\end{tikzpicture}
+		\end{minipage}
+	\end{center}
+	There are Max-heaps and Min-heaps. The height is $\floor*{\log_2n}$.
+	
+	\newpage
+
+	\subsection{MAX-HEAPIFY}
+	\begin{algorithm}[H]
+		\caption{Max Heapify}
+		\DontPrintSemicolon
+		\SetAlgoLined
+		\KwIn{An array \( A \) and an index \( i \)}
+		\KwOut{A modified array where the subtree rooted at \( i \) satisfies the max-heap property}
+		\BlankLine
+		\SetKwFunction{FMain}{MaxHeapify}
+		\SetKwProg{Fn}{Function}{:}{}
+		\Fn{\FMain{\( A, i \)}}{
+			\( l \leftarrow LEFT(i) \)\;
+			\( r \leftarrow RIGHT(i) \)\;
+			\BlankLine
+			\uIf{\( l \leq length[A] \) and \( A[l] > A[i] \)}{
+				\( largest \leftarrow l \)\;
+			}
+			\Else{
+				\( largest \leftarrow i \)\;
+			}
+			\BlankLine
+			\If{\( r \leq length[A] \) and \( A[r] > A[largest] \)}{
+				\( largest \leftarrow r \)\;
+			}
+			\BlankLine
+			\If{\( largest \neq i \)}{
+				swap \( A[i] \) and \( A[largest] \)\;
+				\FMain{\( A, largest \)}\;
+			}
+		}
+	\end{algorithm}
+	\begin{center}
+		\begin{minipage}{.65\textwidth}
+			\includegraphics[width=\textwidth]{MaxHeapify.png}
+		\end{minipage}
+	\begin{minipage}{.325\textwidth}
+		\includegraphics[width=\textwidth]{MaxHeapify_print.png}
+\end{minipage}
+	\end{center}
+	MAX-HEAPIFY is used to maintain the max-heap property.
+	\begin{itemize}
+		\item[--] Before MAX-HEAPIFY, \( A[i] \) may be smaller than its children.
+		\item[--] Assume left and right subtrees of \( i \) are max-heaps.
+		\item[--] After MAX-HEAPIFY, the subtree rooted at \( i \) is a max-heap.
+		\item[--] Compare \( A[i] \), \( A[\text{LEFT}(i)] \), and \( A[\text{RIGHT}(i)] \).
+		\item[--] If necessary, swap \( A[i] \) with the larger of the two children to preserve heap property.
+		\item[--] Continue this process of comparing and swapping down the heap, until the subtree rooted at \( i \) is a max-heap. If we hit a leaf, then the subtree rooted at the leaf is trivially a max-heap.
+	\end{itemize}
+	\vspace{12pt}
+	\begin{tcolorbox}
+	\begin{itemize}
+		\item Before MAX-HEAPIFY, \( A[i] \) may be smaller than its children.
+		\item Assume left and right subtrees of \( i \) are max-heaps.
+		\item After MAX-HEAPIFY, subtree rooted at \( i \) is a max-heap.\end{itemize}
+	Time / Comparisons: \( O(\lg n) \).
+	\end{tcolorbox}
+
+	\subsection{Creating a Max-Heap using MAX-HEAPIFY}
+	\begin{algorithm}[H]
+		\caption{Build Max Heap}
+		\DontPrintSemicolon
+		\SetAlgoLined
+		\KwIn{An array \( A \)}
+		\KwOut{A max-heap formed from array \( A \)}
+		\BlankLine
+		\SetKwFunction{FMain}{BuildMaxHeap}
+		\SetKwFunction{FHeapify}{MaxHeapify}
+		\SetKwProg{Fn}{Function}{:}{}
+		\Fn{\FMain{\( A, n \)}}{
+			\( n \leftarrow length[A] \)\;
+			\For{\( i \leftarrow \lfloor n/2 \rfloor - 1 \) \KwTo \( 0 \)}{
+				\FHeapify{\( A, n, i \)}\;
+			}
+		}
+	\end{algorithm}
+	\begin{center}
+		\begin{minipage}{.65\textwidth}
+			\includegraphics[width=\textwidth]{BuildMaxHeap.png}
+		\end{minipage}
+		\begin{minipage}{.325\textwidth}
+			\includegraphics[width=\textwidth]{BuildMaxHeap_print.png}
+		\end{minipage}
+	\end{center}
+
+	\newpage
+	\subsection{Build-Max-Heap Correctness}
+	\begin{itemize}
+		\item \textbf{Loop invariant:} At the start of every iteration of for loop, each node \( i + 1, i + 2, \ldots, n \) is the root of a max-heap.
+		\item 
+		\textbf{Initialization:} By Exercise 6.1-7, we know that each node \( \lfloor \frac{n}{2} \rfloor + 1 \) to \( n \) is a leaf, which is the root of a trivial max-heap. Since \( i = \lfloor \frac{n}{2} \rfloor \) before the first iteration of the for loop, the invariant is initially true.
+		\item 
+		\textbf{Maintenance:} Children of node \( i \) are indexed higher than \( i \), so by the loop invariant, they are both roots of max-heaps. Correctly assuming that \( i + 1, i + 2, \ldots, n \) are all roots of max-heaps, MAX-HEAPIFY makes node \( i \) a max-heap root. Decrementing \( i \) reestablishes the loop invariant at each iteration.
+		\item 
+		\textbf{Termination:} When \( i = 0 \), the loop terminates. By the loop invariant, each node, notably node 1, is the root of a max-heap.
+	\end{itemize}
+	
+	\subsection{Complexity Build-Max-Heap}
+	\begin{itemize}
+		\item Obviously \( O(n \log n) \).
+		\item Tighter Analysis: \begin{itemize}
+			\item Number of nodes of height \( h \): \( \leq \left\lceil \frac{n}{2^{h+1}} \right\rceil \)
+			\item Time/Comparisons:
+			\[
+			\sum_{h=0}^{\floor*{\lg n}} \left\lceil \frac{n}{2^{h+1}} \right\rceil O(h) = O \left( n \sum_{h=0}^{\floor*{\lg n}} \frac{h}{2^h} \right)
+			\] Then \[
+			\sum_{k=0}^{\infty} k \cdot x^k=\frac{x}{(1-x)^2},\ \abs{x}< 1\implies O \left( n \sum_{h=0}^{\floor*{\lg n}} \frac{h}{2^h} \right)=O\of{n\cdot\frac{1/2}{(1-1/2)^2}}=O(n).
+			\]
+		\end{itemize}
+	\end{itemize}
+	
+	
+	\subsection{Heapsort Algorithm}
+	\textbf{Heapsort}(\(A, n\))\\
+	\texttt{BUILD-MAX-HEAP(A, n)}\\
+	\texttt{for i = n downto 2}\\
+	\texttt{exchange A[1] with A[i]}\\
+	\texttt{MAX-HEAPIFY(A, 1, i - 1)}
+	Complexity:
+	\begin{itemize}
+		\item BUILD-MAX-HEAP: \( O(n) \)
+		\item for loop: \( n - 1 \) times / exchange elements: \( O(1) \)
+		\item MAX-HEAPIFY: \( O(\log n) \)
+	\end{itemize}
+	
+	Total time: \( O(n \log n) \)
+	
+	\newpage
+	\section{Merge Sort}
+	\textbf{Input}\\
+	A sequence of \( n \) numbers \( [a_1, a_2, \ldots, a_n] \)
+	\\
+	\textbf{Output}\\
+	A permutation (reordering) \( [a'_1, a'_2, \ldots, a'_n] \) of the input sequence such that \( a'_1 \leq a'_2 \leq \ldots \leq a'_n \)
+	
+	\subsection{The Divide-and-Conquer Approach}
+	
+	\begin{itemize}
+		\item \textbf{Divide} the problem into a number of subproblems.
+		\item \textbf{Conquer} the subproblems by solving them recursively. If the subproblem sizes are small enough, however, just solve the subproblems in a straightforward manner.
+		\item \textbf{Combine} the solutions to the subproblems into the solution for the original problem.
+	\end{itemize}
+	
+	\subsection{Merge-Sort Algorithm}
+	
+	\begin{itemize}
+		\item \textbf{Divide:} Divide the \( n \)-element sequence to be sorted into two subsequences of \( n/2 \) elements each.
+		\item \textbf{Conquer:} Sort the two subsequences recursively using merge sort.
+		\item \textbf{Combine:} Merge the two sorted subsequences to produce the sorted answer.
+	\end{itemize}
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+%		\KwResult{Merge procedure for Merge Sort Algorithm}
+		\SetKwFunction{FMain}{MERGE}
+		\SetKwProg{Fn}{Function}{:}{}
+		\Fn{\FMain{A, p, q, r}}{
+			\( n_1 \leftarrow q - p + 1 \)\;
+			\( n_2 \leftarrow r - q \)\;
+			Create arrays \( L[1..n_1 + 1] \) and \( R[1..n_2 + 1] \)\;
+			\For{\( i \leftarrow 1 \) \KwTo \( n_1 \)}{
+				\( L[i] \leftarrow A[p + i - 1] \)\;
+			}
+			\For{\( j \leftarrow 1 \) \KwTo \( n_2 \)}{
+				\( R[j] \leftarrow A[q + j] \)\;
+			}
+			\( L[n_1 + 1],R[n_2 + 1] \leftarrow \infty,\infty \)\;
+			\( i,j \leftarrow 1,1 \)\;
+			\For{\( k \leftarrow p \) \KwTo \( r \)}{
+				\eIf{\( L[i] \leq R[j] \)}{
+					\( A[k] \leftarrow L[i] \);
+					\( i \leftarrow i + 1 \)\;
+				}{
+					\( A[k] \leftarrow R[j] \);
+					\( j \leftarrow j + 1 \)\;
+				}
+			}
+		}
+		\caption{Merge procedure of the Merge-Sort Algorithm}
+	\end{algorithm}
+	\begin{figure}[h!]\centering
+		\includegraphics[scale=.3]{Merge.png}
+	\end{figure}
+	
+	\subsection{Merge-sort Algorithm}
+
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetAlgoLined
+	\SetKwFunction{FMain}{Merge-Sort}
+	\Comment{\textbf{Initial call:} \texttt{Merge-Sort(A, 1, n)}}
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{\FMain{A, p, r}}{
+		\If{p < r}{
+			\( q \gets \left\lfloor (p + r) / 2 \right\rfloor \)\;
+			\FMain{A, p, q}\;
+			\FMain{A, q+1, r}\;
+			\texttt{Merge}(A, p, q, r)\;
+		}
+	}
+	\caption{Merge-Sort algorithm procedure}
+\end{algorithm}
+	\section{Stability in Merge Sort}
+	
+	Stability in a sorting algorithm ensures that the relative order of equal elements is preserved in the sorted output. Formally, this can be expressed as follows:
+	
+	Let \( A = [a_1, a_2, \ldots, a_n] \) be a list of elements to be sorted, and let \( f \) denote the sorting function. The sorting algorithm is said to be stable if for every pair of indices \( i, j \) with \( 1 \leq i < j \leq n \) and \( a_i = a_j \), it holds that \( f(A)_k = a_i \) and \( f(A)_{k+1} = a_j \) for some \( k \). Here, \( f(A) \) represents the sorted list.
+	
+	\begin{itemize}
+		\item \( A \) is the original list.
+		\item \( f(A) \) is the sorted list.
+		\item If \( a_i \) and \( a_j \) are equal and \( a_i \) appears before \( a_j \) in \( A \), then \( a_i \) should also appear before \( a_j \) in \( f(A) \).
+	\end{itemize}
+	
+	This definition succinctly captures the essence of stability in sorting algorithms.
+	
+	\section{Lower Bound for Sorting}
+	Decision-tree for insertion sort on 3 elements:
+	\begin{center}
+	\begin{tikzpicture}[sibling distance=10em,
+		every node/.style = {shape=rectangle, rounded corners,
+			draw, align=center, top color=white, bottom color=white}]]
+		\node {compare A[1] to A[2]}
+		child { node {A[1] \( \leq \) A[2]} 
+			child { node {A[1] \( \leq \) A[2] \( \leq \) A[3]} 
+				child { node {(1,2,3)} } }
+			child { node {A[1] \( \leq \) A[3] \( < \) A[2]} 
+				child { node {(1,3,2)} } } }
+		child { node {A[1] \( > \) A[2] (swap in array)}
+			child { node {A[2] \( \leq \) A[1] \( \leq \) A[3]} 
+				child { node {(2,1,3)} } }
+			child { node {A[1] \( \leq \) A[3] \( < \) A[1]} 
+				child { node {(2,3,1)} }
+				child { node {(3,2,1)} } } };
+	\end{tikzpicture}
+	\end{center}
+
+	\subsection{Decision tree}
+	How many leaves on the decision tree? There are at least \( n! \) leaves, because every permutation appears at least once.
+	
+	\textbf{Q:} What is the length of the longest path from root to leaf?
+	
+	\textbf{A:} Depends on the algorithm. Examples
+	\begin{itemize}
+		\item Insertion sort: \( \Theta(n^2) \)
+		\item Merge sort: \( \Theta(n \log n) \)
+	\end{itemize}
+	
+	
+	\textbf{Theorem} Any decision tree that sorts \( n \) elements has height \( \Omega(n \log n) \).
+	
+	\begin{proof}
+		Take logs: \( h \geq \lg(n!) \).
+		Use Stirling's approximation: \( n! \sim \sqrt{2\pi n} \left(\frac{n}{e}\right)^n \)
+		
+		\( h \geq \lg\left(\sqrt{2\pi n}\right) + n\lg\left(\frac{n}{e}\right) \)
+		
+		\( = n \lg n - n \lg e \)
+		
+		\( = \Omega(n \lg n) \).
+	\end{proof}
+	
+	\newpage
+	\chapter{Complexity Theory}
+	
+	\section{Turing Machines}
+	\begin{itemize}
+		\item TM uses an infinite tape.
+		\item TM has a tape head.
+		\item Initially the tape contains only the input string and is blank everywhere else.
+		\item TM continues computing until it decides to produce an output.
+		\item ``accepting state''
+	\end{itemize}
+	
+	\begin{itemize}
+		\item The computation time of a TM on an input corresponds with the number of the computation steps carried out.
+		\item Algorithms can be described by TMs.
+		\item Deterministic and nondeterministic TM
+	\end{itemize}
+	
+	\section{Deterministic Turing Machine}
+	
+	\textbf{Def.} A \( k (k \geq 1) \)-tape deterministic Turing machine TM is a 7-tuple \( (Q, \Sigma, \Gamma, \delta, q_0, B, q_f) \), where \( Q, \Sigma, \Gamma \) are all finite sets and \( Q \) is the set of states. \( \Gamma \) is the tape alphabet. \( B \) is the blank, a symbol in \( \Gamma \). \( \Sigma \) is the input alphabet not containing the blank symbol \( B \) and is a subset of \( \Gamma \). \( \delta : Q \times \Gamma^k \rightarrow Q \times \Gamma^k \times \{L, R, S\}^k \) is the transition function (the partial function). \( q_0 \in Q \) is the start state, and \( q_f \in Q \) is the accept state
+	
+	In Case of \( k = 1 \):
+	
+	\begin{center}
+		\begin{tikzpicture}
+			% Draw the tape
+			\draw (-2,0) -- (4,0); % bottom line
+			\draw (-2,0.6) -- (4,0.6); % top line
+			\foreach \x in {-1.5,-1,...,3.5}{
+				\draw (\x,0) -- (\x,0.6); % vertical lines
+			}
+			
+			% Fill in the tape's squares with numbers and B for blank
+			\node at (-1.25,0.3) {1};
+			\node at (-0.75,0.3) {1};
+			\node at (-0.25,0.3) {0};
+			\node at (0.25,0.3) {1};
+			\node at (0.75,0.3) {B};
+			\node at (1.25,0.3) {...};
+			
+			% Draw the control box
+			\draw (0,1.2) rectangle (0.5,1.8);
+			\node at (0.25,1.5) {control};
+			
+			% Draw the read-write head
+			\draw[->] (0.25,1.2) -- (0.25,0.6);
+			\node[align=center, above] at (0.25,1.8) {read-write-head};
+			
+			% Label the tape
+			\node[align=left, below] at (3.5,0) {tape};
+			\node[align=left, below] at (0.25,-0.5) {contains assignments (instructions)\\given by the transition function \( \delta \).};
+		\end{tikzpicture}
+	\end{center}
+	
+	
+	The transition function \( \delta \) of a Turing machine is defined as follows:
+	\[
+	\delta(q, (a_1, a_2, \ldots, a_k)) = (q', (a'_1, a'_2, \ldots, a'_k), (m_1, m_2, \ldots, m_k))
+	\]
+	with \( a'_1, a'_2, \ldots, a'_k \in \Gamma \) and \( m_1, m_2, \ldots, m_k \in \{L, R, S\} \)
+	
+	\subsection{Definition}
+	
+	A TM-computation is a finite sequence \( B = \langle K_0, \ldots, K_n \rangle \) of TM-configurations, such that \( \forall i < n \) each \( K_i \) yields \( K_{i+1} \). \( K_n \) is the halting configuration if there is no succeeding configuration of \( K_n \).
+	
+	If \( K_n \) is a halting configuration, then the computation \( B \) needs \( n \) computation steps.
+
+	
+	A TM-computation \( B = \langle K_0, K_1, \ldots, K_n \rangle \) is complete, if \( K_n \) is a halting configuration.
+	
+	A complete computation \( B = \langle K_0, K_1, \ldots, K_n \rangle \) is an accepting computation, if the state of \( K_n \) is the accepting state \( q_f \).
+
+	Let \( X \in \Sigma^* \) be any word. A Turing machine TM accepts \( X \), if \( \exists \) an accepting computation for \( X \).
+	
+	The set \( L(TM) = \{ X \in \Sigma^* | TM \text{ accepts } X \} \) is called the language accepted by TM.
+	\section{Deterministic Polynomial Computability - The class \( \mathcal{P} \)}
+	
+	\begin{itemize}
+		\item Polynomial-time algorithms: on inputs of size \( n \), their worst-case running time is \( O(n^k) \) for some constant \( k \).
+		\item The class \( \mathcal{P} \) represents the set of problems that can be solved by a deterministic Turing machine (algorithm) in polynomial time. The "P" stands for "polynomial time."
+	\end{itemize}
+	
+	Problems in \( \mathcal{P} \) are considered "easy" or "tractable" in terms of computation, as they can be solved efficiently.
+	
+	\section{Nondeterministic Turing machine}
+	
+	\textbf{Def.} A \( k (k \geq 1) \)-tape nondeterministic Turing machine NT is a 7-tuple \( (Q, \Sigma, \Gamma, \delta, q_0, B, q_f) \), where \( Q, \Sigma, \Gamma \) are all finite sets and \( Q \) is the set of states. \( \Gamma \) is the tape alphabet. \( B \) is the blank, a symbol in \( \Gamma \). \( \Sigma \) is the input alphabet not containing the blank symbol \( B \) and is a subset of \( \Gamma \). \( P \subseteq Q \times \Gamma^k \times Q \times \Gamma^k \times \{L, R, S\}^k \) is a transition relation. \( q_0 \in Q \) is the start state, and \( q_f \in Q \) is the accept state.
+	
+	\subsection{Determinism and Nondeterminism}
+	
+	In a deterministic computation, each step of a computation follows in a unique way from the preceding step. When the machine is in a given state and reads the next input symbol, we know what the next state will be—it is determined.
+	
+	In a nondeterministic machine, multiple choices may exist for the next state at any given point. Throughout a computation, the machine has the flexibility to proceed along various possibilities.
+	
+	\subsection{Nondeterministic Turing Machine}
+	
+	The computation of a nondeterministic Turing machine is a tree whose branches correspond to different possible computation paths for the machine.
+	
+	If any branch of the computation leads to the accept state, the machine accepts its input.
+	
+	\section{The class NP}
+	
+	\textbf{Def.} The class \( \mathcal{NP} \) is the set of all languages which are acceptable (recognizable) by a polynomial time nondeterministic Turing machine.
+	
+	Formally,
+	\[
+	\mathcal{NP} = \left\{ S \subseteq \{0,1\}^* \mid \exists \text{ a polynomial time nondeterministic Turing machine NT for which } L(\text{NT}) = S \right\}
+	\]
+	
+	\subsection{Nondeterministic Polynomial Computability - The class \( \mathcal{NP} \)}
+	
+	Also we can say: The class \( \mathcal{NP} \) represents the set of problems that can be solved by a nondeterministic Turing machine in polynomial time. The "NP" stands for "nondeterministic polynomial time."
+	
+	\subsection{Nondeterministic Polynomial Computability}
+	
+	The class \( \mathcal{NP} \) consists of those problems that are "verifiable" in polynomial time i.e., if we were somehow given a "certificate" of a solution, then we could verify that the certificate is correct in polynomial time in the size of the input to the problem.
+	
+	\subsection{The class \( \mathcal{NP} \)}
+	
+	Ex. For satisfiability problem, a certificate would be an assignment of values to variables. We could check in polynomial time that this assignment satisfies the formula in conjunctive normal form (See the following slides).
+	
+	\subsection*{The (\(k\)-CNF) Satisfiability Problem Boolean logic (Boolean algebra)}
+	
+	\begin{itemize}
+		\item Let \( \nu = \{p_1, p_2, \ldots, p_m\} \) be a set of logical variables.
+		\item A truth assignment for \( \nu \) is a function \( t: \nu \rightarrow \{T, F\} \).
+		\item If \( t(p) = T \) we say that \( p \) is "true" with respect to \( t \); If \( t(p) = F \) we say that \( p \) is "false".
+		\item If \( p \in \nu \), then \( p \) and \( \neg p \) are called "literals" over \( \nu \).
+	\end{itemize}
+	
+	\newpage
+	\section{The Satisfiability Problem}
+	
+	\begin{itemize}
+		\item The literal \( p \) is true with respect to \( t \) if and only if the variable \( p \) is true with respect to \( t \).
+		\item The literal \( \neg p \) is true with respect to \( t \) if and only if the variable \( p \) is false.
+		\item A clause over \( \nu \) is a finite disjunction \( q_{i_1} \lor q_{i_2} \lor \ldots \lor q_{i_k} \), where each \( q_{i_j} \) (\(j = 1, \ldots, k\)) is a literal.
+		\item A clause is satisfied by a truth assignment \( \leftrightarrow \) at least one of its members is true with respect to the assignment.
+	\end{itemize}
+	
+	\begin{itemize}
+		\item An expression (formula) \( F \) is in conjunctive normal form (CNF) if it is a finite conjunction of clauses:
+		\[
+		F = \bigwedge_{i=1}^{m} \left( \bigvee_{j=1}^{n_i} q_{ij} \right) = (q_{11} \lor q_{12} \lor \ldots \lor q_{1n_1}) \land \ldots \land (q_{m1} \lor q_{m2} \lor \ldots \lor q_{mn_m})
+		\]
+		\item A formula \( F \) is satisfiable \( \leftrightarrow \) there exists some truth assignment for \( \nu \) that simultaneously satisfies all clauses in \( F \).
+	\end{itemize}
+	
+	\subsection*{Definition:}
+	The satisfiability problem is specified as follows:
+	Given a formula \( F \) in conjunctive normal form over a set \( \nu \) of variables, is there a truth assignment that satisfies \( F \)? (Is \( F \) satisfiable?)
+	
+	\subsection*{Language \( E \)}
+	Def. \( E \) is the set of satisfiable formulas in conjunctive normal form.
+	
+	\begin{theorem}
+		The satisfiability problem is in NP.
+	\end{theorem}
+	\begin{proof}
+		[Placeholder for Korean text translation]
+	\end{proof}
+	
+	\section{The class P and The class NP}
+	
+	\subsection*{Inclusion of P in NP}
+	Any deterministic Turing machine is automatically a nondeterministic Turing machine. So the class \( \mathcal{P} \) is a subset of the class \( \mathcal{NP} \).
+	
+	Examples include the traveling salesman problem, knapsack, satisfiability problem, clique problem, etc.
+	
+	\subsection*{Open Questions}
+	\begin{itemize}
+		\item The open question is whether or not \( \mathcal{P} \) is a proper subset of \( \mathcal{NP} \).
+		\item No polynomial-time algorithm has yet been discovered for an NP-complete problem, nor has anyone yet been able to prove that no polynomial-time algorithm can exist for any one of them.
+	\end{itemize}
+	
+	\subsection*{P vs NP Problem}
+	\begin{itemize}
+		\item This so-called \( \mathcal{P} \neq \mathcal{NP} \) question has been one of the deepest, most perplexing open research problems in theoretical computer science since it was first posed in 1971.
+	\end{itemize}
+	
 	
 	\newpage
 	\chapter{Summary}

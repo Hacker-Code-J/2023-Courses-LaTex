@@ -935,6 +935,95 @@ Hence, \( s \) is a pn-sequence.
 
 % Here you can describe the LFSR diagram or include an actual figure using the graphicx package.
 
+\newpage
+Statistical tests for random number generators (RNGs) are crucial in assessing the quality of the RNGs, which purport to produce random sequences. While it is not possible to mathematically prove that a sequence is random, these tests can reveal certain weaknesses. The tests work by evaluating sample outputs from the RNG against attributes expected from truly random sequences. The outcomes of these tests are probabilistic and not definite. If a sequence fails any of the tests, it may be rejected as non-random, or subjected to further testing. Passing all the tests allows the RNG to be accepted as random, or more precisely, not rejected, as it only provides probabilistic evidence of randomness.
+
+\section{Statistical tests for RNGs}
+Statistical tests for RNGs measure the quality of a bit generator's randomness. These tests are essential in identifying weaknesses in the generators by applying various statistical methods to the output sequences. For instance, a sequence that passes all the tests is not definitively random but is likely to exhibit characteristics of randomness, whereas a sequence that fails any test is potentially non-random and may require additional testing or rejection.
+
+\newpage
+\subsection{Golomb’s randomness postulates}
+Golomb’s randomness postulates are historical attempts to define necessary conditions for periodic pseudorandom sequences to appear random. They are not sufficient conditions for randomness but were among the first efforts to systematically address the randomness in sequences. These postulates serve as a fundamental basis for more complex tests and are critical in understanding the nature of pseudorandom sequences and their applications.
+
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
+	\begin{definition}
+		Let \[
+		s=s_0,s_1,s_2,\dots
+		\] be an infnite sequence. The subsequence consisting of the first $n$ terms of $s$ is denoted by \[
+		s^n=s_0,s_1,\cdots,s_{n-1}.
+		\]
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	$s$ is the bit sequence if $s_i\in\set{0,1}$.
+\end{remark}
+
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf $N$-Periodic}]
+	\begin{definition}
+		The sequence $s=s_0,s_1,s_2,\dots$ is said to be \textbf{$N$-periodic} if \[
+		s_i=s_{i+N}
+		\] for all $i\geq 0$.
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	If $s$ is a $N$-periodic sequence, then the \textbf{cycle} of $s$ is the subsequence $s^N$.
+\end{remark}
+\vspace{12pt}
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Run - Gap / Block}]
+	\begin{definition}
+		Let $s$ be a sequence. \begin{itemize}
+			\item A \textbf{run} of $s$ is a subsequence of $s$ consisting of consecutive $0$'s or $1$'s.
+			\item A run of $0$'s is called a \textbf{gap}.
+			\item A run of $1$'s is called a \textbf{block}.
+		\end{itemize}
+	\end{definition}
+\end{tcolorbox}
+\vspace{24pt}
+\newpage
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Autocorrelation Function}]
+	\begin{definition}
+		Let $s$ be a $N$-periodic sequence. The \textbf{autocorrelation function} of $s$ is the integer-value function $C(t):\set{s_i}\to\Z$ defined as \[
+		C(t) = \frac{1}{N}\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)
+		\] for $0\leq t\leq N-1$.
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	
+\end{remark}
+\begin{remark}
+	The autocorrelation function $C(t)$ measure the amount of similarity between the sequence $s$ and a shift of $s$ by $t$ positions. If $s$ is a random $N$-periodic sequence, then $\abs{N\cdot C(t)}$ can be expected to be quite small for all vlaue of $t\in\intoo{0,N}$. 
+\end{remark}
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's randomness postulates}]
+	\begin{definition}
+		Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
+		\begin{enumerate}[\textbf{R}1]
+			\item In the cycle \( s^N \) of \( s \), the number of 1’s differs from the number of 0’s by at most 1.
+			\item In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, and so on, as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
+			\item The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
+			\[
+			N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
+			\begin{cases} 
+				N, & : t = 0, \\
+				K, & : 1 \leq t \leq N - 1.
+			\end{cases}
+			\]
+		\end{enumerate}
+	\end{definition}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf \textbf{Pseudo-Noise Sequence} (\textbf{pn-sequence})}]
+	\begin{definition}
+		A binary sequence which satisfies Golomb's randomness postulates is called a \textbf{pseudo-noise sequence} (\textbf{pn-sequence}).
+	\end{definition}
+\end{tcolorbox}
+\begin{remark}
+	Pseudo-noise sequences arise in practice as output sequences of \textbf{maximum-length linear }
+\end{remark}
+
+The significance of Golomb’s randomness postulates lies in their ability to provide a framework for the evaluation of periodic sequences. A periodic sequence with period \( N \) is assessed based on the following criteria:
+
+
+\newpage
 \section*{Five basic tests}
 
 Let \( s = s_0, s_1, \ldots, s_{n-1} \) be a binary sequence of length \( n \).
@@ -1046,92 +1135,6 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 
 
 	
-	\newpage
-	Statistical tests for random number generators (RNGs) are crucial in assessing the quality of the RNGs, which purport to produce random sequences. While it is not possible to mathematically prove that a sequence is random, these tests can reveal certain weaknesses. The tests work by evaluating sample outputs from the RNG against attributes expected from truly random sequences. The outcomes of these tests are probabilistic and not definite. If a sequence fails any of the tests, it may be rejected as non-random, or subjected to further testing. Passing all the tests allows the RNG to be accepted as random, or more precisely, not rejected, as it only provides probabilistic evidence of randomness.
-	
-	\section{Statistical tests for RNGs}
-	Statistical tests for RNGs measure the quality of a bit generator's randomness. These tests are essential in identifying weaknesses in the generators by applying various statistical methods to the output sequences. For instance, a sequence that passes all the tests is not definitively random but is likely to exhibit characteristics of randomness, whereas a sequence that fails any test is potentially non-random and may require additional testing or rejection.
-	
-	\newpage
-	\subsection{Golomb’s randomness postulates}
-	Golomb’s randomness postulates are historical attempts to define necessary conditions for periodic pseudorandom sequences to appear random. They are not sufficient conditions for randomness but were among the first efforts to systematically address the randomness in sequences. These postulates serve as a fundamental basis for more complex tests and are critical in understanding the nature of pseudorandom sequences and their applications.
-	
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
-		\begin{definition}
-			Let \[
-			s=s_0,s_1,s_2,\dots
-			\] be an infnite sequence. The subsequence consisting of the first $n$ terms of $s$ is denoted by \[
-			s^n=s_0,s_1,\cdots,s_{n-1}.
-			\]
-		\end{definition}
-	\end{tcolorbox}
-	\begin{remark}
-		$s$ is the bit sequence if $s_i\in\set{0,1}$.
-	\end{remark}
-	
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf $N$-Periodic}]
-		\begin{definition}
-			The sequence $s=s_0,s_1,s_2,\dots$ is said to be \textbf{$N$-periodic} if \[
-			s_i=s_{i+N}
-			\] for all $i\geq 0$.
-		\end{definition}
-	\end{tcolorbox}
-	\begin{remark}
-		If $s$ is a $N$-periodic sequence, then the \textbf{cycle} of $s$ is the subsequence $s^N$.
-	\end{remark}
-	\vspace{12pt}
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Run - Gap / Block}]
-		\begin{definition}
-			Let $s$ be a sequence. \begin{itemize}
-				\item A \textbf{run} of $s$ is a subsequence of $s$ consisting of consecutive $0$'s or $1$'s.
-				\item A run of $0$'s is called a \textbf{gap}.
-				\item A run of $1$'s is called a \textbf{block}.
-			\end{itemize}
-		\end{definition}
-	\end{tcolorbox}
-	\vspace{24pt}
-	\newpage
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Autocorrelation Function}]
-		\begin{definition}
-			Let $s$ be a $N$-periodic sequence. The \textbf{autocorrelation function} of $s$ is the integer-value function $C(t):\set{s_i}\to\Z$ defined as \[
-			C(t) = \frac{1}{N}\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)
-			\] for $0\leq t\leq N-1$.
-		\end{definition}
-	\end{tcolorbox}
-	\begin{remark}
-		
-	\end{remark}
-	\begin{remark}
-		The autocorrelation function $C(t)$ measure the amount of similarity between the sequence $s$ and a shift of $s$ by $t$ positions. If $s$ is a random $N$-periodic sequence, then $\abs{N\cdot C(t)}$ can be expected to be quite small for all vlaue of $t\in\intoo{0,N}$. 
-	\end{remark}
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's randomness postulates}]
-		\begin{definition}
-			Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
-			\begin{enumerate}[\textbf{R}1]
-				\item In the cycle \( s^N \) of \( s \), the number of 1’s differs from the number of 0’s by at most 1.
-				\item In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, and so on, as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
-				\item The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
-				\[
-				N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
-				\begin{cases} 
-					N, & : t = 0, \\
-					K, & : 1 \leq t \leq N - 1.
-				\end{cases}
-				\]
-			\end{enumerate}
-		\end{definition}
-	\end{tcolorbox}
-
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf \textbf{Pseudo-Noise Sequence} (\textbf{pn-sequence})}]
-		\begin{definition}
-			A binary sequence which satisfies Golomb's randomness postulates is called a \textbf{pseudo-noise sequence} (\textbf{pn-sequence}).
-		\end{definition}
-	\end{tcolorbox}
-	\begin{remark}
-		Pseudo-noise sequences arise in practice as output sequences of \textbf{maximum-length linear }
-	\end{remark}
-	
-	The significance of Golomb’s randomness postulates lies in their ability to provide a framework for the evaluation of periodic sequences. A periodic sequence with period \( N \) is assessed based on the following criteria:
 	
 	\newpage
 	\chapter{NIST SP 800-22}
