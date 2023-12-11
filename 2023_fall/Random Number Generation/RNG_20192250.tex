@@ -1108,22 +1108,33 @@ The test assesses whether the sequence $s$ is random by checking the frequency o
 \begin{example}
 	Let \[
 	s:\texttt{11100 \ 01100 \ 01000 \ 10100 \ 11101 \ 11100 \ 10010 \ 01001}
-	\] with $n=40$. Then 
+	\] with $n=40$. Then  \[
+	n_0=21,\ n_1=19\longrightarrow X_1=(21-19)^2/40=0.1
+	\]\[
+	\begin{cases}
+		n_{00}=11\\
+		n_{01}=10\\
+		n_{10}=10\\
+		n_{11}=8
+	\end{cases}\longrightarrow X_2=\frac{4}{39}\of{121+100+100+64}-\frac{2}{40}\of{21^2+19^2}+1\approx0.387
+	\]
 \end{example}
 
-\subsection*{(iii) Poker test}
+\subsection{Poker Test}
 Let \( m \) be a positive integer such that \( \left[ \frac{n}{m} \right] \geq 5 \cdot (2^m) \), and let \( k = \left[ \frac{n}{m} \right] \). Divide the sequence \( s \) into \( k \) non-overlapping parts each of length \( m \), and let \( n_i \) be the number of occurrences of the \( i \)-th type of sequence of length \( m \), \( 1 \leq i \leq 2^m \). The poker test determines whether the sequences of length \( m \) each appear approximately the same number of times in \( s \), as would be expected for a random sequence. The statistic used is
 \[ X_3 = \frac{2^m}{k} \left( \sum_{i=1}^{2^m} n_i^2 \right) - k \]
 which approximately follows a \( \chi^2 \) distribution with \( 2^m - 1 \) degrees of freedom. Note that the poker test is a generalization of the frequency test: setting \( m = 1 \) in the poker test yields the frequency test.
 
-\subsection*{(iv) Runs test}
+\newpage
+\subsection{Runs Test}
 The purpose of the runs test is to determine whether the number of runs (of either zeros or ones; see Definition 5.26) of various lengths in the sequence \( s \) is as expected for a random sequence. The expected number of gaps (or blocks) of length \( i \) in a random sequence of length \( n \) is
 \[ e_i = \frac{n-i+3}{2^{i+2}} \]
 for \( 1 \leq i \leq k \). Let \( k \) be equal to the largest integer \( i \) for which \( e_i \geq 5 \). Let \( B_i, G_i \) be the number of blocks and gaps, respectively, of length \( i \) in \( s \) for each \( i, 1 \leq i \leq k \). The statistic used is
 \[ X_4 = \sum_{i=1}^{k} \frac{(B_i - e_i)^2}{e_i} + \sum_{i=1}^{k} \frac{(G_i - e_i)^2}{e_i} \]
 which approximately follows a \( \chi^2 \) distribution with \( 2k - 2 \) degrees of freedom.
 
-\subsection*{(v) Autocorrelation test}
+\newpage
+\subsection{Autocorrelation Test}
 The purpose of this test is to check for correlations between the sequence \( s \) and (non-cyclic) shifted versions of it. Let \( d \) be a fixed integer, \( 1 \leq d \leq \frac{n}{2} \). The number of bits in \( s \) not equal to their \( d \)-shifts is \( A(d) = \sum_{i=0}^{n-d-1} s_i \oplus s_{i+d} \), where \( \oplus \) denotes the XOR operator. The statistic used is
 \[ X_5 = \frac{2(A(d) - \frac{n-d}{2})}{\sqrt{n-d}} \]
 which approximately follows an \( \mathcal{N}(0, 1) \) distribution if \( n - d \geq 10 \). Since small values of \( A(d) \) are as unexpected as large values of \( A(d) \), a two-sided test should be used.
@@ -1503,7 +1514,8 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 		\item[(conclusion)] Since \( P \)-value \( > 0.01 \), accept the sequence as random.
 	\end{itemize}
 
-	\section*{Runs Test}
+\newpage
+	\section{Runs Test}
 	
 	This variant of a classic \textbf{nonparametric test} looks at ``runs'' defined as substrings of consecutive 1's and consecutive 0's, and considers whether the oscillation among such homogeneous substrings is too fast or too slow.
 	
@@ -2375,7 +2387,7 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 		X_1=\frac{(58-42)^2}{100}=2.56.
 		\] Note that 
 		\begin{center}
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=.95]
 			\begin{axis}[
 				no markers,
 				domain=0.01:10,
@@ -2443,37 +2455,29 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 				\hline
 			\end{tabular}
 		\end{center}
-		The critical value from the $\chi^2$ distribution table at a significance level of $0.01 (1\%)$ for $1$ degree is approximately 6.635. Since $X_1=2.56<6.635$, the test passes.
-		\item 
+		\st{The critical value from the $\chi^2$ distribution table at a significance level of $0.01 (1\%)$ for $1$ degree is approximately 6.635. Since $X_1=2.56<6.635$, the test passes.}
+		\item Recall that
+		\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Two-Bit Test}]
+			Let \( n_{00}, n_{01}, n_{10}, n_{11} \) denote the number of occurrences of 00, 01, 10, 11 in \( s \), respectively. These counts allow for overlapping. For example, in the sequence 00110, 00 and 01 overlap; they are not counted as separate, non-overlapping pairs. Then \[
+			n_{00} + n_{01} + n_{10} + n_{11} = (n - 1).
+			\] The statistic used is
+			\[ X_2 = \frac{4}{n-1} (n_{00}^2 + n_{01}^2 + n_{10}^2 + n_{11}^2) - \frac{2}{n} (n_0^2 + n_1^2) + 1 \]
+			which approximately follows a \( \chi^2 \) distribution with 2 degrees of freedom if \( n \geq 21 \).
+		\end{tcolorbox}
+		Since $n_{00}=33,n_{01}=25,n_{10}=24$ and $n_{11}=17$, we have \[
+		X_2=\frac{4}{99}\of{19^2+26^2+25^2+13^2}-\frac{2}{100}(58^2+42^2)+1\approx 2.64.
+		\]
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+				\hline
+				df & $\chi^2_{0.995}$ & $\chi^2_{0.990}$ & $\chi^2_{0.975}$ & $\chi^2_{0.950}$ & $\chi^2_{0.900}$ & $\chi^2_{0.100}$ & $\chi^2_{0.050}$ & $\chi^2_{0.025}$ & $\chi^2_{0.010}$ & $\chi^2_{0.005}$ \\
+				\hline
+				2 & 0.010 & 0.020 & 0.051 & 0.103 & 0.211 & 4.605 & 5.991 & 7.378 & 9.210 & 10.597 \\
+				\hline
+			\end{tabular}
+		\end{center}
 	\end{enumerate}
 \end{proof}
-
-\section*{Analysis of FIPS 140-1 Statistical Random Number Tests}
-
-Given a 100-bit string for analysis under the FIPS 140-1 guidelines, the following tests were conducted:
-
-\subsection*{1. Monobit Test}
-The monobit test checks if the number of 1s in the string is approximately half of the total length of the string. The test is passed if the count of 1s is between 43 and 57 for a 100-bit string.
-
-\textbf{Result:} In the given string, the number of 1s is 39. Hence, the string \textbf{fails} the monobit test.
-
-\subsection*{2. Serial Test}
-The serial test involves calculating the $\chi^2$ statistic for 1-bit and 2-bit patterns.
-
-\subsubsection*{a) 1-bit Patterns}
-The $\chi^2$ statistic for 1-bit patterns is calculated as:
-\[ \chi^2 = \sum \frac{(O_i - E_i)^2}{E_i} \]
-where $O_i$ is the observed frequency and $E_i$ is the expected frequency.
-
-\textbf{Calculated $\chi^2$ statistic for 1-bit patterns:} Approximately 3.375.
-
-\subsubsection*{b) 2-bit Patterns}
-Similarly, the $\chi^2$ statistic for 2-bit patterns is calculated. 
-
-\textbf{Calculated $\chi^2$ statistic for 2-bit patterns:} Approximately 6.853.
-
-These $\chi^2$ values indicate how well the observed frequencies of 1-bit and 2-bit patterns match the expected frequencies. However, a conclusion on pass/fail status requires comparison with critical values from the $\chi^2$ distribution, which is not provided in the FIPS 140-1 guidelines.
-
 
 \section*{5. Runs Test for Binary Sequences}
 
@@ -2488,7 +2492,15 @@ These $\chi^2$ values indicate how well the observed frequencies of 1-bit and 2-
 \end{itemize}
 
 \newpage
-
+\begin{itemize}
+	\item[(a)] For a given bit sequence \( X_1, X_2, \ldots, X_n \), which is assumed to be uniformly distributed, the number of runs (consecutive bits of either 0 or 1) \( R_n \) is counted. The expected value \( E[R_n] \) is calculated.
+	
+	\item[(b)] For a 50-bit sample of the sequence:
+	\begin{verbatim}
+		01100 00001 00011 01001 10001 00110 00110 01010 00101 11000
+	\end{verbatim}
+	Apply the NIST SP 800-22 Runs Test to the sequence. The number of runs \( V_{50} \) is used to determine the randomness of the sequence.
+\end{itemize}
 
 \begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
 	\begin{definition}
