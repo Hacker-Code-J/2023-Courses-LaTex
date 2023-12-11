@@ -147,6 +147,9 @@
 \newcommand{\markov}[1]{\langle #1\rangle}
 \newcommand{\tab}{\hspace{12pt}}
 
+% Stirling's approximation for the gamma function
+\newcommand{\stirling}[1]{(sqrt(2*pi*#1)*(#1/exp(1))^#1)}
+
 % Begin document
 \begin{document}
 	
@@ -1024,24 +1027,89 @@ The significance of Golomb’s randomness postulates lies in their ability to pr
 
 
 \newpage
-\section*{Five basic tests}
+\section{Five Basic Tests}
+The test aims to determine if the sequence 
+$s$ contains roughly the same number of 0's and 1's. In a random sequence, you would expect these numbers to be about equal.
 
+\subsection{Frequency Test (Monobit Test)}
+\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Monobit Test}]
 Let \( s = s_0, s_1, \ldots, s_{n-1} \) be a binary sequence of length \( n \).
-
-\subsection*{(i) Frequency test (monobit test)}
-The purpose of this test is to determine whether the number of 0’s and 1’s in \( s \) are approximately the same, as would be expected for a random sequence. Let \( n_0, n_1 \) denote the number of 0’s and 1’s in \( s \), respectively. The statistic used is
+Let \( n_0:=\#0(s), n_1:=\#1(s) \). The statistic used is
 \[ X_1 = \frac{(n_0 - n_1)^2}{n}, \]
 which approximately follows a \( \chi^2 \) distribution with 1 degree of freedom if \( n \geq 10 \).
+\end{tcolorbox}
+\begin{remark}[Chi-Squared Distribution]
+	Let $Z_1,\cdots,Z_k$ be independent standard normal random variables. Then \[
+	Q:=\sum_{i}^kZ_i^2\sim\chi^2(k).
+	\] is said to have a chi-squared distribution with $k$ degrees of freedom.
+	\begin{center}
+\begin{tikzpicture}[scale=.965]
+	\begin{axis}[
+		title={Chi-Squared Distributions},
+		xlabel={\( x \)},
+		ylabel={Probability Density},
+		grid=major,
+		legend pos=north east,
+		domain=0.01:8,
+		samples=100,
+		smooth,
+		no markers,
+		ymax=0.3,
+		]
+		% Stirling's approximation for the factorial in the gamma function
+		\pgfmathdeclarefunction{stirling}{1}{%
+			\pgfmathparse{sqrt(2*pi*#1)*((#1/exp(1))^#1)}% n!
+		}
+		\pgfplotsinvokeforeach{3,4,6,9,10}{
+			\addplot+[thick] {x^(#1/2-1)*exp(-x/2)/(2^(#1/2)*stirling(#1/2 - 1))};
+			\addlegendentryexpanded{\( k = #1 \)}
+		}
+	\end{axis}
+\end{tikzpicture}
+	\end{center}
+\end{remark}
+\begin{remark}[\textcolor{blue}{\bf Interpretation}]
+	\ \begin{itemize}
+		\item \textbf{Components:} \begin{itemize}
+			\item $n_0-n_1$: The difference in the counts of 0's and 1's.
+			\item $(n_0-n_1)^2$: Ensure the result is always non-negative.
+			\item $n$: This is the total length of the sequence $s$, \ie, $n_0+n_1$.
+		\end{itemize} 
+		\item \textbf{High $X_1$ Value:} A high value of $X_1$ indicates a large difference between $n_0$ and $n_1$,
+		suggesting that the sequence may not be random.
+		\item \textbf{Low $X_1$ Value:} A low value of $X_1$ suggests that $n_0$ and $n_1$
+		are approximately equal, consistent with a random sequence.
+	\end{itemize}
+\end{remark}
 
-% Here you can include the graph or describe it using LaTeX packages like pgfplots/tikz for example.
+\subsection{Serial Test (Two-Bit Test)}
+The test assesses whether the sequence $s$ is random by checking the frequency of adjacent pairs of bits $(00, 01, 10, 11)$.
 
-\subsection*{(ii) Serial test (two-bit test)}
-The purpose of this test is to determine whether the number of occurrences of 00, 01, 10, and 11 as subsequences of \( s \) are approximately the same, as would be expected for a random sequence. Let \( n_{00}, n_{01}, n_{10}, n_{11} \) denote the number of occurrences of 00, 01, 10, 11 in \( s \), respectively. Note that \( n_{00} + n_{01} + n_{10} + n_{11} = (n - 1) \) since the subsequences are allowed to overlap. The statistic used is
-\[ X_2 = \frac{4}{n-1} (n_{00}^2 + n_{01}^2 + n_{10}^2 + n_{11}^2) - \frac{2}{n} (n_0^2 + n_1^2) + 1 \]
-which approximately follows a \( \chi^2 \) distribution with 2 degrees of freedom if \( n \geq 21 \).
-
-\textbf{Example:}
-\[ s (n=40) : 11100 \ 01100 \ 01000 \ 10100 \ 11101 \ 11100 \ 10010 \ 01001. \]
+\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Two-Bit Test}]
+	Let \( n_{00}, n_{01}, n_{10}, n_{11} \) denote the number of occurrences of 00, 01, 10, 11 in \( s \), respectively. These counts allow for overlapping. For example, in the sequence 00110, 00 and 01 overlap; they are not counted as separate, non-overlapping pairs. Then \[
+	n_{00} + n_{01} + n_{10} + n_{11} = (n - 1).
+	\] The statistic used is
+	\[ X_2 = \frac{4}{n-1} (n_{00}^2 + n_{01}^2 + n_{10}^2 + n_{11}^2) - \frac{2}{n} (n_0^2 + n_1^2) + 1 \]
+	which approximately follows a \( \chi^2 \) distribution with 2 degrees of freedom if \( n \geq 21 \).
+\end{tcolorbox}
+\begin{remark}[\textcolor{blue}{\bf Interpretation}]
+	\ \begin{itemize}
+		\item \textbf{Components:} \begin{itemize}
+			\item $\frac{4}{n-1}$: Scales the squared frequencies of the pairs relative to $n-1$.
+			\item $n_{00}^2 + n_{01}^2 + n_{10}^2 + n_{11}^2$: Sum of the squares of the frequencies of each pair.
+			\item $\frac{2}{n}$: Scales the squared frequencies of individual bits (0's and 1's).
+			\item $n_0^2+n_1^2$: Sum of the squares of the frequencies of 0's and 1's.
+			\item The "$+1$" adjusts the statistic to align it with the $\chi^2$ distribution.
+		\end{itemize} 
+		\item \textbf{High $X_2$ Value:} Indicates a significant imbalance among the counts of the subsequences, suggesting non-randomness.
+		\item \textbf{Low $X_2$ Value:} Indicates that the counts of the subsequences are balanced, consistent with a random sequence.
+	\end{itemize}
+\end{remark}
+\begin{example}
+	Let \[
+	s:\texttt{11100 \ 01100 \ 01000 \ 10100 \ 11101 \ 11100 \ 10010 \ 01001}
+	\] with $n=40$. Then 
+\end{example}
 
 \subsection*{(iii) Poker test}
 Let \( m \) be a positive integer such that \( \left[ \frac{n}{m} \right] \geq 5 \cdot (2^m) \), and let \( k = \left[ \frac{n}{m} \right] \). Divide the sequence \( s \) into \( k \) non-overlapping parts each of length \( m \), and let \( n_i \) be the number of occurrences of the \( i \)-th type of sequence of length \( m \), \( 1 \leq i \leq 2^m \). The poker test determines whether the sequences of length \( m \) each appear approximately the same number of times in \( s \), as would be expected for a random sequence. The statistic used is
@@ -2077,6 +2145,350 @@ The resulting entropy estimate is
 \[ \text{min-entropy} = \min(-\log_2(4.6288 \times 10^{-9})/128, 1) = \min(0.761, 1) = 0.761. \]
 
 \newpage
+
+\chapter{2021-2 Final Exam}
+
+
+\section*{1. On Renyi Entropy}
+
+\begin{itemize}
+	\item[(a)] Let us consider a discrete random variable \(X\) with a sample space \(\{1, 2, \ldots, n\}\) and probability \(p = P(X=i)\), for \(1 \leq i \leq n\). Assuming \(a > 0\), \(a \neq 1\), the \(a\)-th order Renyi entropy is defined as:
+	\[
+	H_a(X) = \frac{1}{1-a} \log \left( \sum_{i} p_i^a \right).
+	\]
+	Show that, in the limit as \(a\) approaches 1, Renyi entropy converges to the Shannon entropy:
+	\[
+	\lim_{a \to 1} H_a(X) = H(X) = - \sum_{i} p_i \log p_i.
+	\]
+	
+	\item[(b)] Considering a set of probabilities \(\{p_1, p_2, p_3, p_4, p_5, p_6, p_7, p_8\}\) where each \(p_i\) corresponds to an event in a sample space:
+	\[
+	(p_1, p_2, p_3, p_4, p_5, p_6, p_7, p_8) = \left( \frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \frac{1}{16}, \frac{1}{64}, \frac{1}{64}, \frac{1}{64}, \frac{1}{64} \right).
+	\]
+	Calculate the R\'enyi entropies \(H_0(X), H_1(X), H_2(X), H_\infty(X)\) for this distribution.
+\end{itemize}
+\begin{proof}[\sol]
+	\ \begin{enumerate}[(a)]
+		\item Let $f(\alpha):=\log\of{\sum_{i=1}^{n}p_i^\alpha}$ and $g(\alpha):=1-\alpha$ Then \begin{enumerate}[(i)]
+			\item \[
+			\od{}{\alpha}f=\od{}{\alpha}\of{\log\sum_{i=1}^{n}p_i^\alpha}=\frac{\sum_{i=1}^np_i^\alpha\log p_i}{\sum_{i=1}^np_i^\alpha}.
+			\]
+			\item \[
+			\od{}{\alpha}g=\od{}{\alpha}(1-\alpha)=-1.
+			\]
+		\end{enumerate} Thus, \[
+		\lim\limits_{\alpha\to 1}H_\alpha(X)=
+		\lim\limits_{\alpha\to 1}\frac{f(\alpha)}{g(\alpha)}=
+		\lim\limits_{\alpha\to 1}\frac{f'(\alpha)}{g'(\alpha)}=
+		-1\cdot\frac{\sum_{i=1}^np_i\log p_i}{\sum_{i=1}^np_i}=-1\cdot\frac{\sum_{i=1}^np_i\log p_i}{1}=-\sum_{i=1}^np_i\log p_i.
+		\]
+		\item 
+		1. \textbf{\( H_0(X) \) (Rényi entropy for \( a = 0 \)):}
+		
+		The \(H_0\) entropy, also known as the Hartley entropy, is defined as
+		\[ H_0(X) = \log_2(N) \]
+		where \( N \) is the number of non-zero probabilities. Thus \[
+		H_0(X) = \log_2(8) = 3.0\ \text{bits.}
+		\]
+		
+		2. \textbf{\( H_1(X) \) (Shannon entropy or Rényi entropy for \( a = 1 \)):}
+		The Shannon entropy, \( H_1 \), is calculated using the formula:
+		\[ H_1(X) = -\sum_{i} p_i \log_2 p_i \]
+		The sum for our probabilities is:
+		\begin{align*}
+			H_1(X) &= -\left( \frac{1}{2} \log_2 \frac{1}{2} + \frac{1}{4} \log_2 \frac{1}{4} + \frac{1}{8} \log_2 \frac{1}{8} + \frac{1}{16} \log_2 \frac{1}{16} + 4 \times \frac{1}{64} \log_2 \frac{1}{64} \right)&\\
+			&=-\of{\frac{1}{2}\cdot(-1)+\frac{1}{4}\cdot(-2)+\frac{1}{8}\cdot(-3)+\frac{1}{16}\cdot(-4)+4\times\frac{1}{64}\cdot(-6)}\\
+			&=\frac{32+32+24+16+24}{64}\\
+			&=2.0\ \text{bits.}
+		\end{align*}
+		
+		3. \textbf{\( H_2(X) \) (Rényi entropy for \( a = 2 \)):}
+		For \( a = 2 \), the Rényi entropy is calculated as:
+		\[ H_2(X) = -\log_2 \left( \sum_{i} p_i^2 \right) \]
+		This gives:
+		\begin{align*}
+			H_2(X) &= -\log_2 \left(\of{\frac{1}{2}}^2+\of{\frac{1}{4}}^2+\of{\frac{1}{8}}^2+\of{\frac{1}{16}}^2+4\times\of{\frac{1}{64}}^2\right)\\
+			&=-\log_2\left( \frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \frac{1}{256} + 4 \times \frac{1}{4096} \right)\\
+			&=-\log_2\of{\frac{256+64+16+4+1}{1024}}\\
+			&=\log_2\of{\frac{1024}{341}}\\
+			&=\log_2 1024-\log_2 341\\
+			&\approx10-8.414\\
+			&\approx1.59.
+		\end{align*}
+		Computing this sum and its logarithm gives approximately \( H_2(X) = 1.59 \) bits.
+
+		4. \textbf{\( H_{\infty}(X) \) (Rényi entropy for \( a = \infty \)):}
+		The \( H_{\infty} \) entropy is defined as
+		\[ H_{\infty}(X) :=\min(-\log_2 p_i)=-(\max \log_2 p_i)= -\log_2(\max(p_i)) \]
+		Thus,
+		\[ H_{\infty}(X) = -\log_2\left(\frac{1}{2}\right) = 1.0 \text{bit.} \]
+	\end{enumerate}
+	In summary, \begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				title={R\'enyi Entropy for Different Values of $a$},
+				xlabel={$a$ (R\'enyi entropy parameter)},
+				ylabel={Entropy (bits)},
+				xmin=0, xmax=3,
+				ymin=0, ymax=3.5,
+				xtick={0,1,2,3},
+				xticklabels={$H_0(X)$, $H_1(X)$, $H_2(X)$, $H_{\infty}(X)$},
+				ytick={1,1.59,2,3},
+				legend pos=north east,
+				ymajorgrids=true,
+				grid style=dashed,
+				]
+				
+				\addplot[
+				color=blue,
+				mark=square,
+				]
+				coordinates {
+					(0,3)(1,2)(2,1.59)(3,1)
+				};
+				\legend{Entropy Values}
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+\end{proof}
+
+\section*{2. Markov Chain and Transition Matrix}
+
+Consider a Markov chain with state space \( S = \{0, 1, 2, 3, 4, 5, 6\} \) and the following transition matrix \( P \) for the process \( (X_n, n = 0, 1, 2, \ldots) \):
+\[
+P = \begin{bmatrix}
+	\frac{1}{2} & 0 & \frac{1}{8} & \frac{1}{4} & \frac{1}{8} & 0 & 0 \\
+	0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+	0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 & \frac{1}{2} & 0 & \frac{1}{2} \\
+	0 & 0 & 0 & 0 & \frac{1}{2} & \frac{1}{2} & 0 \\
+	0 & 0 & 0 & 0 & 0 & \frac{1}{2} & \frac{1}{2} \\
+\end{bmatrix}.
+\]
+\begin{itemize}
+	\item[(a)] Represent the state space $S$ by dividing it into the set $S_T$ of transient states and the set $S_R$ of recurrent states.
+	\item[(b)] Calculate the probability $\rho_{01} = P(T_1 < \infty)$.
+\end{itemize}
+
+\section*{3. Pseudo-Noise Sequence}
+Determine whether the sequence given below, with a cycle \( s^{15} \) for a period \( N=15 \), is a pseudo-noise sequence.
+\[
+s^{15} = \texttt{0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}.
+\]
+\begin{proof}[\sol]
+	Recall that 
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's Randomness Postulates}]
+		\begin{definition}
+			Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
+			\begin{enumerate}[\textbf{R}1]
+				\item \textit{Balance Property}: \( \left| \#1(s^N) - \#0(s^N) \right| \leq 1 \), where \( \#1 \) and \( \#0 \) count the number of 1’s and 0’s in \( s^N \).
+				\item \textit{Run Distribution}: For runs of length \( l \) in \( s^N \), \( \text{at least } \frac{1}{2^l} \) of runs are of length \( l \), for \( l \geq 1 \) and total runs \( > 1 \). Equal number of runs for 1's and 0's.
+				For runs of length \( l \) in \( s^N \), \( \#_{l} \geq \frac{N}{2^l} \) for \( l \geq 1 \), with nearly equal numbers of 1-run and 0-run.
+				\item \textit{Autocorrelation Property}: \( C(t) \): 
+				\[
+				N \cdot C(t)=\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
+				\begin{cases} 
+					N, & : t = 0, \\
+					K, & : 1 \leq t \leq N - 1.
+				\end{cases}
+				\]
+				where \( K\in\Z\).
+			\end{enumerate}
+		\end{definition}
+	\end{tcolorbox}
+	Given sequence: \[
+	s^{15} = \{0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1\},
+	\]
+	\begin{enumerate}[\textbf{R}1]
+		\item The sequence contains 7 zeros and 8 ones. It holds $\abs{8-7}\leq 1$.
+		\item Runs in the sequence are as follows:
+		\begin{itemize}
+			\item Runs of 1: Three (2 zeros, 1 one)
+			\item Runs of 2: Three (1 zero, 2 ones)
+			\item Runs of 3: Two (1 zero, 1 ones)
+		\end{itemize}
+		This distribution does not align perfectly with the expected pattern for randomness.
+		\item The sequence does not exhibit obvious periodicity or regularities, suggesting a degree of randomness. However, a full autocorrelation analysis is less meaningful for short sequences.
+	\end{enumerate} 
+	The sequence \( s^{15} \) shows some characteristics of randomness but does not fully comply with Golomb's postulates, especially regarding run distribution.
+\end{proof}
+
+\begin{definition}
+	Consider \( s \), an \( N \)-periodic binary sequence. The \textbf{Golomb's randomness postulates} are defined as follows:
+	\begin{enumerate}[\textbf{R}1]
+		\item \textit{Balance Property}: For the full cycle \( s^N \) of \( s \), the discrepancy between the count of 1's and 0's should not exceed 1. Mathematically, if \( n_1 \) and \( n_0 \) represent the counts of 1's and 0's respectively, then \( |n_1 - n_0| \leq 1 \).
+		\item \textit{Run Property}: In the sequence \( s^N \), the distribution of runs (consecutive identical elements) follows a specific pattern: at least \( \frac{1}{2} \) of the runs are of length 1, at least \( \frac{1}{4} \) are of length 2, at least \( \frac{1}{8} \) are of length 3, and so forth. This is valid as long as the expected number of runs for a given length is greater than 1. Furthermore, for each run length, there should be nearly an equal number of runs of 1's (blocks) and runs of 0's (gaps).
+		\item \textit{Autocorrelation Property}: The autocorrelation function \( C(t) \) of the sequence should be two-valued. Formally, for some integer \( K \) and for each shift \( t \), 
+		\[
+		N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
+		\begin{cases} 
+			N, & : t = 0, \\
+			K, & : 1 \leq t \leq N - 1.
+		\end{cases}
+		\]
+		This implies that, apart from the zero shift (where the autocorrelation is maximum and equals \( N \)), the autocorrelation for any other shift lies consistently at \( K \).
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}
+	Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
+	\begin{enumerate}[\textbf{R}1]
+		\item In the cycle \( s^N \) of \( s \), the number of 1’s differs from the number of 0’s by at most 1.
+		\item In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, and so on, as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
+		\item The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
+		\[
+		N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
+		\begin{cases} 
+			N, & : t = 0, \\
+			K, & : 1 \leq t \leq N - 1.
+		\end{cases}
+		\]
+	\end{enumerate}
+\end{definition}
+
+
+\newpage
+\section*{4. Binary Sequence Analysis}
+A random number generator outputs a string of 100 bits as follows. This random number generator is subjected to testing with 100-bit strings.
+\begin{center}
+	\texttt{01100 00001 00011 01001 10001 00110 00110 01010 00101 11000}\\
+	\texttt{10001 11001 00100 00111 11101 10101 01000 00001 01101 00011}
+\end{center}
+Consider this as a sample sequence and apply the FIPS 140-1 statistical random number test.
+\begin{enumerate}
+	\item[(a)] Determine the pass/fail of the monobit test according to the FIPS 140-1 statistical random number test.
+	\item[(b)] It is intended to apply the serial test to the above sample sequence of length 100. Calculate the value of the $\chi^2$ statistic used at this time.
+\end{enumerate}
+
+\begin{proof}[\sol]
+	\ \begin{enumerate}[(a)]
+		\item Recall that
+		\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Monobit Test}]
+			Let \( s\) be a binary sequence of length \( n \).
+			Let \( n_0:=\#0(s), n_1:=\#1(s) \). The statistic used is
+			\[ X_1 = \frac{(n_0 - n_1)^2}{n}, \]
+			which approximately follows a \( \chi^2 \) distribution with 1 degree of freedom if \( n \geq 10 \).
+		\end{tcolorbox}
+		Since $n_0=58,n_1=42$ and $n=100$, we have \[
+		X_1=\frac{(58-42)^2}{100}=2.56.
+		\] Note that 
+		\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				no markers,
+				domain=0.01:10,
+				samples=100,
+				ymin=0,
+				axis lines*=left,
+				xlabel=$x$,
+				ylabel=$f(x)$,
+				height=5cm,
+				width=12cm,
+				xtick=\empty,
+				ytick=\empty,
+				clip=false,
+				axis on top,
+				grid = major,
+				enlargelimits=false
+				]
+				
+				% Degrees of freedom
+				\def\k{4} % Change this value for different degrees of freedom
+				
+				% Critical value for chi-squared, adjust as needed
+				\def\criticalvalue{6}
+				
+				% Chi-squared PDF using Stirling's approximation
+				% Area to the left of the critical value (colored differently)
+				\addplot [fill=white, draw=none, domain=0:\criticalvalue] {
+					x^(\k/2 - 1) * exp(-x/2) /
+					(2^(\k/2) * \stirling{\k/2 - 1})
+				} \closedcycle;
+				
+				% Area to the right of the critical value (colored differently)
+				\addplot [fill=red!30, draw=none, domain=\criticalvalue:10] {
+					x^(\k/2 - 1) * exp(-x/2) /
+					(2^(\k/2) * \stirling{\k/2 - 1})
+				} \closedcycle;
+				
+				% Chi-squared distribution curve
+				\addplot [very thick,cyan!50!black] {
+					x^(\k/2 - 1) * exp(-x/2) /
+					(2^(\k/2) * \stirling{\k/2 - 1})
+				};
+				
+				% Draw the line at the critical value of X^2
+				\draw [ycomb, thick, color=black] (axis cs:\criticalvalue,0) -- (axis cs:\criticalvalue,{
+					\criticalvalue^(\k/2 - 1) * exp(-\criticalvalue/2) /
+					(2^(\k/2) * \stirling{\k/2 - 1})
+				});
+				\node[above] at (axis cs:\criticalvalue,{
+					\criticalvalue^(\k/2 - 1) * exp(-\criticalvalue/2) /
+					(2^(\k/2) * \stirling{\k/2 - 1})
+				}) {$\chi^2$};
+				
+			\end{axis}
+		\end{tikzpicture}
+\end{center}
+		The colored area is equal to $\alpha$ for $\chi^2 = \chi^2_{\alpha}$.
+		
+		\begin{center}
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+				\hline
+				df & $\chi^2_{0.995}$ & $\chi^2_{0.990}$ & $\chi^2_{0.975}$ & $\chi^2_{0.950}$ & $\chi^2_{0.900}$ & $\chi^2_{0.100}$ & $\chi^2_{0.050}$ & $\chi^2_{0.025}$ & $\chi^2_{0.010}$ & $\chi^2_{0.005}$ \\
+				\hline
+				1 & 0.000 & 0.000 & 0.001 & 0.004 & 0.016 & 2.706 & 3.841 & 5.024 & 6.635 & 7.879 \\
+				\hline
+			\end{tabular}
+		\end{center}
+		The critical value from the $\chi^2$ distribution table at a significance level of $0.01 (1\%)$ for $1$ degree is approximately 6.635. Since $X_1=2.56<6.635$, the test passes.
+		\item 
+	\end{enumerate}
+\end{proof}
+
+\section*{Analysis of FIPS 140-1 Statistical Random Number Tests}
+
+Given a 100-bit string for analysis under the FIPS 140-1 guidelines, the following tests were conducted:
+
+\subsection*{1. Monobit Test}
+The monobit test checks if the number of 1s in the string is approximately half of the total length of the string. The test is passed if the count of 1s is between 43 and 57 for a 100-bit string.
+
+\textbf{Result:} In the given string, the number of 1s is 39. Hence, the string \textbf{fails} the monobit test.
+
+\subsection*{2. Serial Test}
+The serial test involves calculating the $\chi^2$ statistic for 1-bit and 2-bit patterns.
+
+\subsubsection*{a) 1-bit Patterns}
+The $\chi^2$ statistic for 1-bit patterns is calculated as:
+\[ \chi^2 = \sum \frac{(O_i - E_i)^2}{E_i} \]
+where $O_i$ is the observed frequency and $E_i$ is the expected frequency.
+
+\textbf{Calculated $\chi^2$ statistic for 1-bit patterns:} Approximately 3.375.
+
+\subsubsection*{b) 2-bit Patterns}
+Similarly, the $\chi^2$ statistic for 2-bit patterns is calculated. 
+
+\textbf{Calculated $\chi^2$ statistic for 2-bit patterns:} Approximately 6.853.
+
+These $\chi^2$ values indicate how well the observed frequencies of 1-bit and 2-bit patterns match the expected frequencies. However, a conclusion on pass/fail status requires comparison with critical values from the $\chi^2$ distribution, which is not provided in the FIPS 140-1 guidelines.
+
+
+\section*{5. Runs Test for Binary Sequences}
+
+\begin{itemize}
+	\item[(a)] For a given binary sequence \( X_1, X_2, \ldots, X_n \), which is expected to be uniformly distributed, the runs test is applied to examine the randomness of the sequence. Specifically, the test checks for the occurrence and length of consecutive bits (runs) in the sequence.
+	
+	\item[(b)] For a 50-bit sample of the sequence:
+	\begin{verbatim}
+		01100 00001 00011 01001 10001 00110 00110 01010 00101 11000
+	\end{verbatim}
+	The NIST SP 800-22 Runs Test is applied to determine the randomness of the sequence. The number of runs \( V_n \) in the sequence is calculated, and the test assesses whether \( V_{50} \) conforms to the expected distribution under the assumption of randomness.
+\end{itemize}
+
+\newpage
+
 
 \begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
 	\begin{definition}
