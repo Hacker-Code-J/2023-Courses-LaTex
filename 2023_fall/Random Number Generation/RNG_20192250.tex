@@ -1517,23 +1517,43 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 \newpage
 	\section{Runs Test}
 	
-	This variant of a classic \textbf{nonparametric test} looks at ``runs'' defined as substrings of consecutive 1's and consecutive 0's, and considers whether the oscillation among such homogeneous substrings is too fast or too slow.
+	This test assesses the randomness of a binary sequence by analyzing the frequency and pattern of changes between consecutive 1's and 0's. The test is useful in contexts where the binary sequence should be random, such as in random number generation.
 	
-	The specific test used here is based on the distribution of \textbf{the total number of runs}, \( V_n \).
-	\begin{itemize}
-		\item For the fixed proportion \( \pi = \sum_{i=1}^{n} e_i / n \); \( \pi \) is an estimated parameter(Not assumed from \( H_0 \)),
-		\[
-		\lim_{n \to \infty} P\left(\frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n\pi(1 - \pi)}} \leq z\right) = \Phi(z).
-		\]
-	\end{itemize}
+	This variant of a classic \textbf{nonparametric test}\footnote{A statistical test that does not assume the data comes from a particular distribution. Useful when normal distribution cannot be assumed.} looks at ``runs'' defined as substrings of consecutive 1's and consecutive 0's, and considers whether the oscillation\footnote{Assessing whether changes between 1's and 0's happen too frequently (fast oscillation) or too infrequently (slow oscillation).} among such homogeneous substrings is too fast or too slow.
+	\vspace{12pt}
+	\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Runs Test}]
+		\textbf{(i) Estimating the Proportion \( \pi \)}
+		\begin{itemize}
+			\item \textbf{Proportion \(\displaystyle \pi=\frac{\sum_{i=1}^{n} \varepsilon_i}{n} \)}: Estimated proportion of 1's (or 0's) in the sequence.
+		\end{itemize}
+		
+		\textbf{(ii) Asymptotic Distribution}
+		\begin{itemize}
+			\item As \( n\to\infty \), \( \frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)} \) converges to the standard normal distribution \( \Phi(z) \): \[
+			\lim\limits_{n\to\infty}\Pr\sbr{\frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)}\leq z}=\Phi(z).
+			\]
+		\end{itemize}
+		
+		\textcolor{blue}{\bf (iii) The Test Statistic \( V_n \)}
+		\begin{itemize}
+			\item \textbf{Total Number of Runs}: \( V_n \) is the total number of runs in the sequence:\[
+			V_n=\sum_{k=1}^{n-1}r(k)+1\quad\text{with}\quad r(k)=\begin{cases}
+				0 &:\varepsilon_k=\varepsilon_{k+1},\\
+				1 &:\varepsilon_k\neq\varepsilon_{k+1}.
+			\end{cases}
+			\]
+		\end{itemize}
+		
+		\textbf{(iv) P-Value}
+		\begin{itemize}
+			\item \textbf{P-Value}: \(\text{P-Value} = \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n}\pi(1 - \pi)}\right)\).
+			\item Large \( V_n(\text{obs}) \): More oscillation than expected by chance.
+			\item Small \( V_n(\text{obs}) \): Less oscillation than expected by chance.
+		\end{itemize}
+	\end{tcolorbox}
 	
-	To evaluate \( V_n \), define for \( k = 1, \ldots, n-1 \), \( r(k) = 0 \) if \( e_k = e_{k+1} \) and \( r(k) = 1 \) if \( e_k \neq e_{k+1} \).
+	\newpage
 	
-	\[
-	P\text{-value} = \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n\pi(1 - \pi)}}\right).
-	\]
-	
-	Large values of \( V_n(\text{obs}) \) indicate oscillation in the string of e's which is too fast; small values indicate oscillation which is too slow.
 	
 	\section*{Test Statistic and Reference Distribution}
 	\( V_n\text{obs}: \) The total number of runs (i.e., the total number of zero runs + the total number of one-runs) across all \( n \) bits.
@@ -2493,15 +2513,126 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 
 \newpage
 \begin{itemize}
-	\item[(a)] For a given bit sequence \( X_1, X_2, \ldots, X_n \), which is assumed to be uniformly distributed, the number of runs (consecutive bits of either 0 or 1) \( R_n \) is counted. The expected value \( E[R_n] \) is calculated.
-	
-	\item[(b)] For a 50-bit sample of the sequence:
-	\begin{verbatim}
-		01100 00001 00011 01001 10001 00110 00110 01010 00101 11000
-	\end{verbatim}
-	Apply the NIST SP 800-22 Runs Test to the sequence. The number of runs \( V_{50} \) is used to determine the randomness of the sequence.
+	\item[(a)] Given a bit sequence $X_1, \dots, X_n$ of length $n$, where each bit is independent and identically distributed according to a uniform distribution, define the number of runs of length $k$ as the random variable $R_k^{(n)}$. Find the expected value $\E[R_k^{(n)}]$ of this random variable.
+	\item[(b)] When given a sample bit sequence of length 50 as:
+	\begin{center}
+		\texttt{01100 00001 00011 01001 10001 00110 00110 01010 00101 11000},
+	\end{center}
+	 describe the process of calculating the value of the statistic $V_{50}$, which represents the total number of runs, according to the Runs Test in NIST SP 800-22.
 \end{itemize}
 
+\begin{proof}[\sol]
+	\ \begin{enumerate}[(a)]
+		\item For a run of length $k$ to start at position $i$ (where $1 \leq i \leq n-k+1$), the following conditions must be met:
+		\begin{itemize}
+			\item The $k$ bits starting at $i$ are the same.
+			\item The bit before position $i$ (if it exists) and the bit after the $k$ bits (if it exists) are different.
+		\end{itemize}
+		The probability is \[
+		\Pr\sbr{\text{run of length $k$ staring at $i$}}=\begin{cases}
+			\displaystyle\frac{1}{2^{k+1}} &:1<i\leq n-k\\
+			\\
+			\displaystyle\frac{1}{2^k} &:i\in\set{1,n-k+1}.
+		\end{cases}
+		\] 
+		\begin{tikzpicture}
+			% Parameters
+			\def\k{3} % Length of the run
+			\def\i{2} % Starting position of the run
+			\def\n{7} % Total length of the sequence
+			
+			% Draw the binary sequence boxes
+			\foreach \x in {1,...,\n} {
+				\draw (\x,0) rectangle +(1,1);
+				% Fill the run of length k with a different color
+				\ifnum \x=\i
+				\foreach \y in {0,...,\numexpr\k-1\relax} {
+					\fill[blue!30] (\x+\y,0) rectangle +(1,1);
+				}
+				\fi
+			}
+			
+			% Place the bits (0 or 1) in the boxes
+			% For simplicity, let's fill them randomly
+			\foreach \x in {1,...,\n} {
+				% Randomly choose 0 or 1
+				\pgfmathrandominteger{\bit}{0}{1}
+				\node at (\x+0.5,0.5) {\bit};
+			}
+			
+			% Annotate the start and end of the run
+			\draw [decorate,decoration={brace,amplitude=5pt}] (\i,-0.3) -- (\i+\k-1,-0.3) 
+			node [midway,below=4pt] {Run of length k};
+			
+			% Annotate the probability
+			\node at (\n/2,-1) {Probability: P};
+		\end{tikzpicture}
+		
+		{Step 3: Expected Number of Runs}
+		The expected number of runs is the sum of probabilities of a run starting at each position $i$, which is:
+		\[
+		\E[R_k^{(n)}] = \sum_{i=1}^{n-k+1} P(\text{run of length } k \text{ starting at } i)
+		\]
+		
+		{Step 4: Final Calculation}
+		Substituting the probabilities, we get:
+		\[
+		\E[R_k^{(n)}] = 2 \times \frac{1}{2^k} + (n-k-1) \times \frac{1}{2^{k+1}}
+		\]
+		
+		Note: This is valid under the assumption that $n \geq k$.
+		\item 
+		\begin{itemize}
+			\item The probability of a run of length $k$ starting at position $i$ (where $1 \leq i \leq n-k+1$) is $\frac{1}{2^{k+1}}$ if $1 < i \leq n-k$ or $\frac{1}{2^k}$ if $i = 1$ or $i = n-k+1$.
+			\item Therefore, the expected number of runs of length $k$ is given by:
+			\[
+			\E[R_k^{(n)}] = \sum_{i=1}^{n-k+1} P(\text{run of length } k \text{ starting at } i)
+			\]
+			\item Substituting the probabilities, we obtain:
+			\[
+			\E[R_k^{(n)}] = \frac{2}{2^k} + \frac{n-k-1}{2^{k+1}}
+			\]
+		\end{itemize}
+		
+		Note: This is valid under the assumption that $n \geq k$.
+		\item 
+	\end{enumerate}
+	Recall that
+	
+	\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Runs Test}]
+		\textbf{(i) Estimating the Proportion \( \pi \)}
+		\begin{itemize}
+			\item \textbf{Proportion \(\displaystyle \pi=\frac{\sum_{i=1}^{n} \varepsilon_i}{n} \)}: Estimated proportion of 1's (or 0's) in the sequence.
+		\end{itemize}
+		
+		\textbf{(ii) Asymptotic Distribution}
+		\begin{itemize}
+			\item As \( n\to\infty \), \( \frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)} \) converges to the standard normal distribution \( \Phi(z) \): \[
+			\lim\limits_{n\to\infty}\Pr\sbr{\frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)}\leq z}=\Phi(z).
+			\]
+		\end{itemize}
+		
+		\textcolor{blue}{\bf (iii) The Test Statistic \( V_n \)}
+		\begin{itemize}
+			\item \textbf{Total Number of Runs}: \( V_n \) is the total number of runs in the sequence:\[
+			V_n=\sum_{k=1}^{n-1}r(k)+1\quad\text{with}\quad r(k)=\begin{cases}
+				0 &:\varepsilon_k=\varepsilon_{k+1},\\
+				1 &:\varepsilon_k\neq\varepsilon_{k+1}.
+			\end{cases}
+			\]
+		\end{itemize}
+		
+		\textbf{(iv) P-Value}
+		\begin{itemize}
+			\item \textbf{P-Value}: \(\text{P-Value} = \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n}\pi(1 - \pi)}\right)\).
+			\item Large \( V_n(\text{obs}) \): More oscillation than expected by chance.
+			\item Small \( V_n(\text{obs}) \): Less oscillation than expected by chance.
+		\end{itemize}
+	\end{tcolorbox}
+\end{proof}
+
+
+\newpage
 \begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf }]
 	\begin{definition}
 		
