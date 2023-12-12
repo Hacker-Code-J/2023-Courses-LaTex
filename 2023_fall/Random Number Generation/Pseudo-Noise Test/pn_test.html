@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Golomb's Randomness Postulates Verification</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Golomb's Randomness Postulates Verification</h1>
+        <p>Enter a bitstring below:</p>
+        <input type="text" id="bitstringInput" placeholder="Enter bitstring (e.g., 1010101)">
+        <button id="verifyBtn">Verify</button>
+        <div id="testResults">
+            <div id="testR1" class="testResult">Test R1: </div>
+            <div id="testR2" class="testResult">Test R2: </div>
+            <div id="testR3" class="testResult">Test R3: </div>
+        </div>
+        <p id="verificationDescription">Verification Process:</p>
+        <p id="verificationProcess">
+            1. Enter a bitstring to represent a periodic sequence \( s \).<br>
+            2. Click the "Verify" button to create a random sequence of a specified length.<br>
+            3. The code visually displays the results of three tests based on Golomb's randomness postulates (R1, R2, and R3).<br>
+            4. Test R1 checks the balance of 1s and 0s in the sequence.<br>
+            5. Test R2 examines the runs and lengths of runs in the sequence.<br>
+            6. Test R3 evaluates the autocorrelation function \( C(t) \) for the sequence.<br>
+            7. The display indicates whether each test has passed or failed.<br>
+            8. By interpreting the results, you can determine whether the generated sequence satisfies Golomb's randomness postulates.<br>
+            9. You can repeat the process with different bitstrings to test their randomness.
+        </p>
+    </div>
+    
+    <!-- JavaScript for verifying Golomb's postulates -->
+    <script src="script.js"></script>
+</body>
+</html>
