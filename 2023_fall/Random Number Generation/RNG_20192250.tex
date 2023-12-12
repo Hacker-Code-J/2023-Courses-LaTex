@@ -96,7 +96,8 @@
 \usepackage{pgfplots}
 \usetikzlibrary{patterns}
 \pgfplotsset{compat=newest}
-
+\usepackage{colortbl} % for coloring cells
+\usepackage{multirow} % for multirow feature
 %Tcolorbox
 \usepackage[most]{tcolorbox}
 \tcbset{colback=white, arc=5pt}
@@ -1058,17 +1059,16 @@
 	\end{note}
 	
 	\begin{note}[$N$-Periodic]
-		The sequence $s=s_0,s_1,s_2,\dots$ is said to be \textbf{$N$-periodic} if \[
+		The sequence $s=s_0,s_1,s_2,\dots$ is said to be \textbf{$N$-periodic} if $
 		s_i=s_{i+N}
-		\] for all $i\geq 0$. If $s$ is a $N$-periodic sequence, then the \textbf{cycle} of $s$ is the subsequence $s^N$.
+		$ for all $i\geq 0$. If $s$ is a $N$-periodic sequence, then the \textbf{cycle} of $s$ is the subsequence $s^N$.
 	\end{note}
 	\vspace{12pt}
 	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Run - Gap / Block}]
 		\begin{definition}
 			Let $s$ be a sequence. \begin{itemize}
 				\item A \textbf{run} of $s$ is a subsequence of $s$ consisting of consecutive $0$'s or $1$'s.
-				\item A run of $0$'s is called a \textbf{gap}.
-				\item A run of $1$'s is called a \textbf{block}.
+				\item A run of $0$'s and $1$'s are a \textbf{gap} and a \textbf{block}, respectively.
 			\end{itemize}
 		\end{definition}
 	\end{tcolorbox}
@@ -1076,28 +1076,25 @@
 	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Autocorrelation Function}]
 		\begin{definition}
 			Let $s$ be a $N$-periodic sequence. The \textbf{autocorrelation function} of $s$ is the integer-value function $C(t):\set{s_i}\to\Z$ defined as \[
-			C(t) = \frac{1}{N}\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)
-			\] for $0\leq t\leq N-1$.
+			C(t) = \frac{1}{N}\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)\quad\text{for}\quad 0\leq t\leq N-1.
+			\]
 		\end{definition}
 	\end{tcolorbox}
 	\begin{remark}
-		
-	\end{remark}
-	\begin{remark}
 		The autocorrelation function $C(t)$ measure the amount of similarity between the sequence $s$ and a shift of $s$ by $t$ positions. If $s$ is a random $N$-periodic sequence, then $\abs{N\cdot C(t)}$ can be expected to be quite small for all vlaue of $t\in\intoo{0,N}$. 
 	\end{remark}
-	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's randomness postulates}]
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's Randomness Postulates}]
 		\begin{definition}
-			Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
+				Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
 			\begin{enumerate}[\textbf{R}1]
-				\item In the cycle \( s^N \) of \( s \), the number of 1’s differs from the number of 0’s by at most 1.
-				\item In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, and so on, as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
-				\item The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
+				\item \textit{Balance}: \( \left| \#1(s^N) - \#0(s^N) \right| \leq 1 \), where \( \#1 \) and \( \#0 \) count the number of 1’s and 0’s.
+				\item \textit{Run Distribution}: For runs of length \( l \) in \( s^N \), \( \text{at least } \frac{1}{2^l} \) of runs are of length \( l \), for \( l \geq 1 \) and total runs \( > 1 \), with nearly equal numbers of gap and block.
+				\item \textit{Autocorrelation Property}: \( C(t) \): 
 				\[
-				N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
+				N \cdot C(t)=\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
 				\begin{cases} 
 					N, & : t = 0, \\
-					K, & : 1 \leq t \leq N - 1.
+					K\in\Z, & : 1 \leq t \leq N - 1.
 				\end{cases}
 				\]
 			\end{enumerate}
@@ -1110,65 +1107,101 @@
 		\end{definition}
 	\end{tcolorbox}
 	\begin{remark}
-		Pseudo-noise sequences arise in practice as output sequences of \textbf{maximum-length linear }
+		Pseudo-noise sequences arise in practice as output sequences of \textbf{maximum-length linear feedback shift registers (m-LFSR)}
 	\end{remark}
 	
-	The significance of Golomb’s randomness postulates lies in their ability to provide a framework for the evaluation of periodic sequences. A periodic sequence with period \( N \) is assessed based on the following criteria:
-	\section*{Golomb’s randomness postulates}
-	
-	Golomb’s randomness postulates are presented here for historical reasons – they were one of the first attempts to establish some \textit{necessary} conditions for a periodic pseudorandom sequence to look random. It is emphasized that these conditions are far from being \textit{sufficient} for such sequences to be considered random.
-	
-	\subsection*{Definitions}
-	\begin{itemize}
-		\item Let \( s = s_0, s_1, s_2, \ldots \) be an infinite sequence. The subsequence consisting of the first \( n \) terms of \( s \) is denoted by \( s^n = s_0, s_1, \ldots, s_{n-1} \). (Bit sequence: \( s_i = 0 \) or 1)
-		\item The sequence \( s = s_0, s_1, s_2, \ldots \) is said to be \textbf{N-periodic} if \( s_i = s_{i+N} \) for all \( i \geq 0 \). The sequence is periodic if it is N-periodic for some positive integer N. The \textbf{period} of a periodic sequence \( s \) is the smallest positive integer \( N \) for which \( s \) is N-periodic. If \( s \) is a periodic sequence of period \( N \), then the \textbf{cycle} of \( s \) is the subsequence \( s^N \).
-		\item Let \( s \) be a sequence. A \(\_\_\_\_\) of \( s \) is a subsequence of \( s \) consisting of consecutive 0’s or consecutive 1’s which is neither preceded nor succeeded by the same symbol. A run of 0’s is called a \(\_\_\_\_\) while a run of 1’s is called a \(\_\_\_\_\).
-	\end{itemize}
-	
-	\subsection*{Autocorrelation Function}
-	\textbf{Definition:} Let \( s = s_0, s_1, \ldots \) be a periodic sequence of period \( N \). The \textit{autocorrelation function} of \( s \) is the integer-valued function \( C(t) \) defined as
-	\[ C(t) = \begin{cases} 
-		N - \sum_{i=0}^{N-1} (2s_i - 1)(2s_{i+t} - 1) & \text{if } t \neq 0, \\
-		K & \text{if } 1 \leq t \leq N - 1. \\
-	\end{cases} \]
-	
-	The autocorrelation function \( C(t) \) measures the amount of similarity between the sequence and a shift of \( t \) by positions. If \( s \) is a random periodic sequence of period \( N \), then \( N \cdot C(t) \) can be expected to be quite small for all values of \( t \), \( 0 < t < N \).
-	
-	\subsection*{Golomb’s Randomness Postulates}
-	\textbf{Definition:} Let \( s \) be a periodic sequence of period \( N \). Golomb’s randomness postulates are the following:
-	\begin{enumerate}
-		\item[\( R_1 \)] In the cycle \( s^N \), the number of 1’s differs from the number of 0’s by at most 1.
-		\item[\( R_2 \)] In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, etc., as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
-		\item[\( R_3 \)] The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
-		\[ N \cdot C(t) = \begin{cases} 
-			\sum_{i=0}^{N-1} (2s_i - 1)(2s_{i+t} - 1) & \text{if } t \neq 0, \\
-			K & \text{if } 1 \leq t \leq N - 1. \\
-		\end{cases} \]
-	\end{enumerate}
-	
-\subsection*{Definition}
-A binary sequence which satisfies Golomb's randomness postulates is called a \textit{cyclic} or a \textit{pn-sequence}.
-
-\textit{Pseudo-noise sequences arise in practice as output sequences of maximum-length linear feedback shift registers (m-LFSR).}
-
-\subsection*{Example (pn-sequence)}
-Consider the periodic sequence \( s \) of period \( N = 15 \) with cycle
-\[ s^{15} = 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1. \]
-The following shows that the sequence \( s \) satisfies Golomb's randomness postulates.
-\begin{description}
-	\item[R1:] The number of 0's in \( s^{15} \) is 7, while the number of 1's is 8.
-	\item[R2:] \( s^{15} \) has 8 runs. There are 4 runs of length 1 (2 gaps and 2 blocks), 2 runs of length 2 (1 gap and 1 block), 1 run of length 3 (1 gap), and 1 run of length 4 (1 block).
-	\item[R3:] The autocorrelation function \( C(t) \) takes on two values: \( C(0) = 1 \) and \( C(t) = -\frac{1}{15} \) for \( 1 \leq t \leq 14 \).
-\end{description}
-Hence, \( s \) is a pn-sequence.
-
-\subsection*{LFSR (4, \( 1 + D^3 + D^4 \))}
-\begin{itemize}
-	\item Connection polynomial: \( 1 + D^3 + D^4 \)
-	\item Initial state: \( [1, 1, 1, 1] \)
-\end{itemize}
-
-% Here you can describe the LFSR diagram or include an actual figure using the graphicx package.
+	\begin{example}
+		Consider the periodic sequence \( s \) of period \( N = 15 \) with cycle
+		\[ s^{15} = 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1. \]
+		The following shows that the sequence \( s \) satisfies Golomb's randomness postulates.
+		\begin{description}
+			\item[R1:] The number of 0's in \( s^{15} \) is 7, while the number of 1's is 8.
+			\item[R2:] \( s^{15} \) has 8 runs. There are 4 runs of length 1 (2 gaps and 2 blocks), 2 runs of length 2 (1 gap and 1 block), 1 run of length 3 (1 gap), and 1 run of length 4 (1 block).
+			\item[R3:] \( C(0) = 15 \) and \( C(t) = -1 \) for \( 1 \leq t \leq 14 \).
+		\end{description}
+		Hence, \( s \) is a pn-sequence.
+	\end{example}
+	\begin{note}[\bf LFSR (4, \( 1 + D^3 + D^4 \))]
+		\ \begin{itemize}
+			\item Connection polynomial: \( 1 + D^3 + D^4 \)
+			\item Initial state: \( [1, 1, 1, 1] \)
+		\end{itemize}
+	\end{note}
+	\begin{center}
+		\begin{tikzpicture}[>=Stealth, 
+			bit/.style={draw, rectangle, minimum size=10mm, thick},
+			xor/.style={draw, circle, minimum size=5mm, thick}]
+			
+			% Drawing the bits
+			\node[bit] (bit1) {1};
+			\node[bit, right=of bit1] (bit2) {1};
+			\node[bit, right=of bit2] (bit3) {1};
+			\node[bit, right=of bit3] (bit4) {1};
+			\node[right=of bit4] (bit5) {};
+			\node[right=of bit5] (bit6) {};
+			
+			% Drawing the XOR gate
+			\node[xor, below right=of bit3] (xor1) {\large$\oplus$};
+			
+			% Connecting bits
+			\draw[->, thick] (bit1.east) -- (bit2.west);
+			\draw[->, thick] (bit2.east) -- (bit3.west);
+			\draw[->, thick] (bit3.east) -- (bit4.west);
+			\draw[->, thick] (bit4.east) -- (bit6.west);
+			
+			% Connecting to the XOR gate
+			\draw[->, thick] (bit3.south) |- (xor1.west);
+			\draw[->, thick] (bit5.south) |- (xor1.east);
+			
+			% Feedback loop
+			\draw[->, thick] (xor1.south) -- ++(0,-0.5) -| (bit1.south);
+			
+			% Additional information
+			\node[below= 1cm of xor1.south] (info) {
+				LFSR (4, $1+D^3+D^4$)
+			};
+		\end{tikzpicture}
+	\end{center}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c||c|c|c|c|c|}
+		\hline
+		\rowcolor{cyan} State & $X(t-1)$ & $X(t-2)$ & $X(t-3)$ & $X(t-4)$ & $X(t)$ \\
+		\hline
+		0 & \cellcolor{blue!20} 1 & \cellcolor{blue!20} 1 & \cellcolor{blue!20} 1 & \cellcolor{blue!20} 1 &  0\\
+		\hline
+		1 & 0 & 1 & 1 & 1 & 0 \\
+		\hline
+		2 & 0 & 0 & 1 & 1 & 0 \\
+		\hline
+		3 & 0 & 0 & 0 & 1 & 1 \\
+		\hline
+		4 & 1 & 0 & 0 & 0 & 0 \\
+		\hline
+		5 & 0 & 1 & 0 & 0 & 0 \\
+		\hline
+		6 & 0 & 0 & 1 & 0 & 1 \\
+		\hline
+		7 & 1 & 0 & 0 & 1 & 1 \\
+		\hline
+		8 & 1 & 1 & 0 & 0 & 0 \\
+		\hline
+		9 & 0 & 1 & 1 & 0 & 1 \\
+		\hline
+		10 & 1 & 0 & 1 & 1 & 0 \\
+		\hline
+		11 & 0 & 1 & 0 & 1 & 1 \\
+		\hline
+		12 & 1 & 0 & 1 & 0 & 1 \\
+		\hline
+		13 & 1 & 1 & 0 & 1 & 1 \\
+		\hline
+		14 & 1 & 1 & 1 & 0 & 1 \\
+		\hline
+		15 & \cellcolor{blue!20} 1 & \cellcolor{blue!20} 1 & \cellcolor{blue!20} 1 & \cellcolor{blue!20} 1 & 0 \\ % This assumes that the LFSR cycles back to the start; adjust if your LFSR has different behavior
+		\hline
+	\end{tabular}
+\end{table}
 
 \newpage
 Statistical tests for random number generators (RNGs) are crucial in assessing the quality of the RNGs, which purport to produce random sequences. While it is not possible to mathematically prove that a sequence is random, these tests can reveal certain weaknesses. The tests work by evaluating sample outputs from the RNG against attributes expected from truly random sequences. The outcomes of these tests are probabilistic and not definite. If a sequence fails any of the tests, it may be rejected as non-random, or subjected to further testing. Passing all the tests allows the RNG to be accepted as random, or more precisely, not rejected, as it only provides probabilistic evidence of randomness.
