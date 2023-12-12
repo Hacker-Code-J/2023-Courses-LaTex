@@ -864,6 +864,168 @@
 	\newpage
 	\chapter{Examples of Markov chains}
 	
+	\section{Random Walk}
+	
+	Let \(\xi_1, \xi_2, \ldots\) be independent integer-valued random variables having common density \(f\). Let \(X_0\) be an integer-valued random variable that is independent of the \(\xi\)'s and set \(X_n = X_0 + \xi_1 + \cdots + \xi_n\). The sequence \(X_n, n \geq 0\), is called a \textit{random walk}. It is a Markov chain whose state space is the integers and whose transition function is given by \[
+	p(x,y)=f(y-x).
+	\] For all $k\in\Z$, we have $\Pr[\xi_i=k]=f(k)$.
+	\begin{proof}
+		Let \(\pi_0\) denote the distribution of \(X_0\). Then 
+		\begin{align*}
+			\Pr(X_0 = x_0, \ldots, X_n = x_n) & = \Pr(X_0 = x_0, \xi_1 = x_1 - x_0, \ldots, \xi_n = x_n - x_{n-1}) \\
+			& = \Pr(X_0 = x_0)\Pr(\xi_1 = x_1 - x_0) \cdots \Pr(\xi_n = x_n - x_{n-1}) \\
+			& = \pi_0(x_0)f(x_1 - x_0) \cdots f(x_n - x_{n-1}) \\
+			& = \pi_0(x_0)\Pr(x_0, x_1) \cdots \Pr(x_{n-1}, x_n).
+		\end{align*}
+	\end{proof}
+	
+	\begin{remark}
+		Suppose a ``particle'' moves along the integers according to this Markov chain. Whenever the particle is in \( x \), regardless of how it got there, it jumps to state \( y \) with probability \( f(y - x) \).
+		
+		As a special case, consider a \textit{simple random walk} in which \( f(1) = p \), \( f(-1) = q \), and \( f(0) = r \), where \( p, q, \) and \( r \) are nonnegative and sum to one. The transition function is given by
+		
+		\[
+		p(x,y)=\begin{cases}
+			p &:y=x+1\\
+			q &:y=x-1\\
+			r &:y=x\\
+			0 &\text{elsewhere}
+		\end{cases},\quad\begin{cases}
+		\Pr[\xi_i=1]=f(1)=p\\
+		\Pr[\xi_i=-1]=f(-1)=q\\
+		\Pr[\xi_i=0]=f(0)=r\\
+		p+q+r=1.
+	\end{cases}
+		\]
+		
+		Let a particle undergo such a random walk. If the particle is in state \( x \) at a given observation, then by the next observation it will have jumped to state \( x + 1 \) with probability \( p \) and to state \( x - 1 \) with probability \( q \); with probability \( r \) it will still be in state \( x \).
+	\end{remark}
+	
+	\( X_0, X_1, X_2, \ldots \) are i.i.d. random variables with \( P(X_i = +1) = P(X_i = -1) = 1/2 \).
+	\[ S_n = X_0 + X_1 + \ldots + X_n \]
+	\( \{S_n, n \geq 1\} = \{S_1, S_2, \ldots \} \): simple random walk (Markov chain)
+	
+	% The figure of the sample path is not included in this LaTeX code.
+	% You would need to use a graphic package such as pgfplots or includegraphics to add a figure.
+	
+	\textbf{Definition.} The discrete random variables \( X_1, X_2, \ldots \) on \( \mathbb{Z}^d \) are called steps of the random walk and have the following probability distribution:
+	\[ P(X_i = e) = \begin{cases}
+		\frac{1}{2d} & \text{if } e \in \mathbb{Z}^d \text{ and } \|e\| = 1, \\
+		0 & \text{otherwise}.
+	\end{cases} \]
+	
+	\textbf{Definition.} \( S_0 = 0 \) in \( \mathbb{Z}^d \) and \( S_n = X_1 + \ldots + X_n \) for \( n \in \mathbb{N} \) is called the position of the random walk at time \( n \).
+	
+	\textbf{Pólya’s Theorem.} Simple random walks of dimension \( d = 1,2 \) are recurrent, and of \( d \geq 3 \) are transient.
+	
+	\section{Ehrenfest Chain}
+	
+	\textbf{Example 2. [Ehrenfest chain].} The following is a simple model of the exchange of heat or of gas molecules between two isolated bodies. Suppose we have two boxes, labeled 1 and 2, and \( d \) balls labeled 1, 2, \ldots, \( d \). Initially some of these balls are in box 1 and the remainder are in box 2. An integer is selected at random from 1, 2, \ldots, \( d \), and the ball labeled by that integer is removed from its box and placed in the opposite box. This procedure is repeated indefinitely with the selections being independent from trial to trial. Let \( X_n \) denote the number of balls in box 1 after the \( n \)-th trial. Then \( X_n, n \geq 0 \), is a Markov chain on \( \mathcal{S} = \set{0,1,2,\dots,d}\).
+	
+	The transition function of this Markov chain is easily computed. Suppose that there are \( x \) balls in box 1 at time \( n \). Then with probability \( \frac{x}{d} \) the ball drawn on the \( (n + 1) \)-th trial will be from box 1 and will be transferred to box 2. In this case there will be \( x - 1 \) balls in box 1 at time \( n + 1 \). Similarly, with probability \( \frac{d - x}{d} \) the ball drawn on the \( (n + 1) \)-th trial will be from box 2 and will be transferred to box 1, resulting in \( x + 1 \) balls in box 1 at time \( n + 1 \). Thus the transition function of this Markov chain is given by
+	
+	\[
+	p(x,y)=\begin{cases}
+		x/d &:y=x-1\\
+		1-x/d &:y=x+1\\
+		0 &\text{elsewhere}\\
+	\end{cases}
+	\]
+	
+	Note that the Ehrenfest chain can in one transition only go from state \( x \) to \( x - 1 \) or \( x + 1 \) with positive probability.
+	
+	\section{Gambler's Ruin Chain}
+	
+	\textbf{A state of a Markov chain is called an \textit{absorbing state} if \( P(a, a) = 1 \)} or, equivalently, if \( P(a, y) = 0 \) for \( y \neq a \). The next example uses this definition.
+	
+	\textbf{Example 3. [Gambler's ruin chain].} Suppose a gambler starts out with a certain initial capital in dollars and makes a series of one dollar bets against the house. Assume that he has respective probabilities \( p \) and \( q = 1 - p \) of winning and losing each bet, and that if his capital ever reaches zero, he is ruined and his capital remains zero thereafter. Let \( X_n \) denote the gambler's capital at time \( n \). This is a Markov chain in which 0 is an absorbing state, and for \( x \geq 1 \)
+	
+	\[
+	p(x,y)=\begin{cases}
+		q &:y=x-1\\
+		p &:y=x+1\\
+		0 &\text{elsewhere}\\
+	\end{cases}
+	\]
+	
+	Such a chain is called a \textit{gambler's ruin chain} on \( \mathcal{S} = \{0, 1, 2, \ldots\} \). We can modify this model by supposing that if the capital of the gambler increases to \( d \) dollars he quits playing. In this case 0 and \( d \) are both absorbing states, and (15) holds for \( x = 1, \ldots, d - 1 \).
+	
+	\section{Birth and Death Chain}
+	\textbf{Example 4. [Birth and death chain].} Consider a Markov chain either on \( \mathcal{S} = \{0, 1, 2, \ldots\} \) or on \( \mathcal{S} = \{0, 1, \ldots, d\} \) such that starting from \( x \) the chain will be at \( x - 1 \), \( x \), or \( x + 1 \) after one step. The transition function of such a chain is given by
+	
+	\[
+	p(x,y)=\begin{cases}
+		q_x &:y=x-1\\
+		r_x &:y=x\\
+		p_x &:y=x+1\\
+		0 &\text{elsewhere}
+	\end{cases}
+	\]
+	
+	where \( p_x \), \( q_x \), and \( r_x \) are nonnegative numbers such that \( p_x + q_x + r_x = 1 \). The Ehrenfest chain and the two versions of the gambler's ruin chain are examples of birth and death chains. The phrase "birth and death" stems from applications in which the state of the chain is the population of some living system. In these applications a transition from state \( x \) to state \( x + 1 \) corresponds to a "birth," while a transition from state \( x \) to state \( x - 1 \) corresponds to a "death."
+	
+	\section{Queuing Chain}
+	\textbf{Example 5. [Queueing chain].} Consider a service facility such as a checkout counter at a supermarket. People arrive at the facility at various times and are eventually served. Those customers that have arrived at the facility but have not yet been served form a waiting line or queue. There are a variety of models to describe such systems. We will consider here only one very simple and somewhat artificial model.
+	
+	Let time be measured in convenient periods, say in minutes. Suppose that if there are any customers waiting for service at the beginning of any given period, exactly one customer will be served during that period, and that if there are no customers waiting for service at the beginning of a period, none will be served during that period. Let \(\xi_n\) denote the number of new customers arriving during the \(n\)-th period. We assume that \(\xi_1, \xi_2, \ldots\) are independent nonnegative integer-valued random variables having common density \(f\).
+	
+	Let \(X_0\) denote the number of customers present initially, and for \(n \geq 1\), let \(X_n\) denote the number of customers present at the end of the \(n\)-th period. If \(X_n = 0\), then \(X_{n+1} = \xi_{n+1}\); and if \(X_n \geq 1\), then \(X_{n+1} = X_n + \xi_{n+1} - 1\). It follows without difficulty from the assumptions on \(\xi_n, n \geq 1\), that \(X_n, n \geq 0\), is a Markov chain whose state space is the nonnegative integers and whose transition function \(P\) is given by
+	
+	\[ P(0, y) = f(y) \]
+	
+	and
+	
+	\[ P(x, y) = f(y - x + 1), \quad x \geq 1. \]
+	
+	\begin{align*}
+		p(x,y)&=p(x_{n+1}=y\mid x_n=x)\\
+		&=p(x_n+\xi_{n+1}-1=y\mid x_n=x)\\
+		&=p(\xi_{n+1}=y-x+1)\\
+		&=f(y-x+1)
+	\end{align*}
+	
+	\section{Branching Chain}
+	\textbf{Example 6. [Branching chain].} Consider particles such as neutrons or bacteria that can generate new particles of the same type. The initial set of objects is referred to as belonging to the 0th generation. Particles generated from the \(n\)th generation are said to belong to the \((n + 1)\)th generation. Let \(X_n\), \(n \geq 0\), denote the number of particles in the \(n\)th generation.
+	
+	Nothing in this description requires that the various particles in a generation give rise to new particles simultaneously. Indeed at a given time, particles from several generations may coexist.
+	
+	A typical situation is illustrated in Figure 1: one initial particle gives rise to two particles. Thus \(X_0 = 1\) and \(X_1 = 2\). One of the particles in the first generation gives rise to three particles and the other gives rise to one particle, so that \(X_2 = 4\). We see from Figure 1 that \(X_3 = 2\). Since neither of the particles in the third generation gives rise to new particles, we conclude that \(X_4 = 0\) and consequently that \(X_n = 0\) for all \(n \geq 4\). In other words, the progeny of the initial particle in the zeroth generation become extinct after three generations.
+	
+	% The figure is not included in this LaTeX code. You would need to include it using the \includegraphics command from the graphicx package.
+	% \begin{figure}[h]
+		% \centering
+		% \includegraphics[width=0.5\textwidth]{path-to-your-figure-file}
+		% \caption{Figure 1}
+		% \end{figure}
+	
+	In order to model this system as a Markov chain, we suppose that each particle gives rise to \(\xi\) particles in the next generation, where \(\xi\) is a non-negative integer-valued random variable having density \(f\). We suppose that the number of offspring of the various particles in the various generations are chosen independently according to the density \(f\).
+	
+	Under these assumptions \(X_n, n \geq 0\), forms a Markov chain whose state space is the nonnegative integers. State 0 is an absorbing state. For if there are no particles in a given generation, there will not be any particles in the next generation either. For \(x \geq 1\)
+	
+	\[ P(x, y) = P(\xi_1+\cdots+\xi_x=y), \]
+	
+	where \(\xi_1, \xi_2, \ldots\) are independent random variables having common density \(f\). In particular, \(P(1, y) = f(y)\), \(y \geq 0\).
+	
+	
+	If a particle gives rise to \( \xi = 0 \) particles, the interpretation is that the particle dies or disappears. Suppose a particle gives rise to \( \xi \) particles, which in turn give rise to other particles; but after some number of generations, all descendants of the initial particle have died or disappeared (see Figure 1). We describe such an event by saying that the descendants of the original particle eventually become extinct. An interesting problem involving branching chains is to compute the probability \( p \) of eventual extinction for a branching chain starting with a single particle, or, equivalently, the probability that a branching chain starting at state 1 will eventually be absorbed at state 0. Once we determine \( p \), we can easily find the probability that in a branching chain starting with \( x \) particles the descendants of each of the original particles eventually become extinct. Indeed, since the particles are assumed to act independently in giving rise to new particles, the desired probability is just \( p^x \).
+	
+	% The figure and the graph are not included in this LaTeX code. You would need to include them using the \includegraphics command from the graphicx package.
+	% \begin{figure}[h]
+		% \centering
+		% \includegraphics[width=0.5\textwidth]{path-to-your-figure-file}
+		% \caption{Figure 1}
+		% \end{figure}
+	\textbf{Example 7.} Consider a gene composed of \( d \) subunits, where \( d \) is some positive integer and each subunit is either normal or mutant in form. Consider a cell with a gene composed of \( m \) mutant subunits and \( d - m \) normal subunits. Before the cell divides into two daughter cells, the gene duplicates. The corresponding gene of one of the daughter cells is composed of \( d \) units chosen at random from the \( 2m \) mutant subunits and the \( 2(d - m) \) normal subunits. Suppose we follow a fixed line of descent from a given gene. Let \( X_0 \) be the number of mutant subunits initially present, and let \( X_n, n \geq 1 \), be the number present in the \( n \)-th descendant gene. Then \( X_n, n \geq 0 \), is a Markov chain on \( \mathcal{S} = \{0, 1, 2, \ldots, d\} \) and
+	
+	% Diagram or figure not included here. Use the graphicx package to include the figure.
+	% \begin{figure}[h]
+		% \centering
+		% \includegraphics[width=0.5\textwidth]{path-to-image-file}
+		% \caption{Descriptive caption}
+		% \end{figure}
+	
+	States 0 and \( d \) are absorbing states for this chain.
+	
 	\newpage
 	\chapter{Statistical Inferences}
 	
@@ -2181,7 +2343,7 @@ The resulting entropy estimate is
 \chapter{2021-2 Final Exam}
 
 
-\section*{1. On Renyi Entropy}
+\section{On Renyi Entropy}
 
 \begin{itemize}
 	\item[(a)] Let us consider a discrete random variable \(X\) with a sample space \(\{1, 2, \ldots, n\}\) and probability \(p = P(X=i)\), for \(1 \leq i \leq n\). Assuming \(a > 0\), \(a \neq 1\), the \(a\)-th order Renyi entropy is defined as:
@@ -2256,7 +2418,7 @@ The resulting entropy estimate is
 		\[ H_{\infty}(X) = -\log_2\left(\frac{1}{2}\right) = 1.0 \text{bit.} \]
 	\end{enumerate}
 	In summary, \begin{center}
-		\begin{tikzpicture}
+		\begin{tikzpicture}[scale=1]
 			\begin{axis}[
 				title={R\'enyi Entropy for Different Values of $a$},
 				xlabel={$a$ (R\'enyi entropy parameter)},
@@ -2285,7 +2447,7 @@ The resulting entropy estimate is
 	\end{center}
 \end{proof}
 
-\section*{2. Markov Chain and Transition Matrix}
+\section{Markov Chain and Transition Matrix}
 
 Consider a Markov chain with state space \( S = \{0, 1, 2, 3, 4, 5, 6\} \) and the following transition matrix \( P \) for the process \( (X_n, n = 0, 1, 2, \ldots) \):
 \[
@@ -2303,86 +2465,81 @@ P = \begin{bmatrix}
 	\item[(a)] Represent the state space $S$ by dividing it into the set $S_T$ of transient states and the set $S_R$ of recurrent states.
 	\item[(b)] Calculate the probability $\rho_{01} = P(T_1 < \infty)$.
 \end{itemize}
+\begin{proof}[\sol]
+	\begin{enumerate}[(a)]
+		\item $S_T=\set{1,2,3}$ and $S_R=\set{0,4,5,6}$
+		\item $\rho_{01}=0$.
+	\end{enumerate}
+\end{proof}
 
-\section*{3. Pseudo-Noise Sequence}
+\section{Pseudo-Noise Sequence}
 Determine whether the sequence given below, with a cycle \( s^{15} \) for a period \( N=15 \), is a pseudo-noise sequence.
 \[
-s^{15} = \texttt{0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}.
+s^{15} = \texttt{0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1}.
 \]
 \begin{proof}[\sol]
 	Recall that 
+	\\
 	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Golomb's Randomness Postulates}]
 		\begin{definition}
 			Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
 			\begin{enumerate}[\textbf{R}1]
-				\item \textit{Balance Property}: \( \left| \#1(s^N) - \#0(s^N) \right| \leq 1 \), where \( \#1 \) and \( \#0 \) count the number of 1’s and 0’s in \( s^N \).
-				\item \textit{Run Distribution}: For runs of length \( l \) in \( s^N \), \( \text{at least } \frac{1}{2^l} \) of runs are of length \( l \), for \( l \geq 1 \) and total runs \( > 1 \). Equal number of runs for 1's and 0's.
-				For runs of length \( l \) in \( s^N \), \( \#_{l} \geq \frac{N}{2^l} \) for \( l \geq 1 \), with nearly equal numbers of 1-run and 0-run.
+				\item \textit{Balance}: \( \left| \#1(s^N) - \#0(s^N) \right| \leq 1 \), where \( \#1 \) and \( \#0 \) count the number of 1’s and 0’s.
+				\item \textit{Run Distribution}: For runs of length \( l \) in \( s^N \), \( \text{at least } \frac{1}{2^l} \) of runs are of length \( l \), for \( l \geq 1 \) and total runs \( > 1 \), with nearly equal numbers of gap and block.
 				\item \textit{Autocorrelation Property}: \( C(t) \): 
 				\[
 				N \cdot C(t)=\sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
 				\begin{cases} 
 					N, & : t = 0, \\
-					K, & : 1 \leq t \leq N - 1.
+					K\in\Z, & : 1 \leq t \leq N - 1.
 				\end{cases}
 				\]
-				where \( K\in\Z\).
 			\end{enumerate}
 		\end{definition}
 	\end{tcolorbox}
-	Given sequence: \[
-	s^{15} = \{0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1\},
+	Given a sequence \[
+	0, 0, 0, \quad|\quad 1, \quad|\quad 0, 0, \quad|\quad 1, 1, \quad|\quad 0, \quad|\quad 1, \quad|\quad 0, \quad|\quad 1, 1, 1, 1
 	\]
 	\begin{enumerate}[\textbf{R}1]
 		\item The sequence contains 7 zeros and 8 ones. It holds $\abs{8-7}\leq 1$.
-		\item Runs in the sequence are as follows:
+		\item Total number of runs: 8.
 		\begin{itemize}
-			\item Runs of 1: Three (2 zeros, 1 one)
-			\item Runs of 2: Three (1 zero, 2 ones)
-			\item Runs of 3: Two (1 zero, 1 ones)
+			\item Runs of length 1: 4 (2 gaps and 2 blocks).
+			\item Runs of length 2: 2 (1 gap and 1 block).
+			\item Runs of length 3: 1 (1 gap).
+			\item Runs of length 4: 1 (1 block).
+			\item Required number of runs of length 1: at least $\frac{4}{8} \geq\frac{1}{2}$ (satisfied).
+			\item Required number of runs of length 2: at least $\frac{2}{8} \geq\frac{1}{2^2}$ (satisfied).
+			\item Required number of runs of length 2: at least $\frac{1}{8} \geq\frac{1}{2^3}$ (satisfied).
+			\item Required number of runs of length 2: at least $\frac{1}{8} \geq\frac{1}{2^4}$ (satisfied).
 		\end{itemize}
-		This distribution does not align perfectly with the expected pattern for randomness.
-		\item The sequence does not exhibit obvious periodicity or regularities, suggesting a degree of randomness. However, a full autocorrelation analysis is less meaningful for short sequences.
+		\item Let $t=0$ then \[
+		N\cdot C(t)=15\cdot C(0)=\sum_{i=0}^{14}(2s_i-1)^2=7\cdot(0-1)^2 + 8\cdot (2-1)^2= 15.
+		\] Let $1\leq t\leq 14$ then 
+		\begin{align*}
+			15 \cdot C(1)&=\sum_{i=0}^{14}(2s_i-1)(2s_{i+1}-1)\\
+			15 \cdot C(2)&=\sum_{i=0}^{14}(2s_i-1)(2s_{i+2}-1)\\
+			15 \cdot C(3)&=\sum_{i=0}^{14}(2s_i-1)(2s_{i+3}-1)\\
+			&\vdots\\
+			15 \cdot C(14)&=\sum_{i=0}^{14}(2s_i-1)(2s_{i+14}-1).
+		\end{align*}
+		For $
+		s^{15} = \texttt{0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1}
+		$, we know
+		\[
+		2s_i-1= \{-1, -1, -1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1\}.
+		\]
+		\begin{align*}
+			15\cdot C(1) &= [ (2 \cdot 0 - 1)(2 \cdot 0 - 1) + (2 \cdot 0 - 1)(2 \cdot 1 - 1) + \ldots + (2 \cdot 1 - 1)(2 \cdot 1 - 1) ] \\
+			&= -1
+		\end{align*}.
+		Similar calculations are done for $C(t)$ for other values of $t$.
 	\end{enumerate} 
-	The sequence \( s^{15} \) shows some characteristics of randomness but does not fully comply with Golomb's postulates, especially regarding run distribution.
+	Hence $s^{15}$ is a pn-sequence.\\
 \end{proof}
 
-\begin{definition}
-	Consider \( s \), an \( N \)-periodic binary sequence. The \textbf{Golomb's randomness postulates} are defined as follows:
-	\begin{enumerate}[\textbf{R}1]
-		\item \textit{Balance Property}: For the full cycle \( s^N \) of \( s \), the discrepancy between the count of 1's and 0's should not exceed 1. Mathematically, if \( n_1 \) and \( n_0 \) represent the counts of 1's and 0's respectively, then \( |n_1 - n_0| \leq 1 \).
-		\item \textit{Run Property}: In the sequence \( s^N \), the distribution of runs (consecutive identical elements) follows a specific pattern: at least \( \frac{1}{2} \) of the runs are of length 1, at least \( \frac{1}{4} \) are of length 2, at least \( \frac{1}{8} \) are of length 3, and so forth. This is valid as long as the expected number of runs for a given length is greater than 1. Furthermore, for each run length, there should be nearly an equal number of runs of 1's (blocks) and runs of 0's (gaps).
-		\item \textit{Autocorrelation Property}: The autocorrelation function \( C(t) \) of the sequence should be two-valued. Formally, for some integer \( K \) and for each shift \( t \), 
-		\[
-		N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
-		\begin{cases} 
-			N, & : t = 0, \\
-			K, & : 1 \leq t \leq N - 1.
-		\end{cases}
-		\]
-		This implies that, apart from the zero shift (where the autocorrelation is maximum and equals \( N \)), the autocorrelation for any other shift lies consistently at \( K \).
-	\end{enumerate}
-\end{definition}
-
-\begin{definition}
-	Let \( s \) be a $N$-periodic sequence. \textbf{Golomb's randomness postulates} are as follows:
-	\begin{enumerate}[\textbf{R}1]
-		\item In the cycle \( s^N \) of \( s \), the number of 1’s differs from the number of 0’s by at most 1.
-		\item In the cycle \( s^N \), at least half the runs have length 1, at least one-fourth have length 2, at least one-eighth have length 3, and so on, as long as the number of runs so indicated exceeds 1. Moreover, for each of these lengths, there are (almost) equally many gaps and blocks.
-		\item The autocorrelation function \( C(t) \) is two-valued. That is for some integer \( K \),
-		\[
-		N \cdot C(t) = \sum_{i=0}^{N-1}(2s_i - 1) \cdot (2s_{i+t} - 1)=
-		\begin{cases} 
-			N, & : t = 0, \\
-			K, & : 1 \leq t \leq N - 1.
-		\end{cases}
-		\]
-	\end{enumerate}
-\end{definition}
-
-
 \newpage
-\section*{4. Binary Sequence Analysis}
+\section{Binary Sequence Analysis}
 A random number generator outputs a string of 100 bits as follows. This random number generator is subjected to testing with 100-bit strings.
 \begin{center}
 	\texttt{01100 00001 00011 01001 10001 00110 00110 01010 00101 11000}\\
@@ -2498,20 +2655,9 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 		\end{center}
 	\end{enumerate}
 \end{proof}
+\vspace{24pt}
+\section{Runs Test for Binary Sequences}
 
-\section*{5. Runs Test for Binary Sequences}
-
-\begin{itemize}
-	\item[(a)] For a given binary sequence \( X_1, X_2, \ldots, X_n \), which is expected to be uniformly distributed, the runs test is applied to examine the randomness of the sequence. Specifically, the test checks for the occurrence and length of consecutive bits (runs) in the sequence.
-	
-	\item[(b)] For a 50-bit sample of the sequence:
-	\begin{verbatim}
-		01100 00001 00011 01001 10001 00110 00110 01010 00101 11000
-	\end{verbatim}
-	The NIST SP 800-22 Runs Test is applied to determine the randomness of the sequence. The number of runs \( V_n \) in the sequence is calculated, and the test assesses whether \( V_{50} \) conforms to the expected distribution under the assumption of randomness.
-\end{itemize}
-
-\newpage
 \begin{itemize}
 	\item[(a)] Given a bit sequence $X_1, \dots, X_n$ of length $n$, where each bit is independent and identically distributed according to a uniform distribution, define the number of runs of length $k$ as the random variable $R_k^{(n)}$. Find the expected value $\E[R_k^{(n)}]$ of this random variable.
 	\item[(b)] When given a sample bit sequence of length 50 as:
@@ -2521,114 +2667,52 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 	 describe the process of calculating the value of the statistic $V_{50}$, which represents the total number of runs, according to the Runs Test in NIST SP 800-22.
 \end{itemize}
 
+\newpage
 \begin{proof}[\sol]
 	\ \begin{enumerate}[(a)]
-		\item For a run of length $k$ to start at position $i$ (where $1 \leq i \leq n-k+1$), the following conditions must be met:
-		\begin{itemize}
-			\item The $k$ bits starting at $i$ are the same.
-			\item The bit before position $i$ (if it exists) and the bit after the $k$ bits (if it exists) are different.
-		\end{itemize}
-		The probability is \[
-		\Pr\sbr{\text{run of length $k$ staring at $i$}}=\begin{cases}
-			\displaystyle\frac{1}{2^{k+1}} &:1<i\leq n-k\\
-			\\
-			\displaystyle\frac{1}{2^k} &:i\in\set{1,n-k+1}.
-		\end{cases}
-		\] 
-		\begin{tikzpicture}
-			% Parameters
-			\def\k{3} % Length of the run
-			\def\i{2} % Starting position of the run
-			\def\n{7} % Total length of the sequence
-			
-			% Draw the binary sequence boxes
-			\foreach \x in {1,...,\n} {
-				\draw (\x,0) rectangle +(1,1);
-				% Fill the run of length k with a different color
-				\ifnum \x=\i
-				\foreach \y in {0,...,\numexpr\k-1\relax} {
-					\fill[blue!30] (\x+\y,0) rectangle +(1,1);
-				}
-				\fi
-			}
-			
-			% Place the bits (0 or 1) in the boxes
-			% For simplicity, let's fill them randomly
-			\foreach \x in {1,...,\n} {
-				% Randomly choose 0 or 1
-				\pgfmathrandominteger{\bit}{0}{1}
-				\node at (\x+0.5,0.5) {\bit};
-			}
-			
-			% Annotate the start and end of the run
-			\draw [decorate,decoration={brace,amplitude=5pt}] (\i,-0.3) -- (\i+\k-1,-0.3) 
-			node [midway,below=4pt] {Run of length k};
-			
-			% Annotate the probability
-			\node at (\n/2,-1) {Probability: P};
-		\end{tikzpicture}
-		
-		{Step 3: Expected Number of Runs}
-		The expected number of runs is the sum of probabilities of a run starting at each position $i$, which is:
-		\[
-		\E[R_k^{(n)}] = \sum_{i=1}^{n-k+1} P(\text{run of length } k \text{ starting at } i)
-		\]
-		
-		{Step 4: Final Calculation}
-		Substituting the probabilities, we get:
-		\[
-		\E[R_k^{(n)}] = 2 \times \frac{1}{2^k} + (n-k-1) \times \frac{1}{2^{k+1}}
-		\]
-		
-		Note: This is valid under the assumption that $n \geq k$.
 		\item 
-		\begin{itemize}
-			\item The probability of a run of length $k$ starting at position $i$ (where $1 \leq i \leq n-k+1$) is $\frac{1}{2^{k+1}}$ if $1 < i \leq n-k$ or $\frac{1}{2^k}$ if $i = 1$ or $i = n-k+1$.
-			\item Therefore, the expected number of runs of length $k$ is given by:
-			\[
-			\E[R_k^{(n)}] = \sum_{i=1}^{n-k+1} P(\text{run of length } k \text{ starting at } i)
-			\]
-			\item Substituting the probabilities, we obtain:
-			\[
-			\E[R_k^{(n)}] = \frac{2}{2^k} + \frac{n-k-1}{2^{k+1}}
-			\]
-		\end{itemize}
-		
-		Note: This is valid under the assumption that $n \geq k$.
-		\item 
-	\end{enumerate}
-	Recall that
+%		For a run of length $k$ to start at position $i$ (where $1 \leq i \leq n-k+1$), the following conditions must be met:
+%		\begin{itemize}
+%			\item The $k$ bits starting at $i$ are the same.
+%			\item The bit before position $i$ (if it exists) and the bit after the $k$ bits (if it exists) are different.
+%		\end{itemize}
+%		The probability is \[
+%		\Pr\sbr{\text{run of length $k$ staring at $i$}}=\begin{cases}
+%			\displaystyle\of{\frac{1}{2}}^{k+1} &:1<i\leq n-k\\
+%			\\
+%			\displaystyle\of{\frac{1}{2}}^k &:i\in\set{1,n-k+1}.
+%		\end{cases}
+%		\] Thus, \begin{align*}
+%			\E[R_k^{(n)}] &= \sum_{i=1}^{n-k+1} \Pr\sbr{\text{run of length } k \text{ starting at } i}\\
+%			&= 2 \times \frac{1}{2^k} + (n-k-1) \times \frac{1}{2^{k+1}}.
+%		\end{align*}
+%		for $n \geq k$.
+		\item Recall that
 	
-	\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Runs Test}]
-		\textbf{(i) Estimating the Proportion \( \pi \)}
-		\begin{itemize}
-			\item \textbf{Proportion \(\displaystyle \pi=\frac{\sum_{i=1}^{n} \varepsilon_i}{n} \)}: Estimated proportion of 1's (or 0's) in the sequence.
-		\end{itemize}
+		\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Runs Test}]
+		\textbf{(i) Estimating the Proportion} \(\displaystyle \pi=\frac{\sum_{i=1}^{n} \varepsilon_i}{n} \): proportion of 1's (or 0's)
 		
-		\textbf{(ii) Asymptotic Distribution}
-		\begin{itemize}
-			\item As \( n\to\infty \), \( \frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)} \) converges to the standard normal distribution \( \Phi(z) \): \[
-			\lim\limits_{n\to\infty}\Pr\sbr{\frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)}\leq z}=\Phi(z).
-			\]
-		\end{itemize}
+		\textbf{(ii) Asymptotic Distribution} $
+		\displaystyle
+		\lim\limits_{n\to\infty}\Pr\sbr{\frac{V_n - 2n\pi(1 - \pi)}{\sqrt{2n}\pi(1 - \pi)}\leq z}=\Phi(z).
+		$
 		
-		\textcolor{blue}{\bf (iii) The Test Statistic \( V_n \)}
-		\begin{itemize}
-			\item \textbf{Total Number of Runs}: \( V_n \) is the total number of runs in the sequence:\[
-			V_n=\sum_{k=1}^{n-1}r(k)+1\quad\text{with}\quad r(k)=\begin{cases}
-				0 &:\varepsilon_k=\varepsilon_{k+1},\\
-				1 &:\varepsilon_k\neq\varepsilon_{k+1}.
-			\end{cases}
-			\]
-		\end{itemize}
+		\textcolor{blue}{\bf (iii) The Test Statistic \( V_n \)} is the total number of runs in the sequence:\[
+		V_n=\sum_{k=1}^{n-1}r(k)+1\quad\text{with}\quad r(k)=\begin{cases}
+			0 &:\varepsilon_k=\varepsilon_{k+1},\\
+			1 &:\varepsilon_k\neq\varepsilon_{k+1}.
+		\end{cases}
+		\]
 		
-		\textbf{(iv) P-Value}
-		\begin{itemize}
-			\item \textbf{P-Value}: \(\text{P-Value} = \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n}\pi(1 - \pi)}\right)\).
-			\item Large \( V_n(\text{obs}) \): More oscillation than expected by chance.
-			\item Small \( V_n(\text{obs}) \): Less oscillation than expected by chance.
-		\end{itemize}
+		\textbf{(iv) P-Value} \(= \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n}\pi(1 - \pi)}\right)\).
 	\end{tcolorbox}
+\end{enumerate}
+\begin{figure}[h!]\centering
+	\includegraphics[scale=.255]{runs_test.png}
+\end{figure}
+Thus, \[
+V_{50}=24+1=25.
+\]
 \end{proof}
 
 
