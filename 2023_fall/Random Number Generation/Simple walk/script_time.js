@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const delay = 500; // Delay in milliseconds for each step
 
     // Probabilities
-    const p = 0.3; // Probability of moving right
-    const q = 0.5; // Probability of moving left
-    const r = 0.2; // Probability of staying in the same place
+    const p = 0.45; // Probability of moving right
+    const q = 0.45; // Probability of moving left
+    const r = 0.1; // Probability of staying in the same place
 
     function getNextStep() {
         const random = Math.random();
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.fill();
     
         // Increase time by a larger value to make it progress faster
-        time += 32 * delay / 1000; // Double the rate of time progression
+        time += 64 * delay / 1000; // Double the rate of time progression
     
         setTimeout(function() {
             if (isRunning) {
