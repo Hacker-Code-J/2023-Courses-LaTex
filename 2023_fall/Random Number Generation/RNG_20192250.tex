@@ -936,11 +936,12 @@
 	
 	Note that the Ehrenfest chain can in one transition only go from state \( x \) to \( x - 1 \) or \( x + 1 \) with positive probability.
 	
+	\newpage
 	\section{Gambler's Ruin Chain}
 	
 	\textbf{A state of a Markov chain is called an \textit{absorbing state} if \( P(a, a) = 1 \)} or, equivalently, if \( P(a, y) = 0 \) for \( y \neq a \). The next example uses this definition.
 	
-	\textbf{Example 3. [Gambler's ruin chain].} Suppose a gambler starts out with a certain initial capital in dollars and makes a series of one dollar bets against the house. Assume that he has respective probabilities \( p \) and \( q = 1 - p \) of winning and losing each bet, and that if his capital ever reaches zero, he is ruined and his capital remains zero thereafter. Let \( X_n \) denote the gambler's capital at time \( n \). This is a Markov chain in which 0 is an absorbing state, and for \( x \geq 1 \)
+	Suppose a gambler starts out with a certain initial capital in dollars and makes a series of one dollar bets against the house. Assume that he has respective probabilities \( p \) and \( q = 1 - p \) of winning and losing each bet, and that if his capital ever reaches zero, he is ruined and his capital remains zero thereafter. Let \( X_n \) denote the gambler's capital at time \( n \). This is a Markov chain in which 0 is an absorbing state, and for \( x \geq 1 \)
 	
 	\[
 	p(x,y)=\begin{cases}
