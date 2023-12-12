@@ -741,7 +741,6 @@
 	\newpage
 	\chapter{Markov Chains}
 	
-	\section{Introduction}
 	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Markov Chain}]
 		\begin{definition}
 			Let $$
@@ -1204,12 +1203,6 @@
 \end{table}
 
 \newpage
-Statistical tests for random number generators (RNGs) are crucial in assessing the quality of the RNGs, which purport to produce random sequences. While it is not possible to mathematically prove that a sequence is random, these tests can reveal certain weaknesses. The tests work by evaluating sample outputs from the RNG against attributes expected from truly random sequences. The outcomes of these tests are probabilistic and not definite. If a sequence fails any of the tests, it may be rejected as non-random, or subjected to further testing. Passing all the tests allows the RNG to be accepted as random, or more precisely, not rejected, as it only provides probabilistic evidence of randomness.
-
-\section{Statistical tests for RNGs}
-Statistical tests for RNGs measure the quality of a bit generator's randomness. These tests are essential in identifying weaknesses in the generators by applying various statistical methods to the output sequences. For instance, a sequence that passes all the tests is not definitively random but is likely to exhibit characteristics of randomness, whereas a sequence that fails any test is potentially non-random and may require additional testing or rejection.
-
-\newpage
 \section{Five Basic Tests}
 The test aims to determine if the sequence 
 $s$ contains roughly the same number of 0's and 1's. In a random sequence, you would expect these numbers to be about equal.
@@ -1304,68 +1297,109 @@ The test assesses whether the sequence $s$ is random by checking the frequency o
 \end{example}
 
 \subsection{Poker Test}
-Let \( m \) be a positive integer such that \( \left[ \frac{n}{m} \right] \geq 5 \cdot (2^m) \), and let \( k = \left[ \frac{n}{m} \right] \). Divide the sequence \( s \) into \( k \) non-overlapping parts each of length \( m \), and let \( n_i \) be the number of occurrences of the \( i \)-th type of sequence of length \( m \), \( 1 \leq i \leq 2^m \). The poker test determines whether the sequences of length \( m \) each appear approximately the same number of times in \( s \), as would be expected for a random sequence. The statistic used is
-\[ X_3 = \frac{2^m}{k} \left( \sum_{i=1}^{2^m} n_i^2 \right) - k \]
-which approximately follows a \( \chi^2 \) distribution with \( 2^m - 1 \) degrees of freedom. Note that the poker test is a generalization of the frequency test: setting \( m = 1 \) in the poker test yields the frequency test.
+\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Poker Test}]
+	Let \( m \) be a positive integer such that \( \floor*{\frac{n}{m}} \geq 5 \cdot (2^m) \), and let \( k = \floor*{\frac{n}{m}} \). Divide the sequence \( s \) into \( k \) non-overlapping parts each of length \( m \), and let \( n_i \) be the number of occurrences of the \( i \)-th type of sequence of length \( m \), \( 1 \leq i \leq 2^m \). The poker test determines whether the sequences of length \( m \) each appear approximately the same number of times in \( s \), as would be expected for a random sequence. The statistic used is
+	\[ X_3 = \frac{2^m}{k} \left( \sum_{i=1}^{2^m} n_i^2 \right) - k \]
+	which approximately follows a \( \chi^2 \) distribution with \( 2^m - 1 \) degrees of freedom. Note that the poker test is a generalization of the frequency test: setting \( m = 1 \) in the poker test yields the frequency test.
+\end{tcolorbox}
 
-\newpage
+\begin{remark}
+	\[
+	m=1\implies\begin{cases}
+		k=n\\
+		n=n_0+n_1
+	\end{cases}\implies X_3=\frac{2}{n}\of{\sum_{i=1}^2n_i^2}-n=\frac{(n_0-n_1)^2}{n}=X_1.
+	\]
+\end{remark}
+
 \subsection{Runs Test}
-The purpose of the runs test is to determine whether the number of runs (of either zeros or ones; see Definition 5.26) of various lengths in the sequence \( s \) is as expected for a random sequence. The expected number of gaps (or blocks) of length \( i \) in a random sequence of length \( n \) is
-\[ e_i = \frac{n-i+3}{2^{i+2}} \]
-for \( 1 \leq i \leq k \). Let \( k \) be equal to the largest integer \( i \) for which \( e_i \geq 5 \). Let \( B_i, G_i \) be the number of blocks and gaps, respectively, of length \( i \) in \( s \) for each \( i, 1 \leq i \leq k \). The statistic used is
-\[ X_4 = \sum_{i=1}^{k} \frac{(B_i - e_i)^2}{e_i} + \sum_{i=1}^{k} \frac{(G_i - e_i)^2}{e_i} \]
-which approximately follows a \( \chi^2 \) distribution with \( 2k - 2 \) degrees of freedom.
+\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Runs Test}]
+	The purpose of the runs test is to determine whether the number of runs of various lengths in the sequence \( s \) is as expected for a random sequence. The expected number of gaps (or blocks) of length \( i \) in a random sequence of length \( n \) is
+	\[ e_i = \frac{n-i+3}{2^{i+2}} \]
+	for \( 1 \leq i \leq k \). Let \( k \) be equal to the largest integer \( i \) for which \( e_i \geq 5 \). Let \( B_i, G_i \) be the number of blocks and gaps, respectively, of length \( i \) in \( s \) for each \( i, 1 \leq i \leq k \). The statistic used is
+	\[ X_4 = \sum_{i=1}^{k} \frac{(B_i - e_i)^2}{e_i} + \sum_{i=1}^{k} \frac{(G_i - e_i)^2}{e_i} \]
+	which approximately follows a \( \chi^2 \) distribution with \( 2k - 2 \) degrees of freedom.
+\end{tcolorbox}
+\begin{remark}
+	\begin{align*}
+		\E[\text{ran of length $i$}] &=\frac{n-(i+1)}{2^{i+2}}+\frac{2}{2^{i+1}}\\
+		&=\frac{n-i+3}{2^{i+2}}
+	\end{align*}
+\end{remark}
 
 \newpage
 \subsection{Autocorrelation Test}
-The purpose of this test is to check for correlations between the sequence \( s \) and (non-cyclic) shifted versions of it. Let \( d \) be a fixed integer, \( 1 \leq d \leq \frac{n}{2} \). The number of bits in \( s \) not equal to their \( d \)-shifts is \( A(d) = \sum_{i=0}^{n-d-1} s_i \oplus s_{i+d} \), where \( \oplus \) denotes the XOR operator. The statistic used is
-\[ X_5 = \frac{2(A(d) - \frac{n-d}{2})}{\sqrt{n-d}} \]
-which approximately follows an \( \mathcal{N}(0, 1) \) distribution if \( n - d \geq 10 \). Since small values of \( A(d) \) are as unexpected as large values of \( A(d) \), a two-sided test should be used.
-
-\section*{Example (basic statistical tests)}
-Consider the (non-random) sequence \( s \) of length \( n = 160 \) obtained by replicating the following sequence four times:
-\[ 11100\ 01100\ 01000\ 10100\ 11101\ 11100\ 10010\ 01001. \]
-
-\begin{enumerate}
-	\item[(i)] \textbf{Frequency test (monobit test):} \( n_0 = 84 \), \( n_1 = 76 \), and the value of the statistic \( X_1 \) is 0.4.
-	\item[(ii)] \textbf{Serial test (two-bit test):} \( n_{00} = 44 \), \( n_{01} = 40 \), \( n_{10} = 40 \), \( n_{11} = 35 \), and the value of the statistic \( X_2 \) is 0.6252.
-	\item[(iii)] \textbf{Poker test:} Here \( m = 3 \) and \( k = 53 \). The blocks 000, 001, 010, 011, 100, 101, 110, 111 appear 5, 10, 6, 4, 12, 3, 6, and 7 times, respectively, and the value of the statistic \( X_3 \) is 9.6415.
-	\item[(iv)] \textbf{Runs test:} Here \( e_1 = 20.25 \), \( e_2 = 10.0625 \), \( e_3 = 5 \), and \( k = 3 \). There are 25, 4, 5 blocks of lengths 1, 2, 3, respectively, and 8, 20, 12 gaps of lengths 1, 2, 3, respectively. The value of the statistic \( X_4 \) is 31.7813.
-	\item[(v)] \textbf{Autocorrelation test:} If \( d = 8 \), then \( A(8) = 100 \). The value of the statistic \( X_5 \) is 3.8933.
-\end{enumerate}
-
-For a significance level of \( \alpha = 0.05 \), the threshold values for \( X_1, X_2, X_3, X_4 \), and \( X_5 \) are 3.8415, 5.9915, 14.0671, 9.4877, and 1.96, respectively. \\
-Hence, the given sequence \( s \) passes the frequency, serial, and poker tests, but fails the runs and autocorrelation tests.
-
-% Include the chi-squared distribution table and figure here
-% You may need to use a package like pgfplots to create the figure or include it as an image
-
-\section*{FIPS 140-1 statistical tests for randomness}
-\begin{itemize}
-	\item FIPS (Federal Information Processing Standards) 140-1 specifies four statistical tests for randomness.
-	\item Instead of making the user select appropriate significance levels for these tests, explicit bounds are provided that the computed value of a statistic must satisfy.
-	\item A single bitstring \( s \) of length \( n \) output from a generator, is subjected to each of the following tests.
-	\item If any of the tests fail, then the generator fails the test.
+\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Autocorrelation Test}]
+	The purpose of this test is to check for correlations between the sequence \( s \) and (non-cyclic) shifted versions of it. Let \( d \) be a fixed integer, \( 1 \leq d \leq \floor*{\frac{n}{2}} \). The number of bits in \( s \) not equal to their \( d \)-shifts is \( A(d) = \sum_{i=0}^{n-d-1} s_i \oplus s_{i+d} \), where \( \oplus \) denotes the XOR operator. The statistic used is
+	\[ X_5 = \frac{2(A(d) - \frac{n-d}{2})}{\sqrt{n-d}} \]
+	which approximately follows an \( \mathcal{N}(0, 1) \) distribution if \( n - d \geq 10 \). Since small values of \( A(d) \) are as unexpected as large values of \( A(d) \), a two-sided test should be used.
+\end{tcolorbox}
+\begin{remark}
+	\[
+	\E[A(d)]=\frac{n-d}{2},\quad\Var[A(d)]=\frac{n-d}{4}
+	\]
+\end{remark}
+\vspace{24pt}
+\begin{example}
+	Consider the (non-random) sequence \( s \) of length \( n = 160 \) obtained by replicating the following sequence four times:
+	\[ 11100\ 01100\ 01000\ 10100\ 11101\ 11100\ 10010\ 01001. \]
+	
+	\begin{enumerate}
+		\item[(i)] \textbf{Frequency test (monobit test):} \( n_0 = 84 \), \( n_1 = 76 \), and the value of the statistic \( X_1 \) is 0.4.
+		\item[(ii)] \textbf{Serial test (two-bit test):} \( n_{00} = 44 \), \( n_{01} = 40 \), \( n_{10} = 40 \), \( n_{11} = 35 \), and the value of the statistic \( X_2 \) is 0.6252.
+		\item[(iii)] \textbf{Poker test:} Here \( m = 3 \) and \( k = 53 \). The blocks 000, 001, 010, 011, 100, 101, 110, 111 appear 5, 10, 6, 4, 12, 3, 6, and 7 times, respectively, and the value of the statistic \( X_3 \) is 9.6415.
+		\item[(iv)] \textbf{Runs test:} Here \( e_1 = 20.25 \), \( e_2 = 10.0625 \), \( e_3 = 5 \), and \( k = 3 \). There are 25, 4, 5 blocks of lengths 1, 2, 3, respectively, and 8, 20, 12 gaps of lengths 1, 2, 3, respectively. The value of the statistic \( X_4 \) is 31.7813.
+		\item[(v)] \textbf{Autocorrelation test:} If \( d = 8 \), then \( A(8) = 100 \). The value of the statistic \( X_5 \) is 3.8933.
+	\end{enumerate}
+	
+	For a significance level of \( \alpha = 0.05 \), the threshold values for \( X_1, X_2, X_3, X_4 \), and \( X_5 \) are 3.8415, 5.9915, 14.0671, 9.4877, and 1.96, respectively. \par
+	Hence, the given sequence \( s \) passes the frequency, serial, and poker tests, but fails the runs and autocorrelation tests.
+	
+	% Include the chi-squared distribution table and figure here
+	% You may need to use a package like pgfplots to create the figure or include it as an image
+	
+	\section{FIPS 140-1 Statistical Tests for Randomness}
 	\begin{itemize}
-		\item monobit test
-		\item poker test
-		\item runs test
-		\item long run test
+		\item FIPS (Federal Information Processing Standards) 140-1 specifies four statistical tests for randomness.
+		\item Instead of making the user select appropriate significance levels for these tests, explicit bounds are provided that the computed value of a statistic must satisfy.
+		\item A single bitstring \( s \) of length \( n \) output from a generator, is subjected to each of the following tests.
+		\item If any of the tests fail, then the generator fails the test.
+		\begin{itemize}
+			\item monobit test
+			\item poker test
+			\item runs test
+			\item long run test
+		\end{itemize}
+		\item For high security applications, FIPS 140-1 mandates that the four tests be performed each time the random bit generator is powered up.
+		\item FIPS 140-1 allows these tests to be substituted by alternative tests which provide equivalent or superior randomness checking.
 	\end{itemize}
-	\item For high security applications, FIPS 140-1 mandates that the four tests be performed each time the random bit generator is powered up.
-	\item FIPS 140-1 allows these tests to be substituted by alternative tests which provide equivalent or superior randomness checking.
-\end{itemize}
+	
+	\subsection*{Test details}
+	\begin{enumerate}
+		\item[(i)] \textbf{monobit test:} The number of 1's in \( s \) should satisfy \( 9654 < n_1 < 10346 \).
+		\item[(ii)] \textbf{poker test:} The statistic \( X_3 \) defined by equation \( X_3=\frac{2^m}{k}\of{\sum_{i=1}^{2^m}n_i^2}-k \) is computed for \( m = 4 \). The poker test is passed if \( 1.03 < X_3 < 57.4 \).
+		\item[(iii)] \textbf{runs test:} The number \( B_i \) and \( G_i \) of blocks and gaps, respectively, of length \( i \) in \( s \) are counted for each \( i \), \( 1 \leq i \leq 6 \). (For the purpose of this test, runs of length greater than 6 are considered to be of length 6.) The runs test is passed if the 12 counts \( B_i, G_i, 1 \leq i \leq 6 \), are each within the corresponding interval specified by the following table.
+		\begin{table}[h!]\centering
+			\begin{tabular}{c|c}
+				\toprule
+				Length of run & Required interval \\
+				\hline\hline
+				1 & 2267 -- 2733\\
+				2 & 1079 -- 1421\\
+				3 & 502 -- 748\\
+				4 & 223 -- 402\\
+				5 & 90 -- 223\\
+				6 & 90 -- 223\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+		% Here you would insert a table with the intervals
+		\item[(iv)] \textbf{long run test:} The long run test is passed if there are no runs of length 34 or more.
+	\end{enumerate}
+	
+\end{example}
 
-\subsection*{Test details}
-\begin{enumerate}
-	\item[(i)] \textbf{monobit test:} The number of 1's in \( s \) should satisfy \( 9654 < n_1 < 10346 \).
-	\item[(ii)] \textbf{poker test:} The statistic \( X_3 \) defined by equation \( \ldots \) is computed for \( m = 4 \). The poker test is passed if \( 1.03 < X_3 < 57.4 \).
-	\item[(iii)] \textbf{runs test:} The number \( B_i \) and \( G_i \) of blocks and gaps, respectively, of length \( i \) in \( s \) are counted for each \( i \), \( 1 \leq i \leq 6 \). (For the purpose of this test, runs of length greater than 6 are considered to be of length 6.) The runs test is passed if the 12 counts \( B_i, G_i, 1 \leq i \leq 6 \), are each within the corresponding interval specified by the following table.
-	% Here you would insert a table with the intervals
-	\item[(iv)] \textbf{long run test:} The long run test is passed if there are no runs of length 34 or more.
-\end{enumerate}
-
-\section*{Randomness (랜덤함의 난수성)}
+\section{(Probabilistic) Randomness}
 
 A \textbf{random bit sequence} could be interpreted as:
 \begin{itemize}
@@ -1379,33 +1413,25 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 	\item Nonetheless, the hypothetical output of such an idealized generator of a true random sequence serves as a benchmark for the evaluation of random and pseudorandom number generators.
 \end{itemize}
 
-\section*{Unpredictability (알 수 없지만 예측 가능성)}
+\section{(Cryptologic) Unpredictability}
 
 \begin{itemize}
-	\item Random and pseudorandom numbers generated for cryptographic applications should be \textbf{unpredictable}.
-	\item In the case of PRNGs, if the seed is unknown, the next output number in the sequence should be \textbf{unpredictable} in spite of any knowledge of previous random numbers in the sequence. This property is known as \textbf{ASI}.
-	\item It should also not be \textbf{feasible to determine} the seed from knowledge of any generated values, i.e., no correlation between a seed and any value generated from that seed should be evident.
+	\item Random and pseudorandom numbers generated for cryptographic applications should be \textbf{unpredictable}. \begin{itemize}
+		\item In the case of PRNGs, if the seed is unknown, the next output number in the sequence should be \textbf{unpredictable} in spite of any knowledge of previous random numbers in the sequence. This property is known as \textbf{forward unpredictability}.
+		\item It should also not be \textbf{feasible to determine} the seed from knowledge of any generated values, i.e., \textbf{backward unpredictability}
+		\item No correlation between a seed and any value generated from that seed should be evident.
+	\end{itemize}
 	\item To ensure forward unpredictability, care must be exercised in obtaining \textbf{seeds}.
-	\item The values produced by a PRNG are \textbf{completely predictable} if the seed and generation algorithm are known.
-	\item Since in many cases the generation algorithm is publicly available, the \textbf{seed must be kept secret} and should not be derivable from the pseudorandom sequence that it produces. In addition, the seed itself must be unpredictable.
+	\begin{itemize}
+		\item The values produced by a PRNG are \textbf{completely predictable} if the seed and generation algorithm are known.
+		\item Since in many cases the generation algorithm is publicly available, the \textbf{seed must be kept secret} and should not be derivable from the pseudorandom sequence that it produces. In addition, the seed itself must be unpredictable.
+	\end{itemize}
 \end{itemize}
-
-
-
-
-
-
-
-	
-	
 	\newpage
-	\chapter{NIST SP 800-22}
-	This document provides a detailed summary of the NIST Special Publication 800-22r1a. The publication is central to understanding the statistical test suite designed for evaluating random and pseudorandom number generators (RNGs) used in cryptographic applications.
+	\section{NIST SP 800-22}
+	The publication is central to understanding the statistical test suite designed for evaluating random and pseudorandom number generators (RNGs) used in cryptographic applications.
 	
-	\section{Testing Strategy and Result Interpretation}
-	The publication outlines a comprehensive strategy for statistically analyzing RNGs, which is crucial for ensuring the reliability and security of cryptographic systems.
-	
-	\subsection{Strategies for Statistical Analysis of an RNG}
+	\subsection*{Strategies for Statistical Analysis of an RNG}
 	The strategy involves five key stages:
 	\begin{enumerate}
 		\item \textbf{Selection of a Generator:} Choosing a suitable hardware or software-based RNG.
@@ -1426,74 +1452,49 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 				\item $P$-value $\geq \alpha = 0.01\implies$ Accept $H_0$ (random)
 			\end{itemize}
 		\end{itemize}
-		\begin{tikzpicture}
-			% Draw horizontal line for alpha level
-			\draw[red, thick] (0,2) -- (10,2) node[right] {$\alpha = 0.01$};
-			
-			% Annotate for Accept H0 and Reject H0
-			\draw (5,1) node {Accept $H_0$ (random)};
-			\draw (5,3) node {Reject $H_0$ (not random)};
-			
-			% Highlight areas for p-value comparison
-			\fill[green, opacity=0.3] (0,0) rectangle (10,2);
-			\fill[blue, opacity=0.3] (0,2) rectangle (10,4);
-			
-			% Add labels
-			\draw (0,2) node[left] {$\alpha = 0.01$};
-			
-			% Add P-value lines for illustration (optional)
-			\draw[dashed] (2,0) -- (2,4) node[above] {P-value $< \alpha$};
-			\draw[dashed] (8,0) -- (8,4) node[above] {P-value $\geq \alpha$};
-			
-			% Draw axes
-			\draw[thick,->] (0,0) -- (10,0) node[below right] {P-value};
-			\draw[thick,->] (0,0) -- (0,4) node[left] {Probability};
-		\end{tikzpicture}
+		\begin{center}\begin{tikzpicture}[node distance=2cm, auto]
+				
+				% Nodes
+				\node (null) [rectangle, draw, text width=3cm, text centered, rounded corners, minimum height=1cm] {$H_0$: Sequence is random};
+				\node (alt) [rectangle, draw, right of=null, xshift=3cm, text width=3cm, text centered, rounded corners, minimum height=1cm] {$H_a$: Sequence is not random};
+				\node (alpha) [rectangle, draw, below of=null, text width=3cm, text centered, rounded corners, minimum height=1cm] {Significance: $\alpha = 0.01$};
+				\node (decision) [diamond, draw, right of=alpha, xshift=3cm, text width=2.5cm, text centered, aspect=2] {$P$-value $< \alpha$?};
+				\node (reject) [rectangle, draw, below of=decision, yshift=-0.5cm, text width=3cm, text centered, rounded corners, minimum height=1cm] {Reject $H_0$: Not random};
+				\node (accept) [rectangle, draw, left of=reject, xshift=-3cm, text width=3cm, text centered, rounded corners, minimum height=1cm] {Accept $H_0$: Random};
+				
+				% Arrows
+				\draw[->] (null) -- (alpha);
+				\draw[->] (alt) -- (decision);
+				\draw[->] (alpha) -- (decision);
+				\draw[->] (decision) -- node[anchor=east] {yes} (reject);
+				\draw[->] (decision) -- node[anchor=south] {no} (accept);
+				
+			\end{tikzpicture}
+		\end{center}
 	\end{remark}
 	
-	\section{The Interpretation of Empirical Results}
 	\subsection{Proportion of Sequences Passing a Test}
-%Proportion of Sequences Passing a Test
-%Given the empirical results for a particular statistical test,
-%compute the proportion of sequences that pass. For
-%example, if 1000 binary sequences were tested (i.e., m =
-%1000), α = 0.01 (the significance level), and 996 binary
-%sequences had P-values ≥ .01, then the proportion is
-%996/1000 = 0.9960.
-%The range of acceptable proportions is determined using
-%the confidence interval defined as, p̂ ± 3
-%Figure 4-1: P-value Plot
-%
-%where p = 1-α, and m is the sample size. If the proportion
-%falls outside of this interval, then there is evidence that the
-%data is non-random. Note that other standard deviation
-%values could be used. For the example above, the
-%confidence interval is .99 ± 3 .99(.01 ) = .99 ± 0.0094392 (i.e., the proportion should lie above 0.9805607. This
-%1000
-%can be illustrated using a graph as shown in Figure 4-1. The confidence interval was calculated using a
-%normal distribution as an approximation to the binomial distribution, which is reasonably accurate for
-%large sample sizes (e.g., n ≥ 1000).
-
-	\subsection{Uniform Distribution of P-values}
 	
-	\subsection{General Recommendations and Guidelines}
-	Key recommendations include:
-	\begin{itemize}
-		\item Addressing programming errors in statistical tests.
-		\item Dealing with underdeveloped statistical tests.
-		\item Correcting flaws in RNG implementation.
-		\item Ensuring accuracy in data processing for tests.
-		\item Using quality mathematical routines for computing P-values.
-		\item Making appropriate choices for test input parameters.
-	\end{itemize}
+	Given the empirical results for a particular statistical test, compute the proportion of sequences that pass. For example, if 1000 binary sequences were tested (i.e., \( n = 1000 \)), \( \alpha = 0.01 \) (the significance level), and 996 binary sequences had \( P \)-values \( > 0.01 \), then the proportion is \( \frac{996}{1000} = 0.996 \).
 	
-	\subsection{Application of Multiple Tests}
-	The publication highlights the importance of using multiple tests to ensure a wide-ranging assessment of RNGs. A study conducted by NIST revealed minimal redundancy among tests, confirming the suite's ability to thoroughly evaluate different aspects of randomness.
+	The range of acceptable proportions is determined using the confidence interval defined as,
 	
-	\subsection{Conclusion}
-	NIST SP 800-22r1a provides an essential framework for the evaluation of RNGs in cryptographic applications. Its structured approach, comprising detailed testing strategies and guidelines, is crucial for ensuring the integrity and security of cryptographic systems.
+	\[ \hat{p} \pm 4 \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}} \]
 	
-	\section{Useful Functions}
+	where \( \hat{p} = 1 - \alpha \), and \( n \) is the sample size. If the proportion falls outside of this interval, then there is evidence that the data is non-random. Note that other standard deviation values could be used. 
+	
+	\section{Uniform Distribution of \( P \)-values}
+	
+	The distribution of \( P \)-values is examined to ensure uniformity. This may be visually illustrated using a histogram, whereby, the interval between 0 and 1 is divided into 10 sub-intervals, and the \( P \)-values that lie within each sub-interval are counted and displayed.
+	
+	Uniformity may also be determined via an application of a \( \chi^2 \) test and the determination of a \( P \)-value corresponding to the Goodness-of-Fit Distributional Test on the \( P \)-values obtained for an arbitrary statistical test (i.e., a \( P \)-value of the \( P \)-values). This is accomplished by computing
+	
+	\[ \chi^2 = \sum \frac{(O_i - E_i)^2}{E_i} \]
+	
+	where \( F_i \) is the number of \( P \)-values in sub-interval \( i \), and \( s \) is the sample size. A \( P \)-value is calculated such that \( P \)-value\( _{\chi^2} = \text{igamc}(\frac{k}{2}, \frac{\chi^2}{2}) \). If \( P \)-value\( _{\chi^2} < \alpha \), then the sequences can be considered to be uniformly distributed. Additionally, to provide statistically meaningful results, at least 55 sequences must be processed.
+	
+	\newpage
+	\subsection{Useful Functions}
 	
 	\begin{itemize}
 		\item \textbf{Standard Normal (Cumulative Distribution) Function}
@@ -1548,7 +1549,8 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 	\end{enumerate}
 	
 	\newpage
-	\section{Frequency (Monobits) Test}
+	\section{The NIST Test}
+	\subsection{Frequency (Monobits) Test}
 	
 	\begin{itemize}
 		\item The most basic test is that of the null hypothesis: in a sequence of independent identically distributed Bernoulli random variables the probability of ones is 1/2.
@@ -1578,37 +1580,34 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 		\textnormal{erfc}(z)=\frac{2}{\sqrt{\pi}}\int_{z}^{\infty}e^{-u^2}\ du.
 		\]
 	\end{itemize}
+	\begin{remark}
+		\begin{enumerate}
+			\item Conversion to \(\pm 1\): The zeros and ones of the input sequence (\(e\)) are converted to values of \(-1\) and \(+1\) and are added together to produce \(S_n = X_1 + X_2 + \ldots + X_n\), where \(X_i = 2e_i - 1\).
+			
+			For example, if \(e = 1011010101\), then \(n=10\) and \(S_n = (-1) + 1 + (-1) + 1 + (-1) + 1 + (-1) + 1 + (-1) + 1 = 2\).
+			
+			\item Compute the test statistic \(s_{\text{obs}} = \frac{|S_n|}{\sqrt{n}}\)
+			
+			For the example in this section, \(s_{\text{obs}} = \frac{|2|}{\sqrt{10}} \approx 0.632455532\).
+			
+			\item Compute \(P\)-value = \(\text{erfc}\left(\frac{s_{\text{obs}}}{\sqrt{2}}\right)\), where \(\text{erfc}\) is the complementary error function as defined in Section 5.5.3.
+			
+		\(P\)-value = \(\text{erfc}\left(\frac{0.632455532}{\sqrt{2}}\right) \approx 0.527089\geq 0.01=\alpha\). PASS.
+		\end{enumerate}
+	\end{remark}
 	
-	
-	
-	\section*{Frequency Test 수행 절차}
-	
-	\begin{enumerate}
-		\item Conversion to \(\pm 1\): The zeros and ones of the input sequence (\(e\)) are converted to values of \(-1\) and \(+1\) and are added together to produce \(S_n = X_1 + X_2 + \ldots + X_n\), where \(X_i = 2e_i - 1\).
-		
-		For example, if \(e = 1011010101\), then \(n=10\) and \(S_n = (-1) + 1 + (-1) + 1 + (-1) + 1 + (-1) + 1 + (-1) + 1 = 2\).
-		
-		\item Compute the test statistic \(s_{\text{obs}} = \frac{|S_n|}{\sqrt{n}}\)
-		
-		For the example in this section, \(s_{\text{obs}} = \frac{|2|}{\sqrt{10}} \approx 0.632455532\).
-		
-		\item Compute \(P\)-value = \(\text{erfc}\left(\frac{s_{\text{obs}}}{\sqrt{2}}\right)\), where \(\text{erfc}\) is the complementary error function as defined in Section 5.5.3.
-		
-		For the example in this section, \(P\)-value = \(\text{erfc}\left(\frac{0.632455532}{\sqrt{2}}\right) \approx 0.527089\).
-	\end{enumerate}
+	\begin{example}
+		\ \begin{itemize}
+			\item[(input)] \( e = 11001010000011\cdots 00110001001100010001100101000110010011100 \)
+			\item[(input)] \( n = 100 \)
+			\item[(processing)] \( S_{100} = -16 \)
+			\item[(processing)] \( s_{\text{obs}} = 1.6 \)
+			\item[(output)] \( P\text{-value} = 0.109599 \)
+			\item[(conclusion)] \textbf{Since \( P\text{-value} \geq 0.01 \), accept the sequence as random.}
+		\end{itemize}
+	\end{example}
 
-	\section*{Example of Frequency Test}
-	
-	\begin{itemize}
-		\item[(input)] \( e = 110010100000111101101010100010000101010100011000010001010100110001001100010001100101000110010011100 \)
-		\item[(input)] \( n = 100 \)
-		\item[(processing)] \( S_{100} = -16 \)
-		\item[(processing)] \( s_{\text{obs}} = 1.6 \)
-		\item[(output)] \( P\text{-value} = 0.109599 \)
-		\item[(conclusion)] \textbf{Since \( P\text{-value} \geq 0.01 \), accept the sequence as random.}
-	\end{itemize}
-
-	\section*{Frequency Test within a Block}
+	\subsection{Frequency Test within a Block}
 	
 	The test seeks to detect localized deviations from the ideal 50\% frequency of 1's by decomposing the test sequence into a number of overlapping subsequences and applying a chi-square test for a homogeneous match of empirical frequencies to the ideal \( \frac{1}{2} \).
 	
@@ -1625,8 +1624,9 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 	\begin{itemize}
 		\item For each of these substrings, the probability of ones is estimated by the observed relative frequency of 1's, \( \pi_i \), for \( i = 1, \ldots, N \).
 	\end{itemize}
-
-	\section*{The reported \( P \)-value:}
+	
+	\newpage
+	\subsection{The reported \( P \)-value:}
 	(where \texttt{igamc} is the incomplete gamma function)
 	
 	The reported \( P \)-value is computed as:
@@ -1635,49 +1635,47 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 	= \texttt{igamc}\left( \frac{N}{2}, \frac{\chi^2(\text{obs})}{2} \right).
 	\]
 	
-	\subsection*{Gamma Function}
 	\[
 	\Gamma(z) = \int_{0}^{\infty} t^{z-1}e^{-t}dt
 	\]
 	
-	\subsection*{Incomplete Gamma Function}
 	\[
 	P(a,x) = \frac{\gamma(a,x)}{\Gamma(a)} = \frac{1}{\Gamma(a)}\int_{0}^{x}e^{-t}t^{a-1}dt
 	\]
 	where \(P(a,0) = 0\) and \(P(a,\infty) = 1\).
 	
-	\subsection*{Incomplete Gamma Function}
 	\[
 	Q(a,x) = 1 - P(a,x) = \frac{\Gamma(a,x)}{\Gamma(a)} = \frac{1}{\Gamma(a)}\int_{x}^{\infty}e^{-t}t^{a-1}dt
 	\]
 	where \(Q(a,0) = 1\) and \(Q(a,\infty) = 0\).
 
+	\begin{remark}
+		\begin{enumerate}
+			\item Partition the input sequence into \(N = \left\lceil \frac{n}{M} \right\rceil\) non-overlapping blocks. Discard any unused bits.
+			
+			For example, if \(n = 10\), \(M = 3\) and \(e = 0110011010\), 3 blocks (\(N = 3\)) would be created, consisting of 011, 001 and 101. The final 0 would be discarded.
+			
+			\item Determine the proportion \(\pi_i\) of ones in each \(M\)-bit block using the equation
+			\[
+			\pi_i = \frac{\sum_{j=1}^{M} e_{(i-1)M+j}}{M}
+			\]
+			for \(1 \leq i \leq N\).
+			
+			For the example in this section, \(\pi_1 = \frac{2}{3}\), \(\pi_2 = \frac{1}{3}\), and \(\pi_3 = \frac{2}{3}\).
+			
+			\item Compute the \(\chi^2\) statistic: 
+			\[
+			\chi^2(\text{obs}) = 4M \sum_{i=1}^{N} \left(\pi_i - \frac{1}{2}\right)^2.
+			\]
+			
+			For the example in this section, 
+			\[
+			\chi^2(\text{obs}) = 4 \times 3 \left(\left(\frac{2}{3} - \frac{1}{2}\right)^2 + \left(\frac{1}{3} - \frac{1}{2}\right)^2 + \left(\frac{2}{3} - \frac{1}{2}\right)^2\right) = 1.
+			\]
+		\end{enumerate}
+	\end{remark}
 	
-	\section*{Frequency Test within a Block 수행 절차}
 	
-	\begin{enumerate}
-		\item Partition the input sequence into \(N = \left\lceil \frac{n}{M} \right\rceil\) non-overlapping blocks. Discard any unused bits.
-		
-		For example, if \(n = 10\), \(M = 3\) and \(e = 0110011010\), 3 blocks (\(N = 3\)) would be created, consisting of 011, 001 and 101. The final 0 would be discarded.
-		
-		\item Determine the proportion \(\pi_i\) of ones in each \(M\)-bit block using the equation
-		\[
-		\pi_i = \frac{\sum_{j=1}^{M} e_{(i-1)M+j}}{M}
-		\]
-		for \(1 \leq i \leq N\).
-		
-		For the example in this section, \(\pi_1 = \frac{2}{3}\), \(\pi_2 = \frac{1}{3}\), and \(\pi_3 = \frac{2}{3}\).
-		
-		\item Compute the \(\chi^2\) statistic: 
-		\[
-		\chi^2(\text{obs}) = 4M \sum_{i=1}^{N} \left(\pi_i - \frac{1}{2}\right)^2.
-		\]
-		
-		For the example in this section, 
-		\[
-		\chi^2(\text{obs}) = 4 \times 3 \left(\left(\frac{2}{3} - \frac{1}{2}\right)^2 + \left(\frac{1}{3} - \frac{1}{2}\right)^2 + \left(\frac{2}{3} - \frac{1}{2}\right)^2\right) = 1.
-		\]
-	\end{enumerate}
 
 	\subsection*{Compute \( P \)-value}
 	Compute \( P \)-value \( = \texttt{igamc} \left( \frac{N}{2}, \frac{\chi^2(\text{obs})}{2} \right) \), where \texttt{igamc} is the incomplete gamma function for \( Q(a,x) \) as defined in Section 5.5.3.
@@ -1685,17 +1683,6 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 	\textbf{Note:} When comparing this section against the technical description in Section 3.2, note that \( Q(a,x) = 1 - P(a,x) \).
 	
 	For the example in this section, \( P \)-value \( = \texttt{igamc} \left( \frac{3}{2}, \frac{7.2}{2} \right) = 0.801252 \).
-	
-	\section*{Example:}
-	\begin{itemize}
-		\item[(input)] \( e = 110010100000111101101010100010000101010100011000010001010100110001001100010001100101000110010011100 \)
-		\item[(input)] \( n = 100 \)
-		\item[(input)] \( M = 10 \)
-		\item[(processing)] \( N = 10 \)
-		\item[(processing)] \( \chi^2 = 7.2 \)
-		\item[(output)] \( P \)-value \( = 0.706438 \)
-		\item[(conclusion)] Since \( P \)-value \( > 0.01 \), accept the sequence as random.
-	\end{itemize}
 
 \newpage
 	\section{Runs Test}
@@ -1735,14 +1722,12 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 		\end{itemize}
 	\end{tcolorbox}
 	
+	\begin{remark}
+		\( V_n\text{obs}: \) The total number of runs (i.e., the total number of zero runs + the total number of one-runs) across all \( n \) bits.
+		The reference distribution for the test statistic is a \( \chi^2 \) distribution.
+	\end{remark}
 	\newpage
-	
-	
-	\section*{Test Statistic and Reference Distribution}
-	\( V_n\text{obs}: \) The total number of runs (i.e., the total number of zero runs + the total number of one-runs) across all \( n \) bits.
-	The reference distribution for the test statistic is a \( \chi^2 \) distribution.
-	
-	\section*{Test Description}
+	\subsection*{Test Description}
 	\textbf{Note:} The Runs test carries out a Frequency test as a prerequisite.
 	\begin{enumerate}
 		\item Compute the pre-test proportion \( \pi \) of ones in the input sequence: \( \pi = \frac{\sum e_j}{n} \).
@@ -1773,21 +1758,10 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 		\)
 	\end{enumerate}
 	
-	\section*{Input Size Recommendation}
+	\subsection*{Input Size Recommendation}
 	It is recommended that each sequence to be tested consist of a minimum of 100 bits (i.e., \( n \geq 100 \)).
-	
-	\section*{Example}
-	
-	\begin{itemize}
-		\item[(input)] \( e = 110010100000111101101010100010000101010100011000010001010100110001001100010001100101000110010011100 \)
-		\item[(input)] \( n = 100 \)
-		\item[(input)] \( \tau = 0.02 \)
-		\item[(processing)] \( \pi = 0.42 \)
-		\item[(processing)] \( V_{n,\text{obs}} = 52 \)
-		\item[(output)] \( P\text{-value} = 0.500798 \)
-		\item[(conclusion)] Since \( P\text{-value} \geq 0.01 \), accept the sequence as random.
-	\end{itemize}
-	
+
+	\newpage
 	\section{Binary Matrix Rank Test}
 	
 	\begin{itemize}
@@ -1840,77 +1814,6 @@ The use of unbiased coins for cryptographic purposes is \textbf{impractical}.
 			\item The test detects deviations from the distribution of the number of visits of the random walk to a certain "state," i.e., any integer value.
 		\end{itemize}
 	\end{itemize}
-
-	\newpage
-	\section{Testing Strategy and Result Interpretation}
-	The publication details a five-stage strategy for the statistical analysis of RNGs, encompassing selection, generation, execution, examination, and assessment.
-	
-	\subsection{Strategies for Statistical Analysis of an RNG}
-	\begin{itemize}
-		\item Selection of a Generator
-		\item Binary Sequence Generation
-		\item Execution of the Statistical Test Suite
-		\item Examination of P-values
-		\item Assessment: Pass/Fail Assignment
-	\end{itemize}
-	
-	\subsection{Interpretation of Empirical Results}
-	Empirical results are interpreted through three scenarios: no deviation from randomness, clear deviation, or inconclusive results. The process involves examining sequence pass rates and P-value distributions.
-	
-	\subsection{General Recommendations and Guidelines}
-	The document provides recommendations on addressing potential issues in statistical testing, such as programming errors, underdeveloped tests, RNG implementation flaws, data processing errors, poor mathematical routines, and incorrect parameter choices.
-	
-	\section{Application of Multiple Tests}
-	A study on the interdependence of multiple tests revealed minimal redundancy, ensuring a comprehensive assessment of nonrandomness.
-	
-	\section{Conclusion}
-	NIST SP 800-22r1a presents a comprehensive approach to evaluating RNGs for cryptographic applications, providing a structured testing strategy, methods for interpreting results, and guidelines to address common issues in statistical testing.
-	
-	
-	
-	
-\newpage
-\subsection{Golomb’s randomness postulates}
-Solomon W. Golomb's randomness postulates are a cornerstone in the field of cryptography and sequence design, primarily due to their foundational role in the analysis and interpretation of sequences as random. These postulates provide a mathematical framework for evaluating the randomness of binary sequences. Specifically, they set forth criteria that a sequence must meet to be considered random. 
-
-The postulates are as follows:
-
-\begin{enumerate}
-	\item The number of ones and zeros in the sequence should be approximately equal, which is necessary for the sequence to have no bias.
-	\item The distance between consecutive ones should follow a geometric distribution. For binary sequences that are infinitely long, this implies that the probability of a 'gap' of length \( n \) between ones is \( (1/2)^{n+1} \), representing the lack of structure in the sequence.
-	\item The sequence should be balanced, which means that for any binary substring, the number of occurrences of this substring and its complement should be approximately the same. This property is also referred to as the run property, where a 'run' is a substring of consecutive identical digits.
-\end{enumerate}
-
-Golomb’s postulates are integral in the design and analysis of pseudo-random number generators (PRNGs), as they serve as a benchmark for the sequence's randomness. A sequence that fulfills these postulates is considered to be a good candidate for cryptographic applications because it exhibits the unpredictability necessary for securing communications.
-
-\textbf{Application in Cryptography:}
-In cryptography, the randomness of key material is paramount. Golomb's postulates are used to ensure that the generated keys do not exhibit patterns or regularities that could be exploited by adversaries. By applying these postulates to evaluate the randomness of binary sequences, cryptographers can quantify the security level of cryptographic systems.
-
-\textbf{Mathematical Implications:}
-The postulates form the basis of several statistical tests, such as the runs test and the autocorrelation test. These tests are applied to binary sequences to check for the presence of patterns and correlations that would indicate non-randomness. The theoretical underpinnings of Golomb's postulates also contribute to the field of combinatorics and information theory, where they have implications for the construction of codes and error correction.
-
-In conclusion, Golomb’s randomness postulates are not only historically significant but also remain highly relevant in the modern analysis of cryptographic systems. They
-
-%\chapter{Statistical Tests for Randomness}
-
-\section{Introduction}
-Statistical tests for randomness play a pivotal role in validating the quality and integrity of random number generators (RNGs). These tests serve as a benchmark against which RNGs are measured to ensure that their output sequences exhibit properties characteristic of true randomness. Despite the intrinsic limitations in proving randomness, these tests can effectively identify non-randomness in sequences, which is vital for applications in cryptography, simulations, and various stochastic modeling scenarios.
-
-\section{Statistical tests for RNGs}
-The purpose of statistical tests for RNGs is to analyze sequences for unpredictability, lack of patterns, and uniform distribution—traits expected from ideal random sequences. These tests range from simple frequency analysis to complex tests for serial correlation, and no single test can validate randomness conclusively. Hence, a battery of tests is typically employed, where failure of any test suggests non-randomness, prompting further scrutiny or rejection of the RNG.
-
-\subsection{Golomb’s randomness postulates}
-Golomb's randomness postulates, rooted in the theory of shift register sequences, lay foundational criteria for assessing the randomness of periodic sequences. These postulates dictate:
-
-\begin{enumerate}
-	\item \textbf{The Frequency Postulate}: The number of zeros and ones in a sequence should be approximately the same, reflecting the balance of a sequence.
-	\item \textbf{The Run Postulate}: A sequence should contain runs of various lengths distributed according to expected probabilities. For instance, in a binary sequence, half of the runs should be of length one, one-fourth should be of length two, and so forth.
-	\item \textbf{The Autocorrelation Postulate}: The autocorrelation function of the sequence should rapidly drop to zero as the shift increases, which implies that each bit should be independent of others at a certain distance.
-\end{enumerate}
-
-These postulates form the basis for more sophisticated tests, and while they are not sufficient to declare a sequence as random, they are necessary conditions. In particular, they address the uniformity and independence of a sequence, which are critical aspects in cryptographic applications.
-
-Implementing these postulates in practical statistical tests has advanced the analysis of pseudorandom number generators (PRNGs), providing a methodology to assess their suitability for various applications. The evaluation of PRNGs against these postulates often involves chi-squared tests, spectral tests, and other statistical methodologies to detect non-random behavior in generated sequences.
 
 \newpage
 \chapter{Evaluation of Entropy}
@@ -2692,6 +2595,15 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 \begin{proof}[\sol]
 	\ \begin{enumerate}[(a)]
 		\item 
+		\begin{align*}
+			\mathbb{E}[R_k^{(n)}] &= \sum_{i=1}^{n-k+1} P(\text{Run of length } k \text{ starting at position } i) \\
+			&= \sum_{i=1}^{n-k+1} P(X_i \neq X_{i-1}, X_i = X_{i+1} = \dots = X_{i+k-1}, X_{i+k} \neq X_{i+k-1}) \\
+			&= \sum_{i=1}^{n-k+1} \left[ P(X_i \neq X_{i-1}) \cdot P(X_i = X_{i+1} = \dots = X_{i+k-1}) \cdot P(X_{i+k} \neq X_{i+k-1}) \right] \\
+			&= \sum_{i=1}^{n-k+1} \left[ \frac{1}{2} \cdot \left(\frac{1}{2}\right)^{k-1} \cdot \frac{1}{2} \right] \\
+			&= \sum_{i=1}^{n-k+1} \frac{1}{2^{k+1}} \\
+			&= \frac{n-k+1}{2^{k+1}}
+		\end{align*}
+		
 %		For a run of length $k$ to start at position $i$ (where $1 \leq i \leq n-k+1$), the following conditions must be met:
 %		\begin{itemize}
 %			\item The $k$ bits starting at $i$ are the same.
@@ -2728,9 +2640,9 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 		\textbf{(iv) P-Value} \(= \text{erfc}\left(\frac{|V_n(\text{obs}) - 2n\pi(1 - \pi)|}{\sqrt{2n}\pi(1 - \pi)}\right)\).
 	\end{tcolorbox}
 \end{enumerate}
-\begin{figure}[h!]\centering
-	\includegraphics[scale=.255]{runs_test.png}
-\end{figure}
+%\begin{figure}[h!]\centering
+%	\includegraphics[scale=.255]{runs_test.png}
+%\end{figure}
 Thus, \[
 V_{50}=24+1=25.
 \]
