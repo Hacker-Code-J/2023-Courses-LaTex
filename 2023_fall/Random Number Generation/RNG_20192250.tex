@@ -865,10 +865,12 @@
 	\chapter{Examples of Markov chains}
 	
 	\section{Random Walk}
+	Let \(\xi_1, \xi_2, \ldots\) be independent integer-valued random variables having common density \(f\). Let \(X_0\) be an integer-valued random variable that is independent of the \(\xi\)'s and set \(X_n = X_0 + \xi_1 + \cdots + \xi_n\). The sequence \(X_n, n \geq 0\), is called a \textit{random walk}. It is a Markov chain whose state space is the integers and whose transition function is given by 
+	\[
+	p(x,y) = f(y-x).
+	\]
+	For all \( k \in \mathbb{Z} \), we have \( \Pr[\xi_i = k] = f(k) \).
 	
-	Let \(\xi_1, \xi_2, \ldots\) be independent integer-valued random variables having common density \(f\). Let \(X_0\) be an integer-valued random variable that is independent of the \(\xi\)'s and set \(X_n = X_0 + \xi_1 + \cdots + \xi_n\). The sequence \(X_n, n \geq 0\), is called a \textit{random walk}. It is a Markov chain whose state space is the integers and whose transition function is given by \[
-	p(x,y)=f(y-x).
-	\] For all $k\in\Z$, we have $\Pr[\xi_i=k]=f(k)$.
 	\begin{proof}
 		Let \(\pi_0\) denote the distribution of \(X_0\). Then 
 		\begin{align*}
