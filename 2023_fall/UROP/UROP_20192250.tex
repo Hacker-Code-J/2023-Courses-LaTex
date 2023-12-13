@@ -123,7 +123,7 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows, arrows.meta, positioning, shapes, shapes.multipart}
-\usetikzlibrary{positioning,shapes.geometric}
+\usetikzlibrary{positioning,shapes.geometric,shadows}
 \usetikzlibrary{fit,backgrounds}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.16}
@@ -317,6 +317,46 @@
 		\( \texttt{EVE}() \) & Eavesdrop Function\\
 	\end{tabular}
 	
+	\chapter*{Introduction}
+	\addcontentsline{toc}{chapter}{Introduction}
+	
+	``The Joy of Cryptography'' is a unique book that looks at cryptographic "security proofs" from a coding perspective. Instead of using complex mathematics, it uses pseudocode. Pseudocode is like a simple way to write down instructions for a computer. This approach is thought to bring a fresh viewpoint on how we prove the security of cryptographic methods.
+	
+	\begin{center}\begin{tikzpicture}[
+			node distance=1 cm,
+			bookstyle/.style={rectangle, draw=black, fill=red!20, text width=2.5cm, align=center, minimum height=3.5cm},
+			pseudocode/.style={rectangle, draw=black, fill=blue!20, text width=3cm, align=center, rounded corners},
+			concept/.style={ellipse, draw=black, fill=green!20, text width=2.5cm, align=center},
+			line/.style={-Stealth, thick}
+			]
+			
+			% Book
+			\node[bookstyle] (book) at (0,0) {The Joy of\\Cryptography};
+			
+			% Pseudocode
+			\node[pseudocode, right=of book] (pcode) {Pseudocode\\Snippets};
+			
+			% Cryptographic Concepts
+			\node[concept, right=of pcode] (encrypt) {Encryption};
+			\node[concept, above=of encrypt] (key) {Key\\ Exchange};
+			\node[concept, below=of encrypt] (decrypt) {Decryption};
+			
+			% Lines and Arrows
+			\draw[line] (book) -- (pcode);
+			\draw[line] (pcode) -- (encrypt);
+			\draw[line] (encrypt) -- (key);
+			\draw[line] (encrypt) -- (decrypt);
+			
+			% Annotations
+			\node[below=of decrypt] (note) {};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	Inspired by this book, we have also tried to develop cryptographic security proofs using pseudocode. We have taken these pseudocode examples and used various coding techniques to create visualizations. These visualizations turn the pseudocode into pictures and diagrams. This makes it easier to see and understand how cryptographic security works.
+	
+	We believe that this method will make it easier for more people to understand and get involved in cryptographic security certification. By using pseudocode and visualizations, we hope to lower the barrier that often makes cryptography seem difficult and inaccessible.
+	
 	\chapter{One-Time Pad \& Kerckhoff's Principle}
 	
 	\begin{tcolorbox}[colback=white,colframe=magenta,arc=5pt,title={\color{white}\bf }]
@@ -378,9 +418,9 @@
 			\]
 		\end{theorem}
 	\end{tcolorbox}
-	\begin{proof}
-		content...
-	\end{proof}
+%	\begin{proof}
+%		content...
+%	\end{proof}
 	
 	\chapter{The Basics of Provable Security}
 	
@@ -618,119 +658,119 @@
 %	\section{How to Prove Security with The Hybrid Technique},
 %	\section{How to Compare/Contract Security Definitions}
 	
-	\newpage
-	\section*{Exercises}
-	\begin{tcolorbox}[colback=white,colframe=execolor,arc=5pt,title={\color{white}\bf }]
-		\begin{exercise}
-			In abstract algebra, a (finite) group is a finite set $\mathbb{G}$ of items together with an operator $\otimes$ satisfying the following axioms:
-			\begin{itemize}
-				\item \textbf{Closure:} for all \(a,b\in\mathbb{G}\), we have $a\otimes b\in \mathbb{G}$
-				\item \textbf{Identity:} there is a special \textit{identity element} $e\in\G$ that satisfies \(e\otimes a = a\otimes e = a\) for
-				all \(a\in\G\). We typically write ``1'' rather than $e$ for the identity element.
-				\item \textbf{Associativity:} for all \(a, b, c\in\G\), we have \((a\otimes b)\otimes c = a\otimes (b\otimes c)\).
-				\item \textbf{Inverses:} for all \(a\in\G\), there exists an inverse element \(b\in\G\) such that \(a\otimes b = b\otimes a\)
-				is the identity element of $\G$. We typically write ``$a^{-1}$'' for the inverse of $a$.
-			\end{itemize}
-			
-			Define the following encryption scheme in terms of an arbitrary group \((\G, \otimes)\):
-			\begin{center}
-				\begin{tabular}{|clll|}
-					\hline
-					\(\keyspace=\G\) & \(\underline{\KeyGen:}\) & \(\underline{\Enc(k,m):}\) &\(\underline{\Dec(k,c):}\) \\
-					\(\messagespace=\G\) & \tab\(k\gets\G\) & \tab return \(k\otimes m\) & \tab ??\\
-					\(\ciphertextspace=\G\) & \tab return \(k\) &&\\
-					\hline
-				\end{tabular}
-			\end{center}
-			\begin{enumerate}[(a)]
-				\item Prove that \(\binaryfield^\lambda\) is a group with respect to the xor operator. What is the identity
-				element, and what is the inverse of a value $x\in\binaryfield^\lambda$?
-				\item Fill in the details of the $\Dec$ algorithm and prove (using the group axioms) that the scheme satisfies correctness.
-				\item Prove that the scheme satisfies one-time secrecy.
-			\end{enumerate}
-		\end{exercise}
-	\end{tcolorbox}
-	\iffalse
-	\begin{proof}[\sol]
-		\begin{enumerate}[(a)]
-			\item We show that \((\binaryfield^\lambda,\xor)\) satisfies the group axioms:
-			\begin{itemize}
-				\item[] \textbf{Closure:} \(x,y\in\binaryfield^\lambda\implies x\xor y\in\binaryfield^\lambda\)
-				\item[] \textbf{Associativity:} The XOR operation is associative, so this property holds.
-				\item[] \textbf{Identity:} The identity for XOR is the all-zero \(\lambda\)-bit string \(\zero^\lambda\) because \[
-				(\forall x\in\binaryfield^\lambda)\quad x\xor\zero^\lambda=\zero^\lambda\xor x= x.
-				\]
-				\item[] \textbf{Inverse:} The inverse of $x$ under XOR is $x$ itself because \[
-				x\xor x=\zero^\lambda.
-				\]
-			\end{itemize}
-			\vspace{4pt}
-			\item Decryption Algorithm: \begin{center}
-				\begin{tabular}{l}
-					\(\underline{\Dec(k,c):}\) \\ \tab return \(\inv{k}\otimes c\)
-				\end{tabular}
-			\end{center}
-			Proof of Correctness: \begin{align*}
-				\Dec(k,\Enc(k,m))&=\inv{k}\otimes\Enc(k,m)\\
-				&=\inv{k}\otimes(k\otimes m)\\
-				&=(\inv{k}\otimes k)\otimes m\\
-				&=1\otimes m\\
-				&=m.
-			\end{align*}
-			\item Let $m_L,m_R\in\G$ with $m_L\neq m_R$, and let $k\in\G$. The ciphertexts for theses message are \begin{align*}
-				&c_L:=m_L\otimes k,\\
-				&c_R:=m_R\otimes k.
-			\end{align*} Let $\G:=\binaryfield^\lambda$ and $\otimes:=\xor$. Then \begin{align*}
-				c_L\otimes c_R&=(m_L\otimes k)\otimes(m_R\otimes k)\\
-				&=m_L\otimes m_R\otimes(k\otimes k)\\
-				&=m_L\otimes m_R.
-			\end{align*} This result does not reveal any information about $k$, and it would be the same if the attacker knew $m_L$ and $m_R$ but did not know $k$. Therefore, the scheme satisfies one-time secrecy.
-			
-			Note that if $\G=\binaryfield^\lambda$ and $\otimes=\xor$ then
-			\begin{center}
-				\begin{minipage}{.46\textwidth}
-					\begin{tabular}{|c|}
-						\hline
-						\cellcolor{blue!25}$\library_{\ots-\sL}^\scheme$ \\
-						\hline
-						\begin{tabular}{l}
-							\underline{\texttt{Eve}($m_L,m_R\in\G$):}\\
-							\tab $k\gets\G$\quad\textcolor{gray}{//\(\scheme.\KeyGen\)}\\
-							\tab $c\gets k\otimes m_L$\quad\textcolor{gray}{//\(\scheme.\Enc(k,m_L)\)}\\
-							\tab return $c$
-						\end{tabular}\\
-						\hline
-					\end{tabular}
-				\end{minipage}$\equiv$
-				\begin{minipage}{.46\textwidth}
-					\begin{tabular}{|c|}
-						\hline
-						\cellcolor{blue!25}$\library_{\ots-\sR}^\scheme$ \\
-						\hline
-						\begin{tabular}{l}
-							\underline{\texttt{Eve}($m_L,m_R\in\G$):}\\
-							\tab $k\gets\G$\quad\textcolor{gray}{//\(\scheme.\KeyGen\)}\\
-							\tab $c\gets k\otimes m_R$\quad\textcolor{gray}{//\(\scheme.\Enc(k,m_R)\)}\\
-							\tab return $c$
-						\end{tabular}\\
-						\hline
-					\end{tabular}
-				\end{minipage}
-			\end{center}
-		\end{enumerate}
-	\end{proof}
-	\fi
-	\vspace{20pt}
-	\begin{tcolorbox}[colback=white,colframe=execolor,arc=5pt,title={\color{white}\bf }]
-		\begin{exercise}
-			Prove that if an encryption scheme $\scheme$ has $\abs{\scheme.\keyspace}<\abs{\scheme.\messagespace}$ then it cannot satisfy one-time secrecy.\\
-			\\
-			\textcolor{gray}{[Hint: The definition of interchangeability does not place any restriction on the running time of the distinguisher/calling program. Even an exhaustive brute-force attack would be valid]}
-		\end{exercise}
-	\end{tcolorbox}
-	\begin{proof}[\sol]
-		content...
-	\end{proof}
+%	\newpage
+%	\section*{Exercises}
+%	\begin{tcolorbox}[colback=white,colframe=execolor,arc=5pt,title={\color{white}\bf }]
+%		\begin{exercise}
+%			In abstract algebra, a (finite) group is a finite set $\mathbb{G}$ of items together with an operator $\otimes$ satisfying the following axioms:
+%			\begin{itemize}
+%				\item \textbf{Closure:} for all \(a,b\in\mathbb{G}\), we have $a\otimes b\in \mathbb{G}$
+%				\item \textbf{Identity:} there is a special \textit{identity element} $e\in\G$ that satisfies \(e\otimes a = a\otimes e = a\) for
+%				all \(a\in\G\). We typically write ``1'' rather than $e$ for the identity element.
+%				\item \textbf{Associativity:} for all \(a, b, c\in\G\), we have \((a\otimes b)\otimes c = a\otimes (b\otimes c)\).
+%				\item \textbf{Inverses:} for all \(a\in\G\), there exists an inverse element \(b\in\G\) such that \(a\otimes b = b\otimes a\)
+%				is the identity element of $\G$. We typically write ``$a^{-1}$'' for the inverse of $a$.
+%			\end{itemize}
+%			
+%			Define the following encryption scheme in terms of an arbitrary group \((\G, \otimes)\):
+%			\begin{center}
+%				\begin{tabular}{|clll|}
+%					\hline
+%					\(\keyspace=\G\) & \(\underline{\KeyGen:}\) & \(\underline{\Enc(k,m):}\) &\(\underline{\Dec(k,c):}\) \\
+%					\(\messagespace=\G\) & \tab\(k\gets\G\) & \tab return \(k\otimes m\) & \tab ??\\
+%					\(\ciphertextspace=\G\) & \tab return \(k\) &&\\
+%					\hline
+%				\end{tabular}
+%			\end{center}
+%			\begin{enumerate}[(a)]
+%				\item Prove that \(\binaryfield^\lambda\) is a group with respect to the xor operator. What is the identity
+%				element, and what is the inverse of a value $x\in\binaryfield^\lambda$?
+%				\item Fill in the details of the $\Dec$ algorithm and prove (using the group axioms) that the scheme satisfies correctness.
+%				\item Prove that the scheme satisfies one-time secrecy.
+%			\end{enumerate}
+%		\end{exercise}
+%	\end{tcolorbox}
+%	\iffalse
+%	\begin{proof}[\sol]
+%		\begin{enumerate}[(a)]
+%			\item We show that \((\binaryfield^\lambda,\xor)\) satisfies the group axioms:
+%			\begin{itemize}
+%				\item[] \textbf{Closure:} \(x,y\in\binaryfield^\lambda\implies x\xor y\in\binaryfield^\lambda\)
+%				\item[] \textbf{Associativity:} The XOR operation is associative, so this property holds.
+%				\item[] \textbf{Identity:} The identity for XOR is the all-zero \(\lambda\)-bit string \(\zero^\lambda\) because \[
+%				(\forall x\in\binaryfield^\lambda)\quad x\xor\zero^\lambda=\zero^\lambda\xor x= x.
+%				\]
+%				\item[] \textbf{Inverse:} The inverse of $x$ under XOR is $x$ itself because \[
+%				x\xor x=\zero^\lambda.
+%				\]
+%			\end{itemize}
+%			\vspace{4pt}
+%			\item Decryption Algorithm: \begin{center}
+%				\begin{tabular}{l}
+%					\(\underline{\Dec(k,c):}\) \\ \tab return \(\inv{k}\otimes c\)
+%				\end{tabular}
+%			\end{center}
+%			Proof of Correctness: \begin{align*}
+%				\Dec(k,\Enc(k,m))&=\inv{k}\otimes\Enc(k,m)\\
+%				&=\inv{k}\otimes(k\otimes m)\\
+%				&=(\inv{k}\otimes k)\otimes m\\
+%				&=1\otimes m\\
+%				&=m.
+%			\end{align*}
+%			\item Let $m_L,m_R\in\G$ with $m_L\neq m_R$, and let $k\in\G$. The ciphertexts for theses message are \begin{align*}
+%				&c_L:=m_L\otimes k,\\
+%				&c_R:=m_R\otimes k.
+%			\end{align*} Let $\G:=\binaryfield^\lambda$ and $\otimes:=\xor$. Then \begin{align*}
+%				c_L\otimes c_R&=(m_L\otimes k)\otimes(m_R\otimes k)\\
+%				&=m_L\otimes m_R\otimes(k\otimes k)\\
+%				&=m_L\otimes m_R.
+%			\end{align*} This result does not reveal any information about $k$, and it would be the same if the attacker knew $m_L$ and $m_R$ but did not know $k$. Therefore, the scheme satisfies one-time secrecy.
+%			
+%			Note that if $\G=\binaryfield^\lambda$ and $\otimes=\xor$ then
+%			\begin{center}
+%				\begin{minipage}{.46\textwidth}
+%					\begin{tabular}{|c|}
+%						\hline
+%						\cellcolor{blue!25}$\library_{\ots-\sL}^\scheme$ \\
+%						\hline
+%						\begin{tabular}{l}
+%							\underline{\texttt{Eve}($m_L,m_R\in\G$):}\\
+%							\tab $k\gets\G$\quad\textcolor{gray}{//\(\scheme.\KeyGen\)}\\
+%							\tab $c\gets k\otimes m_L$\quad\textcolor{gray}{//\(\scheme.\Enc(k,m_L)\)}\\
+%							\tab return $c$
+%						\end{tabular}\\
+%						\hline
+%					\end{tabular}
+%				\end{minipage}$\equiv$
+%				\begin{minipage}{.46\textwidth}
+%					\begin{tabular}{|c|}
+%						\hline
+%						\cellcolor{blue!25}$\library_{\ots-\sR}^\scheme$ \\
+%						\hline
+%						\begin{tabular}{l}
+%							\underline{\texttt{Eve}($m_L,m_R\in\G$):}\\
+%							\tab $k\gets\G$\quad\textcolor{gray}{//\(\scheme.\KeyGen\)}\\
+%							\tab $c\gets k\otimes m_R$\quad\textcolor{gray}{//\(\scheme.\Enc(k,m_R)\)}\\
+%							\tab return $c$
+%						\end{tabular}\\
+%						\hline
+%					\end{tabular}
+%				\end{minipage}
+%			\end{center}
+%		\end{enumerate}
+%	\end{proof}
+%	\fi
+%	\vspace{20pt}
+%	\begin{tcolorbox}[colback=white,colframe=execolor,arc=5pt,title={\color{white}\bf }]
+%		\begin{exercise}
+%			Prove that if an encryption scheme $\scheme$ has $\abs{\scheme.\keyspace}<\abs{\scheme.\messagespace}$ then it cannot satisfy one-time secrecy.\\
+%			\\
+%			\textcolor{gray}{[Hint: The definition of interchangeability does not place any restriction on the running time of the distinguisher/calling program. Even an exhaustive brute-force attack would be valid]}
+%		\end{exercise}
+%	\end{tcolorbox}
+%	\begin{proof}[\sol]
+%		content...
+%	\end{proof}
 
 	\newpage
 	\chapter{Cryptography on Intractable Computations}
@@ -2147,6 +2187,7 @@ The key distinction between a PRF and an RF is that a PRF's output is reproducib
 			\hline
 		\end{tabular}
 	\end{table}
+	
 	\begin{figure}[h!]\centering
 		\includegraphics[width=\textwidth, height=.36\textheight]{prf.png}
 		\caption{PRF vs RF}
@@ -2238,6 +2279,73 @@ plt.show()
 			\node[below=0.1cm of RFBox.south] {Output varies randomly for the same input};
 		\end{tikzpicture}
 	\end{center}
+
+	\newpage
+	\chapter{Security Against Chosen Plaintext Attacks}
+	\section{Introduction to Encryption}
+	Our previous security definitions for encryption capture the case where a key is used to encrypt only one plaintext. Clearly, it would be more useful to have an encryption scheme that allows many plaintexts to be encrypted under the same key.
+	
+	\subsection{Chosen-Plaintext Attack (CPA) Security}
+	Fortunately, we have arranged things so that we get the "correct" security definition when we modify the earlier definition in a natural way. We simply let the libraries choose a secret key once and for all, which is used to encrypt all plaintexts. More formally:
+	
+	\begin{definition}
+		Let $\mathcal{E}$ be an encryption scheme. We say that $\mathcal{E}$ has \emph{security against chosen-plaintext attacks (CPA security)} if $[\text{some mathematical expression}]$.
+	\end{definition}
+	
+	\subsection{Limits of Deterministic Encryption}
+	We have already seen block ciphers / PRPs, which seem to satisfy everything needed for a secure encryption scheme. For a block cipher, $F$ corresponds to encryption, $F^{-1}$ corresponds to decryption, and all outputs of $F$ look pseudorandom. What more could you ask for in a good encryption scheme?
+	
+	\begin{example}
+		We will see that a block cipher, when used "as-is," is not a CPA-secure encryption scheme. Let $F$ denote the block cipher and suppose its block length is $b$ len.
+	\end{example}
+	
+	When \( \mathcal{A} \) is linked to \( L_{\text{CPA-L}} \), the
+	\textsc{Eavesdrop} algorithm will encrypt its first argument. So, \( c_1 \)
+	and \( c_2 \) will both be computed as \( F(k, 0^{\text{blen}}) \). Since \( F \) is a deterministic
+	function, this results in identical outputs from \textsc{Eavesdrop}. In
+	other words \( c_1 = c_2 \), and \( \mathcal{A} \circ L_{\text{CPA-L}} \) always outputs 1.
+	
+	When \( \mathcal{A} \) is linked to \( L_{\text{CPA-R}} \), the
+	\textsc{Eavesdrop} algorithm will encrypt its second argument. So,
+	\( c_1 \) and \( c_2 \) are computed as \( c_1 = F(k, 0^{\text{blen}}) \) and \( c_2 = F(k, 1^{\text{blen}}) \).
+	Since \( F \) is a permutation, \( c_1 \neq c_2 \), so \( \mathcal{A} \circ L_{\text{CPA-R}} \) never outputs 1.
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\SetKwInput{KwData}{Input}
+		\SetKwInput{KwResult}{Output}
+		
+		\KwData{Two arguments \( 0^{\text{blen}} \), \( 1^{\text{blen}} \)}
+		\KwResult{Whether \( c_1 = c_2 \)}
+		\caption{Adversary \(\mathcal{A}\) for \( L_{\text{CPA-*}} \)}
+		
+		\( c_1 \leftarrow \text{EAVESDROP}(0^{\text{blen}}, 0^{\text{blen}}) \)\;
+		\( c_2 \leftarrow \text{EAVESDROP}(0^{\text{blen}}, 1^{\text{blen}}) \)\;
+		\Return{\( c_1 = c_2 \)}\;
+		
+	\end{algorithm}
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\SetKwInput{KwData}{Input}
+		\SetKwInput{KwResult}{Output}
+		
+		\KwData{\( k \leftarrow \{0, 1\}^\lambda \), \( m_1, m_2 \)}
+		\KwResult{Cipher \( c \)}
+		
+		\caption{EAVESDROP Left and Right}
+		
+		\textbf{EAVESDROP Left:}\\
+		\( c \leftarrow F(k, m_1) \)\;
+		\Return{\( c \)}\;
+		
+		\textbf{EAVESDROP Right:}\\
+		\( c \leftarrow F(k, m_2) \)\;
+		\Return{\( c \)}\;
+		
+	\end{algorithm}
+	
+
 
 	\newpage
 	\begin{thebibliography}{9}
