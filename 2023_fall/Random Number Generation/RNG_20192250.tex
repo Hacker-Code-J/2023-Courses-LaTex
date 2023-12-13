@@ -2604,22 +2604,22 @@ Consider this as a sample sequence and apply the FIPS 140-1 statistical random n
 			&= \frac{n-k+1}{2^{k+1}}
 		\end{align*}
 		
-%		For a run of length $k$ to start at position $i$ (where $1 \leq i \leq n-k+1$), the following conditions must be met:
-%		\begin{itemize}
-%			\item The $k$ bits starting at $i$ are the same.
-%			\item The bit before position $i$ (if it exists) and the bit after the $k$ bits (if it exists) are different.
-%		\end{itemize}
-%		The probability is \[
-%		\Pr\sbr{\text{run of length $k$ staring at $i$}}=\begin{cases}
-%			\displaystyle\of{\frac{1}{2}}^{k+1} &:1<i\leq n-k\\
-%			\\
-%			\displaystyle\of{\frac{1}{2}}^k &:i\in\set{1,n-k+1}.
-%		\end{cases}
-%		\] Thus, \begin{align*}
-%			\E[R_k^{(n)}] &= \sum_{i=1}^{n-k+1} \Pr\sbr{\text{run of length } k \text{ starting at } i}\\
-%			&= 2 \times \frac{1}{2^k} + (n-k-1) \times \frac{1}{2^{k+1}}.
-%		\end{align*}
-%		for $n \geq k$.
+		For a run of length $k$ to start at position $i$ (where $1 \leq i \leq n-k+1$), the following conditions must be met:
+		\begin{itemize}
+			\item The $k$ bits starting at $i$ are the same.
+			\item The bit before position $i$ (if it exists) and the bit after the $k$ bits (if it exists) are different.
+		\end{itemize}
+		The probability is \[
+		\Pr\sbr{\text{run of length $k$ staring at $i$}}=\begin{cases}
+			\displaystyle\of{\frac{1}{2}}^{k+1} &:1<i\leq n-k\\
+			\\
+			\displaystyle\of{\frac{1}{2}}^k &:i\in\set{1,n-k+1}.
+		\end{cases}
+		\] Thus, \begin{align*}
+			\E[R_k^{(n)}] &= \sum_{i=1}^{n-k+1} \Pr\sbr{\text{run of length } k \text{ starting at } i}\\
+			&= 2 \times \frac{1}{2^k} + (n-k-1) \times \frac{1}{2^{k+1}}.
+		\end{align*}
+		for $n \geq k$.
 		\item Recall that
 	
 		\begin{tcolorbox}[colback=white,colframe=lemcolor,arc=5pt,title={\color{white}\bf Runs Test}]
