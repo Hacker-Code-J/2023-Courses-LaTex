@@ -201,15 +201,15 @@
 \newcommand{\uniform}{\xleftarrow{\randomness}}
 \newcommand{\binaryfield}{\set{\zero,\one}}
 
-\newcommand{\ctxt}{\texttt{CTXT}}
-\newcommand{\eavesdrop}{\texttt{Eavesdrop}}
+\newcommand{\ctxt}{\operatorname{\textsc{CTXT}}}
+\newcommand{\eavesdrop}{\operatorname{\textsc{Eavesdrop}}}
 
 \newcommand{\otp}{\mathsf{OTP}}
 \newcommand{\potp}{\mathsf{pOTP}}
 \newcommand{\ots}{\mathsf{ots}}
 \newcommand{\sL}{\mathsf{L}}
 \newcommand{\sR}{\mathsf{R}}
-\newcommand{\indexbit}{\texttt{Idx}}
+\newcommand{\indexbit}{\texttt{In}}
 \newcommand{\outbit}{\texttt{Out}}
 \newcommand{\real}{\mathsf{real}}
 \newcommand{\rand}{\mathsf{rand}}
@@ -313,8 +313,8 @@
 		\( \keyspace \) & Key Space\\
 		\( \messagespace \) & Message Space\\
 		\( \ciphertextspace \) & Ciphertext Space\\
-		\( \texttt{CTXT}() \) & Ciphertext Output Function\\
-		\( \texttt{EVE}() \) & Eavesdrop Function\\
+		\( \textsc{CTXT}() \) & Ciphertext Output Function\\
+		\( \textsc{EAVESDROP}() \) & Eavesdrop Function\\
 	\end{tabular}
 	
 	\chapter*{Introduction}
@@ -380,7 +380,37 @@
 		\end{construction}
 	\end{tcolorbox}
 	\vspace{8pt}
-	\begin{tcolorbox}[colback=white,colframe=procolor,arc=5pt,title={\color{white}\bf Corectness of OTP}]
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\SetNlSty{textbf}{}{:}
+		\SetAlgoNlRelativeSize{-1}
+		\SetNlSkip{1em}
+		\DontPrintSemicolon
+		
+		\SetKwFunction{FKeyGen}{KeyGen}
+		\SetKwFunction{FEnc}{Enc}
+		\SetKwFunction{FDec}{Dec}
+		
+		\SetKwProg{Fn}{Function}{:}{\KwRet}
+		\Fn{\FKeyGen{}}{
+			$k \leftarrow \binaryfield^\lambda$\;
+			\KwRet $k$\;
+		}
+		\BlankLine
+		\Fn{\FEnc{$k, m \in \binaryfield^\lambda$}}{
+			\KwRet $k \oplus m$\;
+		}
+		\BlankLine
+		\Fn{\FDec{$k, c \in \binaryfield^\lambda$}}{
+			\KwRet $k \oplus c$\;
+		}
+		
+		\caption{Key Generation, Encryption, and Decryption}
+	\end{algorithm}
+	
+	\newpage
+	\begin{tcolorbox}[colback=white,colframe=procolor,arc=5pt,title={\color{white}\bf Correctness of OTP}]
 		\begin{proposition}
 			\[
 			(\forall k,m\in\binaryfield^\lambda)\quad\Dec(k,\Enc(k,m))=m.
@@ -395,14 +425,13 @@
 			&=m.
 		\end{align*}
 	\end{proof}
-
-	\newpage
-	\begin{remark}[\eavesdrop\ Algorithm]
+	\vspace{24pt}
+	\begin{remark}[$\eavesdrop$ Algorithm]
 		From Eve’s perspective, seeing a ciphertext corresponds to receiving
 		an output from the following algorithm: \\ \begin{center}
 		\begin{tabular}{|l|}
 			\hline
-			\(\underline{\eavesdrop(m\in\binaryfield^\lambda)}\)\\
+			\(\underline{\eavesdrop (m\in\binaryfield^\lambda)}\)\\
 			\tab\(k\uniform\binaryfield^\lambda\)\\
 			\tab\(c:=k\xor m\)\\
 			\tab return \(c\)\\
@@ -469,9 +498,9 @@
 		The definition is written in terms of a probability because $\Enc$ is allowed to be a randomized algorithm. In other words, decrypting a ciphertext with the same key that was used for encryption must \textit{always} result in the original plaintext.
 	\end{remark}
 	\vspace{4pt}
-	\begin{example}
-		content...
-	\end{example}
+%	\begin{example}
+%		content...
+%	\end{example}
 	
 	\subsection{``Real-vs-Random'' Style of Security Definition}
 	\begin{quote}
@@ -488,20 +517,37 @@
 	\begin{center}
 		\begin{tabular}{|l|}
 			\hline
-			$\underline{\texttt{CTXT}(m\in\scheme.\messagespace):}$\\
+			$\underline{\textsc{CTXT}(m\in\scheme.\messagespace):}$\\
 			\tab$k\gets\scheme.\KeyGen$\\
 			\tab$c:=\scheme.\Enc(k,m)$\\
 			\tab return $c$\\
 			\hline
 		\end{tabular}\\
 	\end{center}
+	\begin{algorithm}[H]
+		\DontPrintSemicolon
+		\SetAlgoLined
+		\SetNlSty{textbf}{}{:}
+		\SetAlgoNlRelativeSize{-1}
+		\SetNlSkip{1em}
+		
+		\SetKwFunction{FCTXT}{\textsc{CTXT}}
+		
+		\Fn{\FCTXT{$m \in \Sigma.M$}}{
+			$k \leftarrow \Sigma.\text{KeyGen}$\;
+			$c := \Sigma.\text{Enc}(k, m)$\;
+			\KwRet $c$\;
+		}
+		
+		\caption{\textsc{CTXT} function}
+	\end{algorithm}
 	
 	\begin{example}[One-Time Pad (OTP)]
 		a\\ \begin{center}
 			\begin{minipage}{.44\textwidth}
 				\begin{tabular}{|l|}
 					\hline
-					$\underline{\texttt{CTXT}(m):}$\\
+					$\underline{\textsc{CTXT}(m):}$\\
 					\begin{tabular}{ll}
 						\tab$k\gets\binaryfield^\lambda$ & \textcolor{gray}{//\(\KeyGen\) of OTP}\\
 						\tab$c:=k\xor m$ & \textcolor{gray}{//\(\Enc\) of OTP}\\
@@ -513,7 +559,7 @@
 		\begin{minipage}{.3\textwidth}
 			\begin{tabular}{|l|}
 				\hline
-				$\underline{\texttt{CTXT}(m):}$\\
+				$\underline{\textsc{CTXT}(m):}$\\
 				\begin{tabular}{ll}
 					\tab$c:=\binaryfield^\lambda$ & \textcolor{gray}{//\(\ciphertextspace\) of OTP}\\
 					\tab return $c$\\
@@ -528,8 +574,9 @@
 		``an encryption scheme is a good one if, when you plug its \(\KeyGen\) and \(\Enc\) algorithms into the template of the \texttt{CTXT} subroutine above, the two implementations of \texttt{CTXT} induce identical behavior in every calling program.''
 	\end{quote}
 
-	\subsection{``Left-vs-Right'' Style of Security Definition}
+%	\subsection{``Left-vs-Right'' Style of Security Definition}
 	
+	\newpage
 	\section{Formalisms for Security Definition}
 	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Library}]
 		\begin{definition}
@@ -570,6 +617,24 @@
 		\Pr\left[\adversary\linking\library\Rightarrow\true\right]=\frac{1}{2^\lambda}.
 		\]
 	\end{example}
+	\vspace{8pt}
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\DontPrintSemicolon
+		\SetNlSty{textbf}{}{:}
+		\SetAlgoNlRelativeSize{0}
+		\SetNlSkip{1em}
+		
+		\Fn{Adversary $\mathcal{A}$}{
+			$m \leftarrow \binaryfield^\lambda$\;
+			$c := \text{CTXT}(m)$\;
+			\KwRet $m = c$\;
+		}
+		
+		\caption{Adversary A}
+	\end{algorithm}
+	
 	\vspace{8pt}
 	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf Interchangeability}]
 		\begin{definition}
@@ -952,6 +1017,24 @@
 				\end{tabular}
 			\end{minipage}
 		\end{center}
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\DontPrintSemicolon
+		
+		\SetKwBlock{PredictLone}{\colorbox{white}{$\mathcal{L}_1$} Predict(x):}{end}
+		\PredictLone{
+			$s \leftarrow \{0, 1\}^\lambda$\;
+			\KwRet $x = s$\;
+		}
+		\SetKwBlock{PredictLtwo}{\colorbox{white}{$\mathcal{L}_2$} Predict(x):}{end}
+		\PredictLtwo{
+			\KwRet false\;
+		}
+		
+		\caption{Algorithm \( \mathcal{L}_1 \) and \( \mathcal{L}_2 \)}
+	\end{algorithm}
+		\vspace{4pt}
 		The calling program $\adversary$ repeatedly invokes the `\texttt{Predict}' functions and returns `1' if it ever obtains a `$\true$' value from the response:
 		\begin{figure}[h!]\centering
 			\begin{tabular}{|c|}
@@ -968,14 +1051,29 @@
 			\end{tabular}
 		\end{figure}
 	
-		Then \begin{enumerate}[(1)]
-			\item $\library_2$ can never return $\true$, \ie, \[
-			\Pr\sbr{\adversary\linking\library_2\outputs 1}=0.
-			\]
+		\newpage
+		\begin{algorithm}[H]
+			\SetAlgoLined
+			\DontPrintSemicolon
+			
+			\SetKwBlock{Adversary}{\colorbox{white}{$\mathcal{A}$}}{end}
+			\Adversary{
+				\For{$i\leftarrow 1$ \KwTo $q$}{
+					\If{\textbf{Predict}($\zero^\lambda$) = true}{
+						\KwRet 1\;
+					}
+				}
+				\KwRet 0\;
+			}
+			
+			\caption{Adversarial Algorithm \( \mathcal{A} \)}
+		\end{algorithm}
+		\begin{enumerate}[(1)]
+			\item $\library_2$ can never return $\true$, \ie, $\Pr\sbr{\adversary\linking\library_2\outputs 1}=0.$
 			\item $\Pr\sbr{\adversary\linking\library_{2}\outputs 1}$ is surely non-zero.
 			\begin{align*}
-				\Pr\sbr{\adversary\linking\outputs 1}&=1-\Pr\left[\adversary\linking\library_{1}\outputs 0\right]\\
-				&=1-\del{1-\frac{1}{2^\lambda}}^q.
+				\Pr\sbr{\adversary\linking\outputs 1}=1-\Pr\left[\adversary\linking\library_{1}\outputs 0\right]
+				=1-\del{1-\frac{1}{2^\lambda}}^q.
 			\end{align*}
 			Using the union bound, we get: \begin{align*}
 				\Pr\sbr{\adversary\linking\outputs 1}&\leq\Pr[\text{first call to \texttt{Predict} returns $\true$}]\\
@@ -995,9 +1093,9 @@
 			\end{enumerate}
 		\end{lemma}
 	\end{tcolorbox}
-	\begin{proof}
-		content...
-	\end{proof}
+%	\begin{proof}
+%		
+%	\end{proof}
 	\begin{tcolorbox}[colframe=lemcolor,title={\color{white}\bf }]
 		\begin{lemma}
 			For any polynomial-time library $\library^*$, \[
@@ -1005,9 +1103,9 @@
 			\]
 		\end{lemma}
 	\end{tcolorbox}
-	\begin{proof}
-		content...
-	\end{proof}
+%	\begin{proof}
+%		
+%	\end{proof}
 	\vspace{20pt}
 	\begin{tcolorbox}[colframe=lemcolor,title={\color{white}\bf Bad-Event Lemma}]
 		\begin{lemma}
@@ -1016,11 +1114,9 @@
 			\]
 		\end{lemma}
 	\end{tcolorbox}
-	\begin{proof}
-		
-	\end{proof}
-
-	\newpage
+%	\begin{proof}
+%		
+%	\end{proof}
 	\begin{example}
 		Consider $\library_1$ and $\library_{2}$. They are indistinguishable with the following sequence of hybrids:
 		\begin{figure}[h!]\centering
@@ -1086,6 +1182,64 @@
 				\end{tabular}
 			\end{minipage}
 		\end{figure}
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\DontPrintSemicolon
+		\SetKwBlock{PredictLone}{\colorbox{white}{$\mathcal{L}_1$} Predict(x):}{end}
+		
+		\PredictLone{
+			$s \leftarrow \binaryfield^\lambda$\;
+			\KwRet $x = s$\;
+		}
+	
+		\SetKwBlock{HybOne}{\colorbox{white}{$\library_{\mathsf{hyb}-1}$}}{end}
+		
+		\HybOne{
+			bad := 0\;
+			\SetKwFunction{FPredict}{Predict}
+			\SetKwProg{Fn}{Function}{:}{\KwRet}
+			\Fn{\FPredict{x}}{
+				$s \leftarrow \binaryfield^\lambda$\;
+				\lIf{x = s}{
+					bad := 1\;
+					\KwRet true
+				}
+				\KwRet false\;
+			}
+		}
+		
+		\caption{Algorithm \( \mathcal{L}_1 \) and $\library_{\mathsf{hyb}-1}$}
+	\end{algorithm}
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\DontPrintSemicolon
+		
+		\SetKwBlock{PredictLtwo}{\colorbox{white}{$\mathcal{L}_2$} Predict(x):}{end}
+		
+		\PredictLtwo{
+			\KwRet false\;
+		}
+		
+		\SetKwBlock{HybTwo}{\colorbox{white}{$\library_{\mathsf{hyb}-2}$}}{end}
+		
+		\HybTwo{
+			bad := 0\;
+			\SetKwFunction{FPredict}{Predict}
+			\SetKwProg{Fn}{Function}{:}{\KwRet}
+			\Fn{\FPredict{x}}{
+				$s \leftarrow \binaryfield^\lambda$\;
+				\lIf{x = s}{
+					bad := 1
+				}
+				\KwRet false\;
+			}
+		}
+		
+		\caption{Algorithm $\library_{\mathsf{hyb}-2}$ and $\library_{2}$ }
+	\end{algorithm}
+	\newpage
 		\begin{enumerate}[$\blacktriangleright$]
 			\item $\library_{1}\equiv\library_{\mathsf{hyb}-1}$; Without \textit{accessing} the variable ``bad'', the change can have no effect.
 			\item $\library_{\mathsf{hyb}-1}\indist\library_{\mathsf{hyb}-2}$; By the bad-event lemma, \[
@@ -1098,215 +1252,24 @@
 	\]
 	\end{example}
 
-	\newpage
-	\section{Birthday Probabilities \& Sampling With/out Replacement}
+%	\newpage
+%	\section{Birthday Probabilities \& Sampling With/out Replacement}
 	
 	
-	\newpage
+%	\newpage
 	\newpage
 	\section*{Exercises}
 	
 	\begin{itemize}
-		\item[\bf 4.2.] Which of the following are negligible functions in $\lambda$? Justify your answers.\[
-		\frac{1}{2^{\lambda/2}}\quad\frac{1}{2^{\log(\lambda^2)}}\quad\frac{1}{\lambda^{\log(\lambda)}}\quad\frac{1}{\lambda^2}\quad\frac{1}{2^{(\log\lambda)^2}}\quad\frac{1}{(\log\lambda)^2}\quad\frac{1}{\lambda^{1/\lambda}}\quad\frac{1}{\sqrt{\lambda}}\quad\frac{1}{2^{\sqrt{\lambda}}}
-		\]
+		\item[\bf 4.2.] The following are negligible functions in $\lambda$? Justify your answers.
+%		\[
+%		\frac{1}{2^{\lambda/2}}\quad\frac{1}{2^{\log(\lambda^2)}}\quad\frac{1}{\lambda^{\log(\lambda)}}\quad\frac{1}{\lambda^2}\quad\frac{1}{2^{(\log\lambda)^2}}\quad\frac{1}{(\log\lambda)^2}\quad\frac{1}{\lambda^{1/\lambda}}\quad\frac{1}{\sqrt{\lambda}}\quad\frac{1}{2^{\sqrt{\lambda}}}
+%		\]
+	\[
+	\frac{1}{\lambda^{1/\lambda}}.
+	\]
 		\begin{proof}[\sol]
-			\ \begin{enumerate}[(1)]
-			\item $\displaystyle\frac{1}{2^{\lambda/2}},\frac{1}{2^{\log(\lambda^2)}},\frac{1}{\lambda^{\log(\lambda)}},\frac{1}{\lambda^2},\frac{1}{2^{(\log\lambda)^2}},\frac{1}{(\log\lambda)^2},\frac{1}{\sqrt{\lambda}},\frac{1}{2^{\sqrt{\lambda}}}$ are negligible functions.
-			\begin{figure}[h!]\centering
-				\begin{minipage}{.46\textwidth}
-					\begin{tikzpicture}[scale=.9]
-						\begin{axis}[
-							axis lines = left,
-							xlabel = \(\lambda\),
-							ylabel = \(f\),
-							ymin = 0, ymax = 1.1,
-							xmin = 0, xmax = 25,
-							legend style={at={(.7,.6)},anchor=west}
-							]
-							% Original plot
-							\addplot [
-							line width = .7mm,
-							domain=0.1:25, 
-							samples=100, 
-							color=red,
-							]
-							{1/2^x};
-							\addlegendentry{\(\frac{1}{2^\lambda}\)}
-							
-							% New plots
-							\addplot [
-							line width = .7mm,
-							domain=0.1:25, 
-							samples=100, 
-							color=blue,
-							]
-							{1/2^(x/2)};
-							\addlegendentry{\(\frac{1}{2^{\lambda/2}}\)}
-							
-							\addplot [
-							line width = .7mm,
-							domain=0.1:25, 
-							samples=100, 
-							color=green,
-							]
-							{1/2^(ln(x^2)/ln(2))};
-							\addlegendentry{\(\frac{1}{2^{\log(\lambda^2)}}\)}
-							
-							\addplot [
-							line width = .7mm,
-							domain=1.1:25, 
-							samples=100, 
-							color=orange,
-							]
-							{1/x^(ln(x)/ln(2))};
-							\addlegendentry{\(\frac{1}{\lambda^{\log(\lambda)}}\)}
-							
-							\addplot [
-							line width = .7mm,
-							domain=0.1:25, 
-							samples=100, 
-							color=purple,
-							]
-							{1/x^2};
-							\addlegendentry{\(\frac{1}{\lambda^2}\)}
-							
-							\addplot [
-							line width = .7mm,
-							domain=1.1:25, 
-							samples=100, 
-							color=brown,
-							]
-							{1/2^(ln(x)*ln(x))};
-							\addlegendentry{\(\frac{1}{2^{(\log\lambda)^2}}\)}
-							
-							\addplot [
-							line width = .7mm,
-							domain=1.1:25, 
-							samples=100, 
-							color=pink,
-							]
-							{1/(ln(x)*ln(x))};
-							\addlegendentry{\(\frac{1}{(\log\lambda)^2}\)}
-
-							\addplot [
-							line width = .7mm,
-							domain=1.1:25, 
-							samples=100, 
-							color=cyan,
-							]
-							{1/sqrt(x)};
-							\addlegendentry{\(\frac{1}{\sqrt{\lambda}}\)}
-							
-							\addplot [
-							line width = .7mm,
-							domain=0.1:25, 
-							samples=100, 
-							color=olive,
-							]
-							{1/2^(sqrt(x))};
-							\addlegendentry{\(\frac{1}{2^{\sqrt{\lambda}}}\)}
-						\end{axis}
-					\end{tikzpicture}
-				\end{minipage}\begin{minipage}{.46\textwidth}
-				\begin{tikzpicture}[scale=.9]
-					\begin{axis}[
-						axis lines = left,
-						xlabel = \(\lambda\),
-						ylabel = \(f\),
-						ymin = 0, ymax = 1.1,
-						xmin = 0, xmax = 1024,
-						legend style={at={(.7,.6)},anchor=west}
-						]
-						% Original plot
-						\addplot [
-						line width = .7mm,
-						domain=0.1:1024, 
-						samples=100, 
-						color=red,
-						]
-						{1/2^x};
-						\addlegendentry{\(\frac{1}{2^\lambda}\)}
-						
-						% New plots
-						\addplot [
-						line width = .7mm,
-						domain=0.1:1024, 
-						samples=100, 
-						color=blue,
-						]
-						{1/2^(x/2)};
-						\addlegendentry{\(\frac{1}{2^{\lambda/2}}\)}
-						
-						\addplot [
-						line width = .7mm,
-						domain=0.1:1024, 
-						samples=100, 
-						color=green,
-						]
-						{1/2^(ln(x^2)/ln(2))};
-						\addlegendentry{\(\frac{1}{2^{\log(\lambda^2)}}\)}
-						
-						\addplot [
-						line width = .7mm,
-						domain=1.1:1024, 
-						samples=100, 
-						color=orange,
-						]
-						{1/x^(ln(x)/ln(2))};
-						\addlegendentry{\(\frac{1}{\lambda^{\log(\lambda)}}\)}
-						
-						\addplot [
-						line width = .7mm,
-						domain=0.1:1024, 
-						samples=100, 
-						color=purple,
-						]
-						{1/x^2};
-						\addlegendentry{\(\frac{1}{\lambda^2}\)}
-						
-						\addplot [
-						line width = .7mm,
-						domain=1.1:1024, 
-						samples=100, 
-						color=brown,
-						]
-						{1/2^(ln(x)*ln(x))};
-						\addlegendentry{\(\frac{1}{2^{(\log\lambda)^2}}\)}
-						
-						
-						\addplot [
-						line width = .7mm,
-						domain=1.1:1024, 
-						samples=100, 
-						color=pink,
-						]
-						{1/(ln(x)*ln(x))};
-						\addlegendentry{\(\frac{1}{(\log\lambda)^2}\)}
-						
-						\addplot [
-						line width = .7mm,
-						domain=1.1:1024, 
-						samples=100, 
-						color=cyan,
-						]
-						{1/sqrt(x)};
-						\addlegendentry{\(\frac{1}{\sqrt{\lambda}}\)}
-						
-						\addplot [
-						line width = .7mm,
-						domain=0.1:1024, 
-						samples=100, 
-						color=olive,
-						]
-						{1/2^(sqrt(x))};
-						\addlegendentry{\(\frac{1}{2^{\sqrt{\lambda}}}\)}
-					\end{axis}
-				\end{tikzpicture}
-		\end{minipage}
-				\captionof{figure}{Negligible functions.}
-			\end{figure}
-			\item  $\displaystyle\frac{1}{\lambda^{1/\lambda}}$ is non-negligible functions.
+			$\displaystyle\frac{1}{\lambda^{1/\lambda}}$ is non-negligible functions.
 			\begin{figure}[h!]\centering
 					\begin{tikzpicture}[scale=.9]
 						\begin{axis}[
@@ -1339,7 +1302,236 @@
 					\end{tikzpicture}
 				\captionof{figure}{Non-negligible functions.}
 			\end{figure}
-		\end{enumerate}
+			\\
+%			\ \begin{enumerate}[(1)]
+%			\item $\displaystyle\frac{1}{2^{\lambda/2}},\frac{1}{2^{\log(\lambda^2)}},\frac{1}{\lambda^{\log(\lambda)}},\frac{1}{\lambda^2},\frac{1}{2^{(\log\lambda)^2}},\frac{1}{(\log\lambda)^2},\frac{1}{\sqrt{\lambda}},\frac{1}{2^{\sqrt{\lambda}}}$ are negligible functions.
+%			\begin{figure}[h!]\centering
+%				\begin{minipage}{.46\textwidth}
+%					\begin{tikzpicture}[scale=.9]
+%						\begin{axis}[
+%							axis lines = left,
+%							xlabel = \(\lambda\),
+%							ylabel = \(f\),
+%							ymin = 0, ymax = 1.1,
+%							xmin = 0, xmax = 25,
+%							legend style={at={(.7,.6)},anchor=west}
+%							]
+%							% Original plot
+%							\addplot [
+%							line width = .7mm,
+%							domain=0.1:25, 
+%							samples=100, 
+%							color=red,
+%							]
+%							{1/2^x};
+%							\addlegendentry{\(\frac{1}{2^\lambda}\)}
+%							
+%							% New plots
+%							\addplot [
+%							line width = .7mm,
+%							domain=0.1:25, 
+%							samples=100, 
+%							color=blue,
+%							]
+%							{1/2^(x/2)};
+%							\addlegendentry{\(\frac{1}{2^{\lambda/2}}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=0.1:25, 
+%							samples=100, 
+%							color=green,
+%							]
+%							{1/2^(ln(x^2)/ln(2))};
+%							\addlegendentry{\(\frac{1}{2^{\log(\lambda^2)}}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=1.1:25, 
+%							samples=100, 
+%							color=orange,
+%							]
+%							{1/x^(ln(x)/ln(2))};
+%							\addlegendentry{\(\frac{1}{\lambda^{\log(\lambda)}}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=0.1:25, 
+%							samples=100, 
+%							color=purple,
+%							]
+%							{1/x^2};
+%							\addlegendentry{\(\frac{1}{\lambda^2}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=1.1:25, 
+%							samples=100, 
+%							color=brown,
+%							]
+%							{1/2^(ln(x)*ln(x))};
+%							\addlegendentry{\(\frac{1}{2^{(\log\lambda)^2}}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=1.1:25, 
+%							samples=100, 
+%							color=pink,
+%							]
+%							{1/(ln(x)*ln(x))};
+%							\addlegendentry{\(\frac{1}{(\log\lambda)^2}\)}
+%
+%							\addplot [
+%							line width = .7mm,
+%							domain=1.1:25, 
+%							samples=100, 
+%							color=cyan,
+%							]
+%							{1/sqrt(x)};
+%							\addlegendentry{\(\frac{1}{\sqrt{\lambda}}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=0.1:25, 
+%							samples=100, 
+%							color=olive,
+%							]
+%							{1/2^(sqrt(x))};
+%							\addlegendentry{\(\frac{1}{2^{\sqrt{\lambda}}}\)}
+%						\end{axis}
+%					\end{tikzpicture}
+%				\end{minipage}\begin{minipage}{.46\textwidth}
+%				\begin{tikzpicture}[scale=.9]
+%					\begin{axis}[
+%						axis lines = left,
+%						xlabel = \(\lambda\),
+%						ylabel = \(f\),
+%						ymin = 0, ymax = 1.1,
+%						xmin = 0, xmax = 1024,
+%						legend style={at={(.7,.6)},anchor=west}
+%						]
+%						% Original plot
+%						\addplot [
+%						line width = .7mm,
+%						domain=0.1:1024, 
+%						samples=100, 
+%						color=red,
+%						]
+%						{1/2^x};
+%						\addlegendentry{\(\frac{1}{2^\lambda}\)}
+%						
+%						% New plots
+%						\addplot [
+%						line width = .7mm,
+%						domain=0.1:1024, 
+%						samples=100, 
+%						color=blue,
+%						]
+%						{1/2^(x/2)};
+%						\addlegendentry{\(\frac{1}{2^{\lambda/2}}\)}
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=0.1:1024, 
+%						samples=100, 
+%						color=green,
+%						]
+%						{1/2^(ln(x^2)/ln(2))};
+%						\addlegendentry{\(\frac{1}{2^{\log(\lambda^2)}}\)}
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=1.1:1024, 
+%						samples=100, 
+%						color=orange,
+%						]
+%						{1/x^(ln(x)/ln(2))};
+%						\addlegendentry{\(\frac{1}{\lambda^{\log(\lambda)}}\)}
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=0.1:1024, 
+%						samples=100, 
+%						color=purple,
+%						]
+%						{1/x^2};
+%						\addlegendentry{\(\frac{1}{\lambda^2}\)}
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=1.1:1024, 
+%						samples=100, 
+%						color=brown,
+%						]
+%						{1/2^(ln(x)*ln(x))};
+%						\addlegendentry{\(\frac{1}{2^{(\log\lambda)^2}}\)}
+%						
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=1.1:1024, 
+%						samples=100, 
+%						color=pink,
+%						]
+%						{1/(ln(x)*ln(x))};
+%						\addlegendentry{\(\frac{1}{(\log\lambda)^2}\)}
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=1.1:1024, 
+%						samples=100, 
+%						color=cyan,
+%						]
+%						{1/sqrt(x)};
+%						\addlegendentry{\(\frac{1}{\sqrt{\lambda}}\)}
+%						
+%						\addplot [
+%						line width = .7mm,
+%						domain=0.1:1024, 
+%						samples=100, 
+%						color=olive,
+%						]
+%						{1/2^(sqrt(x))};
+%						\addlegendentry{\(\frac{1}{2^{\sqrt{\lambda}}}\)}
+%					\end{axis}
+%				\end{tikzpicture}
+%		\end{minipage}
+%				\captionof{figure}{Negligible functions.}
+%			\end{figure}
+%			\item  $\displaystyle\frac{1}{\lambda^{1/\lambda}}$ is non-negligible functions.
+%			\begin{figure}[h!]\centering
+%					\begin{tikzpicture}[scale=.9]
+%						\begin{axis}[
+%							axis lines = left,
+%							xlabel = \(\lambda\),
+%							ylabel = \(f\),
+%							ymin = 0, ymax = 1.1,
+%							xmin = 0, xmax = 25,
+%							legend style={at={(.7,.5)},anchor=west}
+%							]
+%							% Original plot
+%							\addplot [
+%							line width = .7mm,
+%							domain=0:25, 
+%							samples=100, 
+%							color=red,
+%							]
+%							{1/2^x};
+%							\addlegendentry{\(\frac{1}{2^x}\)}
+%							
+%							\addplot [
+%							line width = .7mm,
+%							domain=.9:25, 
+%							samples=100, 
+%							color=gray,
+%							]
+%							{1/x^(1/x)};
+%							\addlegendentry{\(\frac{1}{\lambda^{1/\lambda}}\)}
+%						\end{axis}
+%					\end{tikzpicture}
+%				\captionof{figure}{Non-negligible functions.}
+%			\end{figure}
+%		\end{enumerate}
 		\end{proof}
 		\item[\bf 4.4.] Show that when $f$ is negligible, then for every polynomial $p$, the function $p(\lambda)f(\lambda)$ not only approaches $0$, but it is also negligible itself.
 		%\begin{tcolorbox}[colframe=magenta, breakable, enhanced]
@@ -1354,6 +1546,7 @@
 			\end{proof}
 		%\end{tcolorbox}
 		\vspace{8pt}
+		\newpage
 		\item[\bf 4.8.] A deterministic program is one that uses no random choices. Suppose $\library_{1}$ and $\library_{2}$ are two deterministic libraries with a common interface. Show that either $\library_{1}\equiv\library_{2}$, or else $\library_{1}\&\library_{2}$ can be distinguished with advantage 1.
 		%\begin{tcolorbox}[colframe=magenta, breakable, enhanced]
 			\begin{proof}[\sol]
@@ -1655,7 +1848,7 @@ plt.show()
 	\newpage
 	\textbf{Comparison of Normalized Distributions:}
 	\begin{figure}[h!]\centering
-		\includegraphics[width=\textwidth, height=.43\textheight]{query_1024.png}
+		\includegraphics[width=\textwidth, height=.45\textheight]{query_1024.png}
 		\caption{$\lambda=1024$, \ie, $\binaryfield^{2048}$ with 100,000 experiments}
 	\end{figure}
 	\begin{lstlisting}[style=sage]
@@ -2068,7 +2261,7 @@ lookup table}.
 		
 		% Draw the array table
 		\matrix[matrix of nodes, nodes={draw, minimum size=10mm}, row sep=0pt, column sep=10mm, column 1/.style={nodes={draw=none}}, column 2/.style={nodes={draw=none}}] (array) {
-			Index & Output & \\
+			Input & Output & \\
 			\(x_{\indexbit-1}\cdots x_1x_0\) & \(T[x]\) & Binary String Mapping \\
 			000 & \(T[000]\) & \(\one\one\zero\zero\one\zero\zero\zero\one\zero\cdots\) \\
 			001 & \(T[001]\) & \(\zero\one\one\zero\zero\zero\zero\one\zero\one\cdots\) \\
@@ -2134,7 +2327,40 @@ A truly random function (RF), on the other hand, is a function where every possi
 
 The key distinction between a PRF and an RF is that a PRF's output is reproducible given the same key and input, whereas an RF provides no such guarantee—the output for the same input can vary with each function invocation.
 
+\newpage
 
+\begin{remark}
+	\ \begin{center}
+		\begin{tikzpicture}[node distance=1.5cm, auto, thick]
+			% PRF Block
+			\node[draw, rectangle] (PRF) {$f_k$};
+			\node[above left=0.5cm and 0.5cm of PRF] (Key) {$k \in K$};
+			\node[below left=0.5cm and 0.5cm of PRF] (InputX) {$x \in X$};
+			\node[right=1cm of PRF] (OutputY) {$y \in Y$};
+			
+			\draw[->] (Key) -- (PRF);
+			\draw[->] (InputX) -- (PRF);
+			\draw[->] (PRF) -- (OutputY);
+			
+			\node[draw, dashed, fit=(PRF) (Key) (InputX) (OutputY), inner sep=8pt] (PRFBox) {};
+			\node[above=0.1cm of PRFBox] {Pseudo-Random Function (PRF)};
+			\node[below=0.1cm of PRFBox.south] {Output is deterministic with the same key and input};
+		\end{tikzpicture}
+		\begin{tikzpicture}[node distance=1.5cm, auto, thick]
+			% RF Block
+			\node[draw, rectangle] (RF) {$h$};
+			\node[below=1cm of RF] (InputX2) {$x \in X$};
+			\node[right=2cm of RF] (OutputY2) {$y \in Y$};
+			
+			\draw[->] (InputX2) -- (RF);
+			\draw[->] (RF) -- (OutputY2);
+			
+			\node[draw, dashed, fit=(RF) (InputX2) (OutputY2), inner sep=8pt] (RFBox) {};
+			\node[above=0.1cm of RFBox] {Random Function (RF)};
+			\node[below=0.1cm of RFBox.south] {Output varies randomly for the same input};
+		\end{tikzpicture}
+	\end{center}
+\end{remark}
 
 \begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf PRF Security}]
 	\begin{definition}
@@ -2175,6 +2401,40 @@ The key distinction between a PRF and an RF is that a PRF's output is reproducib
 		\end{center}
 	\end{definition}
 \end{tcolorbox}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\SetNlSty{textbf}{}{:}
+	\SetAlgoNlRelativeSize{0}
+	\SetNlSkip{1em}
+	\DontPrintSemicolon
+	\caption{$\library_{\prf-\real}^F$ and $\library_{\mathsf{PRF}-\mathsf{rand}}^F$}
+	
+	\Fn{\textbf{$\library_{\prf-\real}^F$}}{
+		\BlankLine
+		$k \leftarrow \{0, 1\}^\lambda$\;
+		\BlankLine
+		\SetKwFunction{FLookup}{Lookup}
+		\Fn{\FLookup{$x \in \{0, 1\}^n$}}{
+			\KwRet $F(k, x)$\;
+		}
+	}
+	
+	\Fn{\textbf{$\library_{\mathsf{PRF}-\mathsf{rand}}^F$}}{
+		\BlankLine
+		$T := \{\}$\;
+		\BlankLine
+		\SetKwFunction{FLookup}{Lookup}
+		\Fn{\FLookup{$x \in \{0, 1\}^n$}}{
+			\If{$T[x]$ undefined}{
+				$T[x] \leftarrow \{0, 1\}^{\text{out}}$\;
+			}
+			\KwRet $T[x]$\;
+		}
+	}
+	
+\end{algorithm}
+
 \begin{example}[How NOT to Build a PRF]
 	Suppose we have a length-doubling PRG \[
 	G:\binaryfield^{\lambda}\to\binaryfield^{2\lambda}
@@ -2189,161 +2449,209 @@ The key distinction between a PRF and an RF is that a PRF's output is reproducib
 	\end{table}
 	
 	\begin{figure}[h!]\centering
-		\includegraphics[width=\textwidth, height=.36\textheight]{prf.png}
-		\caption{PRF vs RF}
+		\includegraphics[scale=.5]{notprf.png}
+%		\caption{PRF vs RF}
 	\end{figure}
+
+\newpage
 	\begin{lstlisting}[style=sage]
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Let's visualize the concept of a Pseudo-Random Function (PRF) using a simple example.
+# Define a class RandomFunction to simulate a random function.
+class RandomFunction:
+	def __init__(self, y_space): # Initialize with a range of possible y values
+		self.y_space = y_space
+		self.results = {}  # Dictionary to store x:y mappings
 
-# Generate a random key
-key1 = np.random.randint(0, 2**10, size=1)
-key2 = np.random.randint(0, 2**10, size=1)
+	def __call__(self, x): # If x is new, assign a random y from y_space, else return stored y
+		if x not in self.results:
+		self.results[x] = np.random.choice(self.y_space)
+		return self.results[x]
 
-def prf(x, k):
-	# XOR the input with the key
+# Generate a random key for the pseudorandom function (PRF)
+key = np.random.randint(0, 2**10, size=1)
+
+def prf(x, k): # Define a simple PRF: bitwise XOR of input x with key k
 	x_k = np.bitwise_xor(x, k)
 	return x_k
 
-# Define a truly random function (RF)
-def rf(x, y_space):
-	# Choose a random output from the output space for each input
-	return np.random.choice(y_space)
-
-# Define new input and output spaces of different sizes
+# Create an input space for the functions
 input_space = np.arange(2**10)
+
+# Calculate PRF output for each input value
+prf_output = np.array([prf(x, key) for x in input_space])
+
+# Define the output space for the random function
 output_space = np.arange(2**10)
 
-# Compute the PRF and RF outputs for the smaller input/output space
-prf_output1 = np.array([prf(x, key1) for x in input_space1])
-rf_output1 = np.array([rf(x, output_space) for x in input_space])
-prf_output2 = np.array([prf(x, key2) for x in input_space1])
-rf_output2 = np.array([rf(x, output_space) for x in input_space])
+# Create an instance of RandomFunction with the defined output space
+rf_instance = RandomFunction(output_space)
 
-# Create a figure with specified figure size
-plt.figure(figsize=(14, 7))
-# Subplot 1 for PRF vs RF comparison in the first scenario
-plt.subplot(1, 2, 1)
-plt.plot(input_space1, prf_output1, 'o', color='mediumvioletred', label='PRF', markersize=4)
-plt.plot(input_space1, rf_output1, 'x', color='dodgerblue', label='RF', markersize=4)
-plt.title('PRF vs. RF (kEY 1)', fontsize=14)
-plt.xlabel('Index Space X', fontsize=12)
+# Calculate RF output for each input value
+rf_output = np.array([rf_instance(x) for x in input_space])
+
+# Set up the plot with a specific size
+plt.figure(figsize=(7, 7))
+
+# Plot RF output vs input space
+plt.plot(input_space, rf_output, 'x', color='dodgerblue', label='RF', markersize=4)
+# Plot PRF output vs input space
+plt.plot(input_space, prf_output, 'o', color='mediumvioletred', label='PRF', markersize=4)
+
+plt.title(f'PRF vs. RF (KEY: {key})', fontsize=14)
+plt.xlabel('Input Space X', fontsize=12)
 plt.ylabel('Output Space Y', fontsize=12)
 plt.legend()
+
 plt.grid(True)
-# Subplot 2 for PRF vs RF comparison in the second scenario
-plt.subplot(1, 2, 2)
-plt.plot(input_space1, prf_output2, 'o', color='mediumvioletred', label='PRF', markersize=4)
-plt.plot(input_space1, rf_output2, 'x', color='dodgerblue', label='RF', markersize=4)
-plt.title('PRF vs. RF (KEY 2)', fontsize=14)
-plt.xlabel('Index Space X', fontsize=12)
-plt.ylabel('Output Space Y', fontsize=12)
-plt.legend()
-plt.grid(True)
-# Adjust layout to prevent overlap and show the plot
+
 plt.tight_layout()
 plt.show()
 	\end{lstlisting}
 \end{example}
 
 	\newpage
-	\begin{center}
-		\begin{tikzpicture}[node distance=1.5cm, auto, thick]
-			% PRF Block
-			\node[draw, rectangle] (PRF) {$f_k$};
-			\node[above left=0.5cm and 0.5cm of PRF] (Key) {$k \in K$};
-			\node[below left=0.5cm and 0.5cm of PRF] (InputX) {$x \in X$};
-			\node[right=1cm of PRF] (OutputY) {$y \in Y$};
-			
-			\draw[->] (Key) -- (PRF);
-			\draw[->] (InputX) -- (PRF);
-			\draw[->] (PRF) -- (OutputY);
-			
-			\node[draw, dashed, fit=(PRF) (Key) (InputX) (OutputY), inner sep=8pt] (PRFBox) {};
-			\node[above=0.1cm of PRFBox] {Pseudo-Random Function (PRF)};
-			\node[below=0.1cm of PRFBox.south] {Output is deterministic and reproducible with the same key and input};
-		\end{tikzpicture}
-		\begin{tikzpicture}[node distance=1.5cm, auto, thick]
-			% RF Block
-			\node[draw, rectangle] (RF) {$h$};
-			\node[below=1cm of RF] (InputX2) {$x \in X$};
-			\node[right=2cm of RF] (OutputY2) {$y \in Y$};
-			
-			\draw[->] (InputX2) -- (RF);
-			\draw[->] (RF) -- (OutputY2);
-			
-			\node[draw, dashed, fit=(RF) (InputX2) (OutputY2), inner sep=8pt] (RFBox) {};
-			\node[above=0.1cm of RFBox] {Random Function (RF)};
-			\node[below=0.1cm of RFBox.south] {Output varies randomly for the same input};
-		\end{tikzpicture}
-	\end{center}
-
-	\newpage
 	\chapter{Security Against Chosen Plaintext Attacks}
-	\section{Introduction to Encryption}
-	Our previous security definitions for encryption capture the case where a key is used to encrypt only one plaintext. Clearly, it would be more useful to have an encryption scheme that allows many plaintexts to be encrypted under the same key.
 	
-	\subsection{Chosen-Plaintext Attack (CPA) Security}
-	Fortunately, we have arranged things so that we get the "correct" security definition when we modify the earlier definition in a natural way. We simply let the libraries choose a secret key once and for all, which is used to encrypt all plaintexts. More formally:
+	Our earlier rules for secure encryption were about using a key for just one message. But it's better to have a method where you can encrypt many messages with the same key.\par
+	We just make the libraries pick a secret key once, and this key is used for all messages. To explain this in a more detailed way:
+	\vspace{12pt}
+	\begin{tcolorbox}[colback=white,colframe=defcolor,arc=5pt,title={\color{white}\bf CPA security}]
+		\begin{definition}
+			Let $\Sigma$ be an encryption scheme. We say that $\Sigma$ has \textbf{CPA security} (\textbf{security against chosen-plaintext attacks}) if $\library_{\mathsf{cpa-L}}^\Sigma\indist\library_{\mathsf{cpa-R}}^\Sigma$.
+		\end{definition}
+	\end{tcolorbox}
 	
-	\begin{definition}
-		Let $\mathcal{E}$ be an encryption scheme. We say that $\mathcal{E}$ has \emph{security against chosen-plaintext attacks (CPA security)} if $[\text{some mathematical expression}]$.
-	\end{definition}
+	\begin{algorithm}[H]
+		\DontPrintSemicolon
+		\SetAlgoLined
+		\SetKwInput{KwData}{Input}
+		\SetKwInput{KwResult}{Output}
+		\KwData{$m_L, m_R \in \Sigma.M$}
+		\KwResult{Ciphertext $c$}
+		\BlankLine
+		$k \leftarrow \Sigma.\text{KeyGen}$\;
+		\BlankLine
+		\SetKwFunction{FMain}{\textsc{EAVESDROP}}
+%		\SetKwProg{Fn}{Function}{:}{}
+		\Fn{\FMain{$m_L, m_R \in \Sigma.M$}}{
+			$c \leftarrow \Sigma.\text{Enc}(k, m_L)$\;
+			\KwRet c\;
+		}
+		
+		\caption{$\mathcal{L}^{\Sigma}_{\mathsf{cpa-L}}$}
+	\end{algorithm}
 	
-	\subsection{Limits of Deterministic Encryption}
-	We have already seen block ciphers / PRPs, which seem to satisfy everything needed for a secure encryption scheme. For a block cipher, $F$ corresponds to encryption, $F^{-1}$ corresponds to decryption, and all outputs of $F$ look pseudorandom. What more could you ask for in a good encryption scheme?
+	\begin{algorithm}[H]
+		\DontPrintSemicolon
+		\SetAlgoLined
+		\SetKwInput{KwData}{Input}
+		\SetKwInput{KwResult}{Output}
+		\KwData{$m_L, m_R \in \Sigma.M$}
+		\KwResult{Ciphertext $c$}
+		\BlankLine
+		$k \leftarrow \Sigma.\text{KeyGen}$\;
+		\BlankLine
+		\SetKwFunction{FMain}{\textsc{EAVESDROP}}
+		%		\SetKwProg{Fn}{Function}{:}{}
+		\Fn{\FMain{$m_L, m_R \in \Sigma.M$}}{
+			$c \leftarrow \Sigma.\text{Enc}(k, m_R)$\;
+			\KwRet c\;
+		}
+		
+		\caption{$\mathcal{L}^{\Sigma}_{\mathsf{cpa-R}}$}
+	\end{algorithm}
+	\vspace{24pt}
+	\begin{note}
+		CPA security is often called ``IND-CPA'' security, meaning ``indistinguishability of cipher-
+		texts under chosen-plaintext attack.''
+	\end{note}
+	
+	\section{Limits of Deterministic Encryption}
+	
+	We already know about block ciphers, also called PRPs. These look like they have everything necessary for safe encryption. In a block cipher $F$ is used for encrypting, $F^{-1}$i s used for decrypting, and the results of $F$ appear to be random, but they're not truly random. What else would you need in a reliable encryption method?
 	
 	\begin{example}
-		We will see that a block cipher, when used "as-is," is not a CPA-secure encryption scheme. Let $F$ denote the block cipher and suppose its block length is $b$ len.
+		We will see that a block cipher, when used "as-is," is not a CPA-secure encryption scheme. Let $F$ denote the block cipher and suppose its block length is $\texttt{blen}$.\par
+		Consider the following adversary $\adversary$, that tries to distinguish the $\library_{}$ libraries:
+		
+		\begin{algorithm}[H]
+			\SetAlgoLined
+			\SetKwInput{KwData}{Input}
+			\SetKwInput{KwResult}{Output}
+			
+			\KwData{Two arguments \( \zero^{\text{blen}} \), \( \one^{\text{blen}} \)}
+			\KwResult{\texttt{True} or \texttt{False}}
+			\caption{Adversary \(\mathcal{A}\) for \( \library_{\text{CPA-*}} \)}
+			\BlankLine
+			\( c_1 \leftarrow \textsc{EAVESDROP}(\zero^{\text{blen}}, \zero^{\text{blen}}) \)\;
+			\( c_2 \leftarrow \textsc{EAVESDROP}(\zero^{\text{blen}}, \one^{\text{blen}}) \)\;
+			\Return{\( c_1 = c_2 \)}\;
+			
+		\end{algorithm}
+		
+		\begin{algorithm}[H]
+			\SetAlgoLined
+			\SetKwInput{KwData}{Input}
+			\SetKwInput{KwResult}{Output}
+			
+			\KwData{\( k \leftarrow \binaryfield^\lambda \), \( m_1, m_2 \)}
+			\KwResult{Cipher \( c \)}
+			
+			\caption{EAVESDROP Left and Right}
+			\BlankLine
+			\textbf{EAVESDROP Left:}\\
+			\( c \leftarrow F(k, m_1) \)\;
+			\Return{\( c \)}\;
+			
+			\textbf{EAVESDROP Right:}\\
+			\( c \leftarrow F(k, m_2) \)\;
+			\Return{\( c \)}\;
+			
+		\end{algorithm}
+		
+		\begin{center}\begin{tikzpicture}[node distance=1.75cm, auto]
+				% Nodes
+				\node (A) {\(\mathcal{A}\)};
+				\node [below left=of A] (LCPAL) {\(L_{\text{CPA-L}}\)};
+				\node [below right=of A] (LCPAR) {\(L_{\text{CPA-R}}\)};
+				\node [below=of LCPAL] (EavesdropL) {\textsc{Eavesdrop}};
+				\node [below=of LCPAR] (EavesdropR) {\textsc{Eavesdrop}};
+				\node [below=of EavesdropL] (c1c2L) {\(c_1 = c_2\)};
+				\node [below=of EavesdropR] (c1c2R) {\(c_1 \neq c_2\)};
+				
+				% Arrows
+				\draw[-{Latex[length=2mm]}] (A) -- (LCPAL) node[midway, left] {links to};
+				\draw[-{Latex[length=2mm]}] (A) -- (LCPAR) node[midway, right] {links to};
+				\draw[-{Latex[length=2mm]}] (LCPAL) -- (EavesdropL);
+				\draw[-{Latex[length=2mm]}] (LCPAR) -- (EavesdropR);
+				\draw[-{Latex[length=2mm]}] (EavesdropL) -- (c1c2L);
+				\draw[-{Latex[length=2mm]}] (EavesdropR) -- (c1c2R);
+				
+				% Labels
+				\node [below=of c1c2L] (output1) {\(\mathcal{A} \circ L_{\text{CPA-L}}\) outputs 1};
+				\node [below=of c1c2R] (output2) {\(\mathcal{A} \circ L_{\text{CPA-R}}\) never outputs 1};
+				
+				\draw[-{Latex[length=2mm]}] (c1c2L) -- (output1);
+				\draw[-{Latex[length=2mm]}] (c1c2R) -- (output2);
+			\end{tikzpicture}
+		\end{center}
 	\end{example}
+		
 	
-	When \( \mathcal{A} \) is linked to \( L_{\text{CPA-L}} \), the
+	
+	When \( \mathcal{A} \) is linked to \( \library_{\text{CPA-L}} \), the
 	\textsc{Eavesdrop} algorithm will encrypt its first argument. So, \( c_1 \)
-	and \( c_2 \) will both be computed as \( F(k, 0^{\text{blen}}) \). Since \( F \) is a deterministic
+	and \( c_2 \) will both be computed as \( F(k, \zero^{\text{blen}}) \). Since \( F \) is a deterministic
 	function, this results in identical outputs from \textsc{Eavesdrop}. In
-	other words \( c_1 = c_2 \), and \( \mathcal{A} \circ L_{\text{CPA-L}} \) always outputs 1.
+	other words \( c_1 = c_2 \), and \( \mathcal{A} \circ \library_{\text{CPA-L}} \) always outputs 1.
 	
 	When \( \mathcal{A} \) is linked to \( L_{\text{CPA-R}} \), the
 	\textsc{Eavesdrop} algorithm will encrypt its second argument. So,
-	\( c_1 \) and \( c_2 \) are computed as \( c_1 = F(k, 0^{\text{blen}}) \) and \( c_2 = F(k, 1^{\text{blen}}) \).
-	Since \( F \) is a permutation, \( c_1 \neq c_2 \), so \( \mathcal{A} \circ L_{\text{CPA-R}} \) never outputs 1.
-	
-	\begin{algorithm}[H]
-		\SetAlgoLined
-		\SetKwInput{KwData}{Input}
-		\SetKwInput{KwResult}{Output}
-		
-		\KwData{Two arguments \( 0^{\text{blen}} \), \( 1^{\text{blen}} \)}
-		\KwResult{Whether \( c_1 = c_2 \)}
-		\caption{Adversary \(\mathcal{A}\) for \( L_{\text{CPA-*}} \)}
-		
-		\( c_1 \leftarrow \text{EAVESDROP}(0^{\text{blen}}, 0^{\text{blen}}) \)\;
-		\( c_2 \leftarrow \text{EAVESDROP}(0^{\text{blen}}, 1^{\text{blen}}) \)\;
-		\Return{\( c_1 = c_2 \)}\;
-		
-	\end{algorithm}
-	
-	\begin{algorithm}[H]
-		\SetAlgoLined
-		\SetKwInput{KwData}{Input}
-		\SetKwInput{KwResult}{Output}
-		
-		\KwData{\( k \leftarrow \{0, 1\}^\lambda \), \( m_1, m_2 \)}
-		\KwResult{Cipher \( c \)}
-		
-		\caption{EAVESDROP Left and Right}
-		
-		\textbf{EAVESDROP Left:}\\
-		\( c \leftarrow F(k, m_1) \)\;
-		\Return{\( c \)}\;
-		
-		\textbf{EAVESDROP Right:}\\
-		\( c \leftarrow F(k, m_2) \)\;
-		\Return{\( c \)}\;
-		
-	\end{algorithm}
+	\( c_1 \) and \( c_2 \) are computed as \( c_1 = F(k, \zero^{\text{blen}}) \) and \( c_2 = F(k, \one^{\text{blen}}) \).
+	Since \( F \) is a permutation, \( c_1 \neq c_2 \), so \( \mathcal{A} \circ \library_{\text{CPA-R}} \) never outputs 1.
+
 	
 
 
